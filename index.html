@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ArtSpace - Virtual Art Gallery</title>
+    <title>ArtSpace - Virtual Art Gallery with AI</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,6 +22,8 @@
             --light: #f5f5f5;
             --text: #333;
             --text-light: #666;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
         
         * {
@@ -41,7 +43,7 @@
         .header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: 20px;
+            padding: 15px 20px;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -58,7 +60,7 @@
         
         .logo {
             font-family: 'Playfair Display', serif;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -66,67 +68,103 @@
         }
         
         .logo-icon {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             background: var(--accent);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 18px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
         
         .header-badge {
             background: var(--gold);
             color: var(--primary);
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+        
+        .ai-chat-toggle {
+            background: var(--gradient-1);
+            border: none;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .ai-chat-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
         
         /* Hero Section */
         .hero {
             background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
             color: white;
-            padding: 40px 20px;
+            padding: 30px 20px;
             text-align: center;
         }
         
         .hero h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 36px;
+            font-size: 32px;
             margin-bottom: 10px;
         }
         
         .hero p {
             opacity: 0.8;
-            font-size: 16px;
+            font-size: 15px;
             max-width: 600px;
             margin: 0 auto;
         }
         
-        .ar-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 10px 20px;
-            border-radius: 30px;
+        .tech-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
             margin-top: 20px;
-            font-size: 14px;
+            flex-wrap: wrap;
         }
         
-        .ar-badge .dot {
-            width: 8px;
-            height: 8px;
-            background: #4ade80;
+        .tech-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        .tech-badge .dot {
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             animation: pulse 2s infinite;
         }
+        
+        .dot-green { background: #4ade80; }
+        .dot-blue { background: #60a5fa; }
+        .dot-purple { background: #a78bfa; }
         
         @keyframes pulse {
             0%, 100% { opacity: 1; }
@@ -137,34 +175,36 @@
         .gallery-section {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 30px 20px;
         }
         
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
         .section-title {
             font-family: 'Playfair Display', serif;
-            font-size: 28px;
+            font-size: 26px;
             color: var(--primary);
         }
         
         .filter-pills {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
         
         .pill {
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 20px;
             border: 1px solid #ddd;
             background: white;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -177,28 +217,28 @@
         
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
         }
         
         /* Artwork Card */
         .artwork-card {
             background: white;
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
             transition: all 0.4s ease;
             cursor: pointer;
         }
         
         .artwork-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
         }
         
         .artwork-preview {
             position: relative;
-            height: 280px;
+            height: 220px;
             background: linear-gradient(145deg, #f8f8f8 0%, #e8e8e8 100%);
         }
         
@@ -210,13 +250,13 @@
         
         .artwork-badge {
             position: absolute;
-            top: 15px;
-            left: 15px;
+            top: 12px;
+            left: 12px;
             background: var(--accent);
             color: white;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 11px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 10px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -224,51 +264,46 @@
         
         .ar-available {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 12px;
+            right: 12px;
             background: rgba(0,0,0,0.7);
             color: white;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 11px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 10px;
             display: flex;
             align-items: center;
-            gap: 6px;
-        }
-        
-        .ar-available svg {
-            width: 16px;
-            height: 16px;
+            gap: 5px;
         }
         
         .artwork-info {
-            padding: 25px;
+            padding: 20px;
         }
         
         .artwork-artist {
             color: var(--accent);
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         
         .artwork-title {
             font-family: 'Playfair Display', serif;
-            font-size: 22px;
+            font-size: 18px;
             color: var(--primary);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             line-height: 1.3;
         }
         
         .artwork-dimensions {
             display: flex;
-            gap: 20px;
-            padding: 15px 0;
+            gap: 15px;
+            padding: 12px 0;
             border-top: 1px solid #eee;
             border-bottom: 1px solid #eee;
-            margin: 15px 0;
+            margin: 12px 0;
         }
         
         .dimension {
@@ -277,43 +312,43 @@
         }
         
         .dimension-value {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             color: var(--primary);
         }
         
         .dimension-label {
-            font-size: 11px;
+            font-size: 9px;
             color: var(--text-light);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-top: 4px;
+            margin-top: 2px;
         }
         
         .artwork-price {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         
         .artwork-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
         
         .btn {
             flex: 1;
-            padding: 14px 20px;
-            border-radius: 12px;
-            font-size: 14px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             border: none;
         }
         
@@ -324,7 +359,7 @@
         
         .btn-primary:hover {
             transform: scale(1.02);
-            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.4);
+            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.4);
         }
         
         .btn-secondary {
@@ -344,11 +379,11 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             z-index: 1000;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 15px;
         }
         
         .modal-overlay.active {
@@ -357,7 +392,7 @@
         
         .modal {
             background: white;
-            border-radius: 24px;
+            border-radius: 20px;
             max-width: 900px;
             width: 100%;
             max-height: 90vh;
@@ -367,7 +402,7 @@
         }
         
         .modal-header {
-            padding: 20px 25px;
+            padding: 18px 22px;
             border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
@@ -376,18 +411,18 @@
         
         .modal-title {
             font-family: 'Playfair Display', serif;
-            font-size: 24px;
+            font-size: 22px;
             color: var(--primary);
         }
         
         .modal-close {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             border: none;
             background: #f5f5f5;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -400,17 +435,18 @@
         }
         
         .modal-body {
-            padding: 25px;
+            padding: 22px;
             overflow-y: auto;
             flex: 1;
         }
         
         .modal-viewer {
-            height: 400px;
+            height: 350px;
             background: linear-gradient(145deg, #f8f8f8 0%, #e8e8e8 100%);
-            border-radius: 16px;
+            border-radius: 14px;
             overflow: hidden;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            position: relative;
         }
         
         .modal-viewer model-viewer {
@@ -418,28 +454,43 @@
             height: 100%;
         }
         
+        .size-indicator {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        
+        .size-indicator strong {
+            color: var(--gold);
+        }
+        
         .modal-details {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 15px;
         }
         
         .detail-card {
             background: #f8f8f8;
-            padding: 20px;
-            border-radius: 12px;
+            padding: 16px;
+            border-radius: 10px;
         }
         
         .detail-card h4 {
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--text-light);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .detail-card p {
-            font-size: 16px;
+            font-size: 15px;
             color: var(--primary);
             font-weight: 500;
         }
@@ -447,16 +498,16 @@
         .dimension-visual {
             background: var(--primary);
             color: white;
-            padding: 25px;
-            border-radius: 16px;
-            margin-top: 20px;
+            padding: 22px;
+            border-radius: 14px;
+            margin-top: 18px;
         }
         
         .dimension-visual h4 {
-            font-size: 14px;
+            font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             opacity: 0.8;
         }
         
@@ -471,82 +522,268 @@
         }
         
         .dim-value {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 700;
         }
         
         .dim-unit {
-            font-size: 14px;
+            font-size: 12px;
             opacity: 0.7;
         }
         
         .dim-label {
-            font-size: 12px;
+            font-size: 11px;
             opacity: 0.6;
-            margin-top: 5px;
+            margin-top: 4px;
         }
         
         .dim-separator {
-            font-size: 24px;
+            font-size: 22px;
             opacity: 0.3;
         }
         
         .modal-actions {
-            padding: 20px 25px;
+            padding: 18px 22px;
             border-top: 1px solid #eee;
             display: flex;
-            gap: 15px;
+            gap: 12px;
         }
         
         .btn-ar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-1);
             color: white;
             flex: 2;
         }
         
         .btn-ar:hover {
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
         
         .lidar-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             background: rgba(255,255,255,0.2);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 10px;
+        }
+        
+        /* AI Chat Panel */
+        .ai-chat-panel {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            bottom: 0;
+            width: 380px;
+            background: white;
+            box-shadow: -5px 0 30px rgba(0,0,0,0.15);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            transition: right 0.3s ease;
+        }
+        
+        .ai-chat-panel.active {
+            right: 0;
+        }
+        
+        .chat-header {
+            background: var(--gradient-1);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-header h3 {
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chat-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .chat-message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .chat-message.bot {
+            background: #f0f0f0;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        
+        .chat-message.user {
+            background: var(--gradient-1);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .chat-suggestions {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .suggestion-chip {
+            background: #f0f0f0;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .suggestion-chip:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .chat-input-area {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .chat-input:focus {
+            border-color: #667eea;
+        }
+        
+        .chat-send {
+            background: var(--gradient-1);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-send:hover {
+            transform: scale(1.1);
+        }
+        
+        .artwork-recommendation {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .artwork-recommendation:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .artwork-recommendation h5 {
+            font-size: 14px;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+        
+        .artwork-recommendation p {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
+        .artwork-recommendation .view-ar {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        /* Chat overlay for mobile */
+        .chat-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        
+        .chat-overlay.active {
+            display: block;
         }
         
         /* Footer */
         .footer {
             background: var(--primary);
             color: white;
-            padding: 30px 20px;
+            padding: 25px 20px;
             text-align: center;
-            margin-top: 60px;
+            margin-top: 50px;
         }
         
         .footer-text {
             opacity: 0.7;
-            font-size: 14px;
+            font-size: 13px;
         }
         
         .footer-brand {
             font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            margin-bottom: 10px;
+            font-size: 18px;
+            margin-bottom: 8px;
         }
         
         /* Responsive */
         @media (max-width: 768px) {
             .header-content {
-                flex-direction: column;
-                gap: 15px;
+                flex-wrap: wrap;
+                gap: 10px;
             }
             
             .hero h1 {
-                font-size: 28px;
+                font-size: 26px;
             }
             
             .gallery-grid {
@@ -563,8 +800,12 @@
             
             .section-header {
                 flex-direction: column;
-                gap: 15px;
                 align-items: flex-start;
+            }
+            
+            .ai-chat-panel {
+                width: 100%;
+                right: -100%;
             }
         }
         
@@ -576,6 +817,21 @@
         model-viewer::part(default-ar-button) {
             display: none;
         }
+        
+        /* Loading state */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -586,17 +842,35 @@
                 <div class="logo-icon">🎨</div>
                 ArtSpace
             </div>
-            <div class="header-badge">PINUS Hack 2026</div>
+            <div class="header-actions">
+                <span class="header-badge">PINUS Hack 2026</span>
+                <button class="ai-chat-toggle" onclick="toggleChat()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    AI Assistant
+                </button>
+            </div>
         </div>
     </header>
     
     <!-- Hero -->
     <section class="hero">
         <h1>Experience Art in Your Space</h1>
-        <p>Browse our curated collection and visualize artworks in your room using AR technology</p>
-        <div class="ar-badge">
-            <span class="dot"></span>
-            LiDAR & AR Enabled
+        <p>Browse our curated collection and visualize artworks in your room using AR technology with AI-powered recommendations</p>
+        <div class="tech-badges">
+            <span class="tech-badge">
+                <span class="dot dot-green"></span>
+                LiDAR Enhanced
+            </span>
+            <span class="tech-badge">
+                <span class="dot dot-blue"></span>
+                Real-Size AR
+            </span>
+            <span class="tech-badge">
+                <span class="dot dot-purple"></span>
+                AI Recommendations
+            </span>
         </div>
     </section>
     
@@ -605,10 +879,10 @@
         <div class="section-header">
             <h2 class="section-title">Featured Collection</h2>
             <div class="filter-pills">
-                <span class="pill active">All</span>
-                <span class="pill">Sculptures</span>
-                <span class="pill">Wall Art</span>
-                <span class="pill">Modern</span>
+                <span class="pill active" onclick="filterArtworks('all')">All</span>
+                <span class="pill" onclick="filterArtworks('sculptures')">Sculptures</span>
+                <span class="pill" onclick="filterArtworks('modern')">Modern</span>
+                <span class="pill" onclick="filterArtworks('decorative')">Decorative</span>
             </div>
         </div>
         
@@ -637,8 +911,12 @@
                         ar
                         ar-modes="webxr scene-viewer quick-look"
                         ar-scale="fixed"
+                        ar-placement="floor"
                     >
                     </model-viewer>
+                    <div class="size-indicator" id="size-indicator">
+                        Real Size: <strong id="real-size">-</strong>
+                    </div>
                 </div>
                 
                 <div class="modal-details">
@@ -651,8 +929,8 @@
                         <p id="modal-medium">-</p>
                     </div>
                     <div class="detail-card">
-                        <h4>Year</h4>
-                        <p id="modal-year">-</p>
+                        <h4>Style</h4>
+                        <p id="modal-style">-</p>
                     </div>
                     <div class="detail-card">
                         <h4>Price</h4>
@@ -661,7 +939,7 @@
                 </div>
                 
                 <div class="dimension-visual">
-                    <h4>Artwork Dimensions</h4>
+                    <h4>Artwork Dimensions (Real Scale in AR)</h4>
                     <div class="dimension-display">
                         <div class="dim-item">
                             <div class="dim-value" id="modal-width">-</div>
@@ -685,22 +963,67 @@
             </div>
             <div class="modal-actions">
                 <button class="btn btn-ar" onclick="activateAR()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
                         <path d="M12 18a6 6 0 100-12 6 6 0 000 12z"/>
                         <path d="M12 14a2 2 0 100-4 2 2 0 000 4z"/>
                     </svg>
-                    View in AR
+                    View in AR (Real Size)
                     <span class="lidar-badge">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
                             <circle cx="12" cy="12" r="3"/>
-                            <path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
                         </svg>
                         LiDAR
                     </span>
                 </button>
                 <button class="btn btn-secondary" onclick="closeModal()">Close</button>
             </div>
+        </div>
+    </div>
+    
+    <!-- AI Chat Panel -->
+    <div class="chat-overlay" id="chat-overlay" onclick="toggleChat()"></div>
+    <div class="ai-chat-panel" id="ai-chat-panel">
+        <div class="chat-header">
+            <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                    <line x1="9" y1="9" x2="9.01" y2="9"/>
+                    <line x1="15" y1="9" x2="15.01" y2="9"/>
+                </svg>
+                Art Advisor AI
+            </h3>
+            <button class="chat-close" onclick="toggleChat()">×</button>
+        </div>
+        
+        <div class="chat-messages" id="chat-messages">
+            <div class="chat-message bot">
+                Hello! I'm your AI Art Advisor. Tell me what kind of artwork you're looking for, and I'll recommend pieces from our collection. You can describe:
+                <br><br>
+                • A <strong>theme</strong> (nature, modern, abstract)
+                <br>
+                • A <strong>mood</strong> (calm, energetic, mysterious)
+                <br>
+                • A <strong>space</strong> (living room, office, bedroom)
+            </div>
+        </div>
+        
+        <div class="chat-suggestions">
+            <button class="suggestion-chip" onclick="sendSuggestion('modern minimalist')">Modern & Minimalist</button>
+            <button class="suggestion-chip" onclick="sendSuggestion('playful and fun')">Playful & Fun</button>
+            <button class="suggestion-chip" onclick="sendSuggestion('elegant decorative')">Elegant Decor</button>
+            <button class="suggestion-chip" onclick="sendSuggestion('unique conversation piece')">Conversation Piece</button>
+        </div>
+        
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="chat-input" placeholder="Describe what you're looking for..." onkeypress="handleChatKeypress(event)">
+            <button class="chat-send" onclick="sendMessage()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+            </button>
         </div>
     </div>
     
@@ -711,70 +1034,167 @@
     </footer>
     
     <script>
-        // Artwork data
+        // Artwork data with real dimensions
         const artworks = [
             {
                 id: 1,
-                title: "Geometric Harmony",
+                title: "Geometric Wall Decor",
                 artist: "Studio Moderne",
-                medium: "Wood & Metal Sculpture",
-                year: "2024",
+                medium: "Wood & Metal",
+                style: "Contemporary",
                 price: "$2,450",
-                dimensions: { width: 45, height: 60, depth: 15 },
+                dimensions: { width: 60, height: 80, depth: 15 },
                 model: "models/decor_wall.glb",
                 badge: "Featured",
-                category: "wall-art"
+                category: "decorative",
+                tags: ["modern", "geometric", "elegant", "wall art", "minimalist"],
+                description: "A stunning geometric wall piece perfect for modern living spaces."
             },
             {
                 id: 2,
-                title: "Abstract Flow",
-                artist: "Elena Vasquez",
-                medium: "Bronze Sculpture",
-                year: "2023",
-                price: "$4,800",
-                dimensions: { width: 30, height: 45, depth: 25 },
-                model: "models/decor_wall.glb",
+                title: "Legendary Sword",
+                artist: "Fantasy Forge",
+                medium: "Digital Sculpture",
+                style: "Fantasy",
+                price: "$1,890",
+                dimensions: { width: 15, height: 120, depth: 8 },
+                model: "models/sword.glb",
                 badge: "New",
-                category: "sculptures"
+                category: "sculptures",
+                tags: ["fantasy", "unique", "conversation piece", "dramatic", "collector"],
+                description: "An intricately detailed fantasy sword sculpture."
             },
             {
                 id: 3,
-                title: "Urban Reflections",
-                artist: "Marcus Chen",
-                medium: "Mixed Media",
-                year: "2024",
-                price: "$1,890",
-                dimensions: { width: 80, height: 60, depth: 5 },
-                model: "models/decor_wall.glb",
-                badge: "Popular",
-                category: "modern"
+                title: "Growth Chart",
+                artist: "Data Visuals Co.",
+                medium: "3D Infographic",
+                style: "Modern",
+                price: "$980",
+                dimensions: { width: 40, height: 50, depth: 20 },
+                model: "models/financial_growth.glb",
+                badge: null,
+                category: "modern",
+                tags: ["modern", "office", "professional", "minimalist", "business"],
+                description: "A modern 3D visualization perfect for office spaces."
             },
             {
                 id: 4,
-                title: "Nature's Whisper",
-                artist: "Aria Woods",
-                medium: "Ceramic & Glass",
-                year: "2023",
+                title: "Vintage Cart",
+                artist: "Rustic Arts",
+                medium: "Mixed Media",
+                style: "Rustic",
                 price: "$3,200",
-                dimensions: { width: 35, height: 50, depth: 20 },
-                model: "models/decor_wall.glb",
+                dimensions: { width: 80, height: 60, depth: 45 },
+                model: "models/cart.glb",
+                badge: "Popular",
+                category: "decorative",
+                tags: ["rustic", "vintage", "decorative", "statement", "unique"],
+                description: "A charming vintage cart sculpture with rustic appeal."
+            },
+            {
+                id: 5,
+                title: "Balance Tower",
+                artist: "Playful Designs",
+                medium: "Wood Sculpture",
+                style: "Interactive",
+                price: "$450",
+                dimensions: { width: 20, height: 35, depth: 20 },
+                model: "models/jenga.glb",
                 badge: null,
-                category: "sculptures"
+                category: "modern",
+                tags: ["playful", "fun", "interactive", "game", "conversation piece"],
+                description: "A playful wooden tower sculpture inspired by classic games."
+            },
+            {
+                id: 6,
+                title: "Designer Lamp",
+                artist: "Lumina Studio",
+                medium: "Glass & Metal",
+                style: "Art Deco",
+                price: "$1,250",
+                dimensions: { width: 30, height: 55, depth: 30 },
+                model: "models/lamp.glb",
+                badge: "Trending",
+                category: "decorative",
+                tags: ["elegant", "functional", "decorative", "lighting", "art deco"],
+                description: "An elegant designer lamp that doubles as a sculptural piece."
+            },
+            {
+                id: 7,
+                title: "Tech Display",
+                artist: "Digital Age Art",
+                medium: "Mixed Media",
+                style: "Tech Art",
+                price: "$780",
+                dimensions: { width: 50, height: 40, depth: 25 },
+                model: "models/monitor.glb",
+                badge: null,
+                category: "modern",
+                tags: ["tech", "modern", "office", "digital", "contemporary"],
+                description: "A modern tech-inspired display piece for contemporary spaces."
+            },
+            {
+                id: 8,
+                title: "Space Explorer",
+                artist: "Cosmos Studio",
+                medium: "Resin Sculpture",
+                style: "Sci-Fi",
+                price: "$2,100",
+                dimensions: { width: 40, height: 90, depth: 35 },
+                model: "models/astronaut.glb",
+                badge: "Editor's Pick",
+                category: "sculptures",
+                tags: ["space", "adventure", "unique", "conversation piece", "inspiring"],
+                description: "An inspiring astronaut sculpture celebrating human exploration."
+            },
+            {
+                id: 9,
+                title: "Galloping Spirit",
+                artist: "Nature Forms",
+                medium: "Bronze",
+                style: "Classical",
+                price: "$4,500",
+                dimensions: { width: 45, height: 40, depth: 15 },
+                model: "models/horse.glb",
+                badge: null,
+                category: "sculptures",
+                tags: ["classical", "elegant", "nature", "majestic", "traditional"],
+                description: "A majestic horse sculpture capturing movement and grace."
+            },
+            {
+                id: 10,
+                title: "Expressive Bot",
+                artist: "Future Arts",
+                medium: "Digital Sculpture",
+                style: "Futuristic",
+                price: "$1,650",
+                dimensions: { width: 35, height: 50, depth: 30 },
+                model: "models/robot.glb",
+                badge: null,
+                category: "modern",
+                tags: ["futuristic", "playful", "tech", "fun", "animated"],
+                description: "A charming robot sculpture with expressive personality."
             }
         ];
         
         // Current selected artwork
         let currentArtwork = null;
+        let currentFilter = 'all';
         
         // Render gallery
-        function renderGallery() {
+        function renderGallery(filter = 'all') {
             const gallery = document.getElementById('gallery');
-            gallery.innerHTML = artworks.map(art => `
+            const filteredArtworks = filter === 'all' 
+                ? artworks 
+                : artworks.filter(a => a.category === filter);
+            
+            gallery.innerHTML = filteredArtworks.map(art => `
                 <div class="artwork-card" onclick="openModal(${art.id})">
                     <div class="artwork-preview">
                         ${art.badge ? `<span class="artwork-badge">${art.badge}</span>` : ''}
                         <span class="ar-available">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
                                 <circle cx="12" cy="12" r="3"/>
                             </svg>
@@ -797,21 +1217,21 @@
                         <div class="artwork-dimensions">
                             <div class="dimension">
                                 <div class="dimension-value">${art.dimensions.width}</div>
-                                <div class="dimension-label">Width (cm)</div>
+                                <div class="dimension-label">W (cm)</div>
                             </div>
                             <div class="dimension">
                                 <div class="dimension-value">${art.dimensions.height}</div>
-                                <div class="dimension-label">Height (cm)</div>
+                                <div class="dimension-label">H (cm)</div>
                             </div>
                             <div class="dimension">
                                 <div class="dimension-value">${art.dimensions.depth}</div>
-                                <div class="dimension-label">Depth (cm)</div>
+                                <div class="dimension-label">D (cm)</div>
                             </div>
                         </div>
                         <div class="artwork-price">${art.price}</div>
                         <div class="artwork-actions">
                             <button class="btn btn-primary" onclick="event.stopPropagation(); openModal(${art.id})">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <circle cx="12" cy="12" r="10"/>
                                     <circle cx="12" cy="12" r="3"/>
                                 </svg>
@@ -826,6 +1246,14 @@
             `).join('');
         }
         
+        // Filter artworks
+        function filterArtworks(category) {
+            currentFilter = category;
+            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+            event.target.classList.add('active');
+            renderGallery(category);
+        }
+        
         // Open modal
         function openModal(artworkId) {
             currentArtwork = artworks.find(a => a.id === artworkId);
@@ -834,11 +1262,15 @@
             document.getElementById('modal-title').textContent = currentArtwork.title;
             document.getElementById('modal-artist').textContent = currentArtwork.artist;
             document.getElementById('modal-medium').textContent = currentArtwork.medium;
-            document.getElementById('modal-year').textContent = currentArtwork.year;
+            document.getElementById('modal-style').textContent = currentArtwork.style;
             document.getElementById('modal-price').textContent = currentArtwork.price;
             document.getElementById('modal-width').textContent = currentArtwork.dimensions.width;
             document.getElementById('modal-height').textContent = currentArtwork.dimensions.height;
             document.getElementById('modal-depth').textContent = currentArtwork.dimensions.depth;
+            
+            // Update real size indicator
+            const realSize = `${currentArtwork.dimensions.width} × ${currentArtwork.dimensions.height} × ${currentArtwork.dimensions.depth} cm`;
+            document.getElementById('real-size').textContent = realSize;
             
             const viewer = document.getElementById('modal-viewer');
             viewer.src = currentArtwork.model;
@@ -860,7 +1292,7 @@
             if (viewer.canActivateAR) {
                 viewer.activateAR();
             } else {
-                alert('AR is not supported on this device. Please try on a mobile device with AR capabilities.');
+                alert('AR is not supported on this device. Please try on a mobile device with AR capabilities (iPhone or Android with ARCore).');
             }
         }
         
@@ -875,17 +1307,135 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeModal();
+                if (document.getElementById('ai-chat-panel').classList.contains('active')) {
+                    toggleChat();
+                }
             }
         });
         
-        // Filter functionality
-        document.querySelectorAll('.pill').forEach(pill => {
-            pill.addEventListener('click', () => {
-                document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-                pill.classList.add('active');
-                // Add filter logic here if needed
+        // AI Chat Functions
+        function toggleChat() {
+            const panel = document.getElementById('ai-chat-panel');
+            const overlay = document.getElementById('chat-overlay');
+            panel.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+        
+        function sendSuggestion(text) {
+            document.getElementById('chat-input').value = text;
+            sendMessage();
+        }
+        
+        function handleChatKeypress(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            // Add user message
+            addChatMessage(message, 'user');
+            input.value = '';
+            
+            // Process with AI
+            setTimeout(() => {
+                const recommendations = getAIRecommendations(message);
+                addChatMessage(recommendations.text, 'bot', recommendations.artworks);
+            }, 500);
+        }
+        
+        function addChatMessage(text, type, recommendedArtworks = null) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${type}`;
+            messageDiv.innerHTML = text;
+            
+            if (recommendedArtworks && recommendedArtworks.length > 0) {
+                recommendedArtworks.forEach(art => {
+                    const recDiv = document.createElement('div');
+                    recDiv.className = 'artwork-recommendation';
+                    recDiv.onclick = () => {
+                        toggleChat();
+                        openModal(art.id);
+                    };
+                    recDiv.innerHTML = `
+                        <h5>${art.title}</h5>
+                        <p>${art.description}</p>
+                        <span class="view-ar">View in AR →</span>
+                    `;
+                    messageDiv.appendChild(recDiv);
+                });
+            }
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function getAIRecommendations(query) {
+            const queryLower = query.toLowerCase();
+            let matchedArtworks = [];
+            let responseText = '';
+            
+            // Simple keyword matching for recommendations
+            const keywords = {
+                'modern': ['modern', 'contemporary', 'minimalist', 'clean', 'sleek'],
+                'playful': ['playful', 'fun', 'whimsical', 'cheerful', 'game'],
+                'elegant': ['elegant', 'sophisticated', 'refined', 'classy', 'luxurious'],
+                'unique': ['unique', 'conversation', 'statement', 'bold', 'unusual'],
+                'nature': ['nature', 'organic', 'natural', 'animal', 'horse'],
+                'tech': ['tech', 'digital', 'futuristic', 'robot', 'space'],
+                'office': ['office', 'professional', 'business', 'work', 'corporate'],
+                'living room': ['decorative', 'elegant', 'statement', 'wall art'],
+                'bedroom': ['calm', 'peaceful', 'soft', 'relaxing'],
+                'fantasy': ['fantasy', 'magical', 'mythical', 'sword', 'adventure']
+            };
+            
+            // Find matching artworks
+            artworks.forEach(art => {
+                let score = 0;
+                art.tags.forEach(tag => {
+                    if (queryLower.includes(tag)) score += 2;
+                });
+                
+                Object.entries(keywords).forEach(([key, values]) => {
+                    if (queryLower.includes(key)) {
+                        values.forEach(v => {
+                            if (art.tags.includes(v)) score += 1;
+                        });
+                    }
+                });
+                
+                if (art.title.toLowerCase().includes(queryLower)) score += 3;
+                if (art.style.toLowerCase().includes(queryLower)) score += 2;
+                if (art.description.toLowerCase().includes(queryLower)) score += 1;
+                
+                if (score > 0) {
+                    matchedArtworks.push({ ...art, score });
+                }
             });
-        });
+            
+            // Sort by score and take top 3
+            matchedArtworks.sort((a, b) => b.score - a.score);
+            matchedArtworks = matchedArtworks.slice(0, 3);
+            
+            // Generate response
+            if (matchedArtworks.length > 0) {
+                responseText = `Based on your interest in "<strong>${query}</strong>", I recommend these pieces from our collection. Each can be viewed in AR to see how it looks in your space:`;
+            } else {
+                // Fallback to random recommendations
+                matchedArtworks = artworks.sort(() => Math.random() - 0.5).slice(0, 3);
+                responseText = `I found some pieces you might like! Here are my suggestions based on our collection. Try them in AR to see how they fit your space:`;
+            }
+            
+            return {
+                text: responseText,
+                artworks: matchedArtworks
+            };
+        }
         
         // Initialize
         renderGallery();
