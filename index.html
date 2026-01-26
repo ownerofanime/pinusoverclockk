@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARt Viewer - PINUS Hack 2026</title>
+    
+    <!-- A-Frame Library -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    
+    <!-- AR.js Library -->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* UI Overlay */
+        #ui-overlay {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 10px;
+        }
+        
+        .art-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #333;
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .art-btn:hover {
+            background: #333;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .art-btn.active {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        
+        /* Instructions overlay */
+        #instructions {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            z-index: 1000;
+            text-align: center;
+            max-width: 90%;
+        }
+        
+        #instructions h2 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+        }
+        
+        #instructions p {
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        /* Loading indicator */
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            z-index: 2000;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Instructions -->
+    <div id="instructions">
+        <h2>ARt Viewer</h2>
+        <p>Point your camera at the Hiro marker to see the artwork</p>
+    </div>
+    
+    <!-- Loading indicator -->
+    <div id="loading">Loading artwork...</div>
+    
+    <!-- Artwork selection buttons -->
+    <div id="ui-overlay">
+        <button class="art-btn active" onclick="switchArtwork('decor_wall')">Decor Wall</button>
+        <button class="art-btn" onclick="switchArtwork('cube')">Demo Cube</button>
+    </div>
+    
+    <!-- AR Scene -->
+    <a-scene
+        embedded
+        arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+        vr-mode-ui="enabled: false"
+        renderer="logarithmicDepthBuffer: true; precision: medium;"
+    >
+        <!-- Asset Management -->
+        <a-assets>
+            <a-asset-item id="decor-wall-model" src="models/decor_wall.glb"></a-asset-item>
+        </a-assets>
+        
+        <!-- Hiro Marker -->
+        <a-marker preset="hiro" id="marker">
+            <!-- 3D Model Container -->
+            <a-entity
+                id="artwork"
+                gltf-model="#decor-wall-model"
+                scale="0.1 0.1 0.1"
+                position="0 0 0"
+                rotation="-90 0 0"
+            ></a-entity>
+            
+            <!-- Fallback cube (hidden by default) -->
+            <a-box
+                id="demo-cube"
+                color="#4CAF50"
+                scale="0.3 0.3 0.3"
+                position="0 0.15 0"
+                visible="false"
+            >
+                <a-animation
+                    attribute="rotation"
+                    to="0 360 0"
+                    dur="3000"
+                    easing="linear"
+                    repeat="indefinite"
+                ></a-animation>
+            </a-box>
+        </a-marker>
+        
+        <!-- Camera -->
+        <a-entity camera></a-entity>
+    </a-scene>
+    
+    <script>
+        // Artwork switching functionality
+        function switchArtwork(artworkId) {
+            const artwork = document.getElementById('artwork');
+            const demoCube = document.getElementById('demo-cube');
+            const buttons = document.querySelectorAll('.art-btn');
+            const loading = document.getElementById('loading');
+            
+            // Update button states
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Show loading
+            loading.style.display = 'block';
+            
+            if (artworkId === 'cube') {
+                // Show demo cube, hide 3D model
+                artwork.setAttribute('visible', 'false');
+                demoCube.setAttribute('visible', 'true');
+                loading.style.display = 'none';
+            } else if (artworkId === 'decor_wall') {
+                // Show decor wall model
+                artwork.setAttribute('visible', 'true');
+                artwork.setAttribute('gltf-model', '#decor-wall-model');
+                demoCube.setAttribute('visible', 'false');
+                loading.style.display = 'none';
+            }
+        }
+        
+        // Hide instructions after 5 seconds
+        setTimeout(() => {
+            const instructions = document.getElementById('instructions');
+            instructions.style.opacity = '0';
+            instructions.style.transition = 'opacity 1s ease';
+            setTimeout(() => {
+                instructions.style.display = 'none';
+            }, 1000);
+        }, 5000);
+        
+        // Log when marker is found/lost
+        const marker = document.getElementById('marker');
+        marker.addEventListener('markerFound', () => {
+            console.log('Marker found!');
+        });
+        marker.addEventListener('markerLost', () => {
+            console.log('Marker lost');
+        });
+    </script>
+</body>
+</html>
