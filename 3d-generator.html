@@ -4,28 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>3D Model Generator - ArtSpace</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- Model Viewer -->
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
-    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%2311998e' rx='15' width='100' height='100'/><text y='.9em' x='50%' text-anchor='middle' font-size='70'>🎨</text></svg>">
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
-        :root {
-            --primary: #1a1a2e;
-            --secondary: #16213e;
-            --accent: #e94560;
-            --gold: #d4af37;
-            --light: #f5f5f5;
-            --text: #333;
-            --text-light: #666;
-            --gradient-ai: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-3d: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        }
-        
         * {
             margin: 0;
             padding: 0;
@@ -33,168 +14,118 @@
         }
         
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--light);
-            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
             min-height: 100vh;
         }
         
-        /* Header */
         .header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             padding: 15px 20px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         
         .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 10px;
-            text-decoration: none;
             color: white;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 700;
         }
         
         .logo-icon {
-            width: 35px;
-            height: 35px;
-            background: var(--gradient-3d);
-            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.2rem;
         }
         
         .back-btn {
             background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
             color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.9rem;
+            padding: 10px 20px;
+            border-radius: 25px;
             text-decoration: none;
-            transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
         
-        .back-btn:hover {
-            background: rgba(255,255,255,0.2);
-        }
-        
-        /* Main Container */
         .container {
-            max-width: 900px;
+            max-width: 600px;
             margin: 0 auto;
             padding: 20px;
         }
         
-        /* Hero Section */
         .hero {
-            text-align: center;
-            padding: 30px 20px;
-            background: var(--gradient-3d);
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
             color: white;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         
         .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
+            font-size: 1.5rem;
             margin-bottom: 10px;
         }
         
         .hero p {
             opacity: 0.9;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
         
-        .ai-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            margin-top: 15px;
-            font-size: 0.9rem;
-        }
-        
-        /* Main Card */
-        .main-card {
+        .card {
             background: white;
             border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 20px;
             margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .card h3 {
+            margin-bottom: 15px;
+            color: #333;
         }
         
-        /* Tab Buttons */
-        .tab-buttons {
+        /* Tabs */
+        .tabs {
             display: flex;
             gap: 10px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
+            margin-bottom: 20px;
         }
         
         .tab-btn {
             flex: 1;
-            min-width: 140px;
-            padding: 15px 20px;
-            border: 2px solid #ddd;
-            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
             background: white;
             cursor: pointer;
-            transition: all 0.3s ease;
             text-align: center;
-        }
-        
-        .tab-btn:hover {
-            border-color: var(--accent);
+            font-size: 0.9rem;
+            transition: all 0.3s;
         }
         
         .tab-btn.active {
             border-color: #11998e;
-            background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(17,153,142,0.1) 0%, rgba(56,239,125,0.1) 100%);
         }
         
-        .tab-btn .tab-icon {
+        .tab-btn span {
+            display: block;
             font-size: 1.5rem;
             margin-bottom: 5px;
-        }
-        
-        .tab-btn .tab-label {
-            font-weight: 600;
-            color: var(--text);
-        }
-        
-        .tab-btn .tab-desc {
-            font-size: 0.8rem;
-            color: var(--text-light);
         }
         
         .tab-content {
@@ -206,14 +137,23 @@
         }
         
         /* Camera Section */
-        .camera-container {
+        .camera-section {
+            text-align: center;
+        }
+        
+        .video-container {
             position: relative;
             width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
+            max-width: 400px;
+            margin: 0 auto 20px;
             border-radius: 15px;
             overflow: hidden;
             background: #000;
+            display: none;
+        }
+        
+        .video-container.active {
+            display: block;
         }
         
         #camera-video {
@@ -221,11 +161,7 @@
             display: block;
         }
         
-        #camera-canvas {
-            display: none;
-        }
-        
-        .camera-overlay {
+        .video-overlay {
             position: absolute;
             top: 0;
             left: 0;
@@ -237,147 +173,86 @@
             justify-content: center;
         }
         
-        .camera-frame {
+        .video-frame {
             width: 80%;
             height: 80%;
-            border: 3px dashed rgba(255,255,255,0.5);
-            border-radius: 15px;
+            border: 2px dashed rgba(255,255,255,0.5);
+            border-radius: 10px;
         }
         
-        .camera-hint {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-        }
-        
-        /* Capture Controls */
-        .capture-controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .capture-btn {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: 4px solid var(--accent);
-            background: white;
+        /* Simple Buttons - No nested elements */
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 30px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-            -webkit-tap-highlight-color: rgba(233, 69, 96, 0.3);
-            touch-action: manipulation;
-            -webkit-user-select: none;
-            user-select: none;
-            position: relative;
-            z-index: 100;
+            text-align: center;
+            text-decoration: none;
+            transition: transform 0.2s, opacity 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .btn:active {
+            transform: scale(0.95);
+            opacity: 0.8;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #e94560 0%, #ff6b6b 100%);
+            color: white;
+        }
+        
+        /* CAPTURE BUTTON - Simple design, no nested elements */
+        #capture-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 5px solid #e94560;
+            background: linear-gradient(135deg, #e94560 0%, #ff6b6b 100%);
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            -webkit-tap-highlight-color: transparent;
             -webkit-appearance: none;
             appearance: none;
-            outline: none;
-            display: flex;
-            align-items: center;
+        }
+        
+        #capture-btn:active {
+            transform: scale(0.9);
+            opacity: 0.8;
+        }
+        
+        .camera-controls {
+            display: none;
+            flex-wrap: wrap;
             justify-content: center;
-            padding: 0;
+            gap: 10px;
+            margin-top: 15px;
         }
         
-        /* Inner circle using pseudo-element */
-        .capture-btn::after {
-            content: '';
-            display: block;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--accent);
-            transition: all 0.2s ease;
-            pointer-events: none;
-        }
-        
-        .capture-btn:hover,
-        .capture-btn:active {
-            transform: scale(1.05);
-            background: var(--accent);
-        }
-        
-        .capture-btn:hover::after,
-        .capture-btn:active::after {
-            background: white;
-        }
-        
-        .control-btn {
-            padding: 12px 24px;
-            border-radius: 25px;
-            border: none;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
-            user-select: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
+        .camera-controls.active {
             display: flex;
-            align-items: center;
-            gap: 8px;
         }
         
-        .control-btn.secondary {
-            background: var(--light);
-            color: var(--text);
-        }
-        
-        .control-btn.primary {
-            background: var(--gradient-3d);
-            color: white;
-        }
-        
-        .control-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-        
-        .control-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        /* Multi-Image Grid */
-        .multi-image-section {
-            margin-top: 20px;
-        }
-        
-        .multi-image-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .multi-image-header h4 {
-            color: var(--primary);
-            font-size: 1rem;
-        }
-        
-        .image-count {
-            background: var(--gradient-3d);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-        
+        /* Image Grid */
         .image-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 10px;
-            margin-bottom: 15px;
+            margin: 20px 0;
         }
         
         .image-slot {
@@ -387,19 +262,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            background: #fafafa;
             position: relative;
             overflow: hidden;
-            background: #fafafa;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
-            user-select: none;
-        }
-        
-        .image-slot:hover {
-            border-color: var(--accent);
-            background: rgba(233, 69, 96, 0.05);
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #ccc;
         }
         
         .image-slot.filled {
@@ -413,123 +281,68 @@
             object-fit: cover;
         }
         
-        .image-slot .remove-btn {
+        .image-slot .remove {
             position: absolute;
-            top: 5px;
-            right: 5px;
+            top: 3px;
+            right: 3px;
             width: 24px;
             height: 24px;
-            border-radius: 50%;
-            background: var(--accent);
+            background: #e94560;
             color: white;
             border: none;
+            border-radius: 50%;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             font-size: 14px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            line-height: 24px;
+            text-align: center;
         }
         
-        .image-slot:hover .remove-btn {
-            opacity: 1;
-        }
-        
-        .image-slot .slot-icon {
-            font-size: 1.5rem;
-            color: #ccc;
-        }
-        
-        .multi-image-tip {
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-            padding: 12px 15px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            color: #2e7d32;
-        }
-        
-        /* Upload Section */
-        .upload-section {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-        
+        /* Upload Area */
         .upload-area {
             border: 2px dashed #ddd;
             border-radius: 15px;
-            padding: 30px;
+            padding: 40px 20px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
-            user-select: none;
+            margin: 20px 0;
         }
         
-        .upload-area:hover {
-            border-color: var(--accent);
-            background: rgba(233, 69, 96, 0.05);
+        .upload-area:active {
+            background: #f5f5f5;
         }
         
-        .upload-area.dragover {
-            border-color: var(--accent);
-            background: rgba(233, 69, 96, 0.1);
-        }
-        
-        .upload-icon {
-            font-size: 3rem;
+        .upload-area span {
+            font-size: 2rem;
+            display: block;
             margin-bottom: 10px;
         }
         
-        .upload-text {
-            color: var(--text-light);
-        }
-        
-        #file-input, #glb-input {
-            display: none;
-        }
-        
-        /* GLB Import Section */
-        .glb-upload-area {
-            border: 2px dashed #11998e;
+        /* GLB Upload */
+        .glb-upload {
+            border: 2px dashed #ddd;
             border-radius: 15px;
-            padding: 40px;
+            padding: 40px 20px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-            background: linear-gradient(135deg, rgba(17, 153, 142, 0.05) 0%, rgba(56, 239, 125, 0.05) 100%);
         }
         
-        .glb-upload-area:hover {
-            background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+        .glb-upload:active {
+            background: #f5f5f5;
         }
         
-        .glb-upload-area.dragover {
-            background: linear-gradient(135deg, rgba(17, 153, 142, 0.15) 0%, rgba(56, 239, 125, 0.15) 100%);
+        .glb-upload span {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 10px;
         }
         
-        /* Options Section */
-        .options-section {
-            margin-top: 25px;
-            padding: 20px;
-            background: var(--light);
-            border-radius: 15px;
-        }
-        
-        .options-title {
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-        
+        /* Options */
         .option-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
         }
         
         .option-row:last-child {
@@ -537,120 +350,77 @@
         }
         
         .option-label {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-        
-        .option-label span {
             font-weight: 500;
         }
         
-        .option-label small {
-            color: var(--text-light);
-            font-size: 0.8rem;
+        .option-desc {
+            font-size: 0.85rem;
+            color: #888;
         }
         
-        .option-select {
-            padding: 8px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            background: white;
-        }
-        
-        .toggle-switch {
-            position: relative;
+        /* Toggle Switch */
+        .toggle {
             width: 50px;
-            height: 26px;
-        }
-        
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .toggle-slider {
-            position: absolute;
+            height: 28px;
+            background: #ddd;
+            border-radius: 14px;
+            position: relative;
             cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 26px;
+            transition: background 0.3s;
         }
         
-        .toggle-slider:before {
+        .toggle.on {
+            background: #11998e;
+        }
+        
+        .toggle::after {
+            content: '';
             position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .4s;
+            width: 24px;
+            height: 24px;
+            background: white;
             border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         
-        input:checked + .toggle-slider {
-            background: var(--gradient-3d);
+        .toggle.on::after {
+            transform: translateX(22px);
         }
         
-        input:checked + .toggle-slider:before {
-            transform: translateX(24px);
-        }
-        
-        /* Generate Button */
-        .generate-btn {
-            width: 100%;
-            padding: 18px;
-            background: var(--gradient-3d);
-            color: white;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 25px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .generate-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(17, 153, 142, 0.4);
-        }
-        
-        .generate-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        /* Progress Section */
+        /* Progress */
         .progress-section {
             display: none;
-            margin-top: 25px;
-            padding: 25px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
-            border-radius: 15px;
             text-align: center;
+            padding: 30px;
         }
         
-        .progress-section.visible {
+        .progress-section.active {
             display: block;
         }
         
-        .progress-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(17, 153, 142, 0.2);
+        .progress-bar-bg {
+            width: 100%;
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #eee;
             border-top-color: #11998e;
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -661,1277 +431,588 @@
             to { transform: rotate(360deg); }
         }
         
-        .progress-text {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-        
-        .progress-status {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
-        
-        .progress-bar-container {
-            background: #ddd;
-            border-radius: 10px;
-            height: 10px;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background: var(--gradient-3d);
-            border-radius: 10px;
-            transition: width 0.5s ease;
-            width: 0%;
-        }
-        
-        .progress-percent {
-            margin-top: 10px;
-            font-weight: 600;
-            color: #11998e;
-        }
-        
-        /* Result Section */
+        /* Result */
         .result-section {
             display: none;
-            margin-top: 25px;
         }
         
-        .result-section.visible {
+        .result-section.active {
             display: block;
-        }
-        
-        .result-card {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-        
-        .result-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .result-header h2 {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-        
-        .result-header p {
-            color: var(--text-light);
-        }
-        
-        .model-viewer-container {
-            width: 100%;
-            height: 400px;
-            border-radius: 15px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
-            position: relative;
         }
         
         model-viewer {
             width: 100%;
-            height: 100%;
-        }
-        
-        .model-viewer-container .ar-button-custom {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-weight: 600;
-            position: absolute;
-            bottom: 16px;
-            right: 16px;
-            cursor: pointer;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
-        }
-        
-        .model-viewer-container .ar-button-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5);
-        }
-        
-        /* Add to Gallery Section */
-        .add-to-gallery-section {
-            margin-top: 20px;
-            padding: 20px;
-            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            height: 300px;
             border-radius: 15px;
+            background: #f0f0f0;
         }
         
-        .add-to-gallery-section h4 {
-            color: #f57c00;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .gallery-form {
+        .download-btns {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        /* Gallery Form */
+        .gallery-form {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
         }
         
         .gallery-form input {
+            width: 100%;
             padding: 12px 15px;
             border: 1px solid #ddd;
             border-radius: 10px;
-            font-size: 0.95rem;
+            margin-bottom: 10px;
+            font-size: 1rem;
         }
         
-        .gallery-form input:focus {
-            outline: none;
-            border-color: #f57c00;
-        }
-        
-        .add-gallery-btn {
-            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .add-gallery-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(245, 124, 0, 0.4);
-        }
-        
-        .result-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-            justify-content: center;
-        }
-        
-        .result-btn {
-            padding: 12px 24px;
-            border-radius: 25px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .result-btn.primary {
-            background: var(--gradient-3d);
-            color: white;
-        }
-        
-        .result-btn.secondary {
-            background: var(--light);
-            color: var(--text);
-        }
-        
-        .result-btn.ar {
-            background: var(--accent);
-            color: white;
-        }
-        
-        .result-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-        
-        /* Error Message */
-        .error-message {
-            display: none;
-            background: #ffebee;
-            color: #c62828;
-            padding: 15px 20px;
+        /* Error */
+        .error-msg {
+            background: #fee;
+            color: #c00;
+            padding: 15px;
             border-radius: 10px;
-            margin-top: 20px;
-            text-align: center;
+            margin: 20px 0;
+            display: none;
         }
         
-        .error-message.visible {
+        .error-msg.active {
             display: block;
         }
         
-        /* Success Message */
-        .success-message {
-            display: none;
+        /* Tips */
+        .tips {
             background: #e8f5e9;
-            color: #2e7d32;
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin-top: 15px;
-            text-align: center;
-        }
-        
-        .success-message.visible {
-            display: block;
-        }
-        
-        /* Info Box */
-        .info-box {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
             border-radius: 15px;
             padding: 20px;
-            margin-top: 20px;
         }
         
-        .info-box h4 {
-            color: #1565c0;
+        .tips h4 {
+            color: #2e7d32;
             margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
         
-        .info-box ul {
-            color: #1976d2;
+        .tips ul {
             margin-left: 20px;
-            font-size: 0.9rem;
+            color: #555;
         }
         
-        .info-box li {
+        .tips li {
             margin-bottom: 5px;
         }
         
-        /* Credits Display */
-        .credits-info {
-            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        /* Hidden */
+        .hidden {
+            display: none !important;
         }
         
-        .credits-info span {
-            font-weight: 600;
-            color: #f57c00;
-        }
-        
-        /* Responsive */
-        @media (max-width: 600px) {
-            .hero h1 {
-                font-size: 1.5rem;
-            }
-            
-            .capture-controls {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .result-actions {
-                flex-direction: column;
-            }
-            
-            .result-btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .tab-buttons {
-                flex-direction: column;
-            }
-            
-            .tab-btn {
-                min-width: 100%;
-            }
-            
-            .image-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+        /* Image count badge */
+        .image-count {
+            background: #11998e;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
-        <div class="header-content">
-            <a href="index.html" class="logo">
-                <div class="logo-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-                        <line x1="12" y1="22.08" x2="12" y2="12"/>
-                    </svg>
-                </div>
-                3D Generator
-            </a>
-            <a href="index.html" class="back-btn">← Back to Gallery</a>
-        </div>
+        <a href="index.html" class="logo">
+            <div class="logo-icon">🎨</div>
+            3D Generator
+        </a>
+        <a href="index.html" class="back-btn">← Back to Gallery</a>
     </header>
     
-    <!-- Main Container -->
     <div class="container">
-        <!-- Hero -->
         <div class="hero">
             <h1>Turn Photos into 3D Models</h1>
-            <p>Capture up to 4 images from different angles for better 3D conversion</p>
-            <div class="ai-badge">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                </svg>
-                Powered by Meshy.ai
-            </div>
+            <p>Capture up to 4 images from different angles for better results</p>
         </div>
         
-        <!-- Main Card -->
-        <div class="main-card">
-            <h2 class="section-title">
-                🎨 Choose Your Method
-            </h2>
-            
-            <!-- Tab Buttons -->
-            <div class="tab-buttons">
-                <button class="tab-btn active" data-tab="generate">
-                    <div class="tab-icon">📸</div>
-                    <div class="tab-label">Generate 3D</div>
-                    <div class="tab-desc">From photos (1-4)</div>
+        <div class="card">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('generate')">
+                    <span>📸</span>
+                    Generate 3D
                 </button>
-                <button class="tab-btn" data-tab="import">
-                    <div class="tab-icon">📦</div>
-                    <div class="tab-label">Import Model</div>
-                    <div class="tab-desc">Upload GLB/GLTF</div>
+                <button class="tab-btn" onclick="switchTab('import')">
+                    <span>📦</span>
+                    Import Model
                 </button>
             </div>
             
-            <!-- Tab: Generate 3D -->
-            <div class="tab-content active" id="tab-generate">
-                <!-- Camera Section -->
-                <div class="camera-container" id="camera-container">
-                    <video id="camera-video" autoplay playsinline></video>
-                    <canvas id="camera-canvas"></canvas>
-                    <div class="camera-overlay">
-                        <div class="camera-frame"></div>
-                    </div>
-                    <div class="camera-hint">Position object in frame</div>
-                </div>
-                
-                <div class="capture-controls" id="camera-controls">
-                    <button class="control-btn secondary" id="switch-camera-btn">
-                        🔄 Switch
-                    </button>
-                    <button class="capture-btn" id="capture-btn" type="button" aria-label="Capture photo"></button>
-                    <button class="control-btn secondary" id="stop-camera-btn">
-                        ✕ Close
-                    </button>
-                </div>
-                
-                <!-- Start Camera Button (shown when camera is off) -->
-                <div id="start-camera-section" style="text-align: center; margin-top: 20px; display: none;">
-                    <button class="control-btn primary" id="start-camera-btn">
+            <!-- Generate Tab -->
+            <div id="tab-generate" class="tab-content active">
+                <div class="camera-section">
+                    <!-- Start Camera Button -->
+                    <button id="start-camera-btn" class="btn btn-primary" onclick="startCamera()">
                         📷 Start Camera
                     </button>
-                </div>
-                
-                <!-- Multi-Image Grid -->
-                <div class="multi-image-section" id="multi-image-section">
-                    <div class="multi-image-header">
-                        <h4>📷 Captured Images</h4>
-                        <span class="image-count" id="image-count">0/4</span>
-                    </div>
-                    <div class="image-grid" id="image-grid">
-                        <div class="image-slot" data-index="0">
-                            <span class="slot-icon">+</span>
-                        </div>
-                        <div class="image-slot" data-index="1">
-                            <span class="slot-icon">+</span>
-                        </div>
-                        <div class="image-slot" data-index="2">
-                            <span class="slot-icon">+</span>
-                        </div>
-                        <div class="image-slot" data-index="3">
-                            <span class="slot-icon">+</span>
+                    
+                    <!-- Video Container -->
+                    <div id="video-container" class="video-container">
+                        <video id="camera-video" autoplay playsinline muted></video>
+                        <div class="video-overlay">
+                            <div class="video-frame"></div>
                         </div>
                     </div>
-                    <div class="multi-image-tip">
-                        💡 <strong>Tip:</strong> Add 2-4 images from different angles (front, side, back) for better 3D results!
+                    
+                    <!-- Capture Button - SIMPLE, NO NESTED ELEMENTS -->
+                    <button id="capture-btn" class="hidden" onclick="capturePhoto()"></button>
+                    
+                    <!-- Camera Controls -->
+                    <div id="camera-controls" class="camera-controls">
+                        <button class="btn btn-secondary" onclick="switchCamera()">🔄 Switch</button>
+                        <button class="btn btn-secondary" onclick="stopCamera()">✕ Close</button>
                     </div>
                 </div>
                 
-                <!-- Upload Section -->
-                <div class="upload-section" id="image-upload-section">
-                    <p style="text-align: center; color: var(--text-light); margin-bottom: 15px;">— or upload images —</p>
-                    <div class="upload-area" id="upload-area">
-                        <div class="upload-icon">📁</div>
-                        <p class="upload-text">Click or drag & drop images here</p>
-                        <p style="font-size: 0.85rem; color: #999; margin-top: 5px;">Supports JPG, JPEG, PNG (up to 4 images)</p>
+                <!-- Image Grid -->
+                <div style="margin-top: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <strong>📷 Captured Images</strong>
+                        <span id="image-count" class="image-count">0/4</span>
                     </div>
-                    <input type="file" id="file-input" accept="image/jpeg,image/jpg,image/png" multiple>
-                </div>
-                
-                <!-- Options Section -->
-                <div class="options-section" id="options-section">
-                    <h3 class="options-title">⚙️ Generation Options</h3>
-                    
-                    <div class="option-row">
-                        <div class="option-label">
-                            <span>AI Model</span>
-                            <small>Latest model provides best results</small>
-                        </div>
-                        <select class="option-select" id="ai-model">
-                            <option value="latest">Meshy 6 (Latest)</option>
-                            <option value="meshy-5">Meshy 5</option>
-                        </select>
-                    </div>
-                    
-                    <div class="option-row">
-                        <div class="option-label">
-                            <span>Generate Textures</span>
-                            <small>Add realistic textures to the model</small>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="should-texture" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    
-                    <div class="option-row">
-                        <div class="option-label">
-                            <span>PBR Maps</span>
-                            <small>Metallic, roughness, normal maps</small>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="enable-pbr">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    
-                    <div class="credits-info">
-                        <span>💎 Estimated Credits: <span id="credit-estimate">30</span></span>
-                        <small style="color: #666;">Based on selected options</small>
+                    <div id="image-grid" class="image-grid">
+                        <div class="image-slot" onclick="triggerUpload()">+</div>
+                        <div class="image-slot" onclick="triggerUpload()">+</div>
+                        <div class="image-slot" onclick="triggerUpload()">+</div>
+                        <div class="image-slot" onclick="triggerUpload()">+</div>
                     </div>
                 </div>
                 
-                <!-- Generate Button -->
-                <button class="generate-btn" id="generate-btn" disabled>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                    </svg>
-                    Generate 3D Model
+                <!-- Upload Area -->
+                <div class="upload-area" onclick="triggerUpload()">
+                    <span>📁</span>
+                    <p>Tap to upload images</p>
+                    <p style="font-size: 0.85rem; color: #888;">JPG, PNG (up to 4)</p>
+                </div>
+                <input type="file" id="file-input" accept="image/*" multiple style="display: none;" onchange="handleFiles(this.files)">
+            </div>
+            
+            <!-- Import Tab -->
+            <div id="tab-import" class="tab-content">
+                <div class="glb-upload" onclick="document.getElementById('glb-input').click()">
+                    <span>📦</span>
+                    <p>Tap to upload GLB/GLTF file</p>
+                </div>
+                <input type="file" id="glb-input" accept=".glb,.gltf" style="display: none;" onchange="handleGLB(this.files[0])">
+            </div>
+        </div>
+        
+        <!-- Options Card -->
+        <div id="options-card" class="card">
+            <h3>⚙️ Generation Options</h3>
+            <div class="option-row">
+                <div>
+                    <div class="option-label">Generate Textures</div>
+                    <div class="option-desc">Add realistic textures</div>
+                </div>
+                <div id="toggle-texture" class="toggle on" onclick="toggleOption(this)"></div>
+            </div>
+            <div class="option-row">
+                <div>
+                    <div class="option-label">PBR Maps</div>
+                    <div class="option-desc">Metallic, roughness, normal</div>
+                </div>
+                <div id="toggle-pbr" class="toggle on" onclick="toggleOption(this)"></div>
+            </div>
+            
+            <button id="generate-btn" class="btn btn-primary" style="width: 100%; margin-top: 20px;" onclick="generateModel()" disabled>
+                Generate 3D Model
+            </button>
+        </div>
+        
+        <!-- Progress Section -->
+        <div id="progress-section" class="card progress-section">
+            <div class="spinner"></div>
+            <h3 id="progress-text">Creating your 3D model...</h3>
+            <p id="progress-status" style="color: #888; margin-top: 10px;">This may take 2-5 minutes</p>
+            <div class="progress-bar-bg">
+                <div id="progress-bar" class="progress-bar-fill"></div>
+            </div>
+            <p id="progress-percent">0%</p>
+        </div>
+        
+        <!-- Error Message -->
+        <div id="error-msg" class="error-msg"></div>
+        
+        <!-- Result Section -->
+        <div id="result-section" class="card result-section">
+            <h3>🎉 Your 3D Model is Ready!</h3>
+            <model-viewer 
+                id="model-viewer"
+                camera-controls 
+                auto-rotate 
+                ar 
+                ar-modes="webxr scene-viewer quick-look"
+                ar-scale="auto"
+                ar-placement="floor"
+                shadow-intensity="1"
+                exposure="1"
+            ></model-viewer>
+            
+            <div class="download-btns">
+                <a id="download-glb" class="btn btn-primary" download>📥 Download GLB</a>
+                <a id="download-fbx" class="btn btn-secondary" download>📥 Download FBX</a>
+                <a id="download-obj" class="btn btn-secondary" download>📥 Download OBJ</a>
+            </div>
+            
+            <div class="gallery-form">
+                <h4>Add to Gallery</h4>
+                <input type="text" id="model-title" placeholder="Model title">
+                <input type="text" id="model-artist" placeholder="Artist name (optional)">
+                <button class="btn btn-primary" style="width: 100%;" onclick="addToGallery()">
+                    Add to Gallery
                 </button>
             </div>
             
-            <!-- Tab: Import Model -->
-            <div class="tab-content" id="tab-import">
-                <div class="glb-upload-area" id="glb-upload-area">
-                    <div class="upload-icon">📦</div>
-                    <p style="font-size: 1.1rem; font-weight: 600; color: var(--primary); margin-bottom: 10px;">Import 3D Model</p>
-                    <p class="upload-text">Click or drag & drop a 3D model file here</p>
-                    <p style="font-size: 0.85rem; color: #999; margin-top: 10px;">Supports GLB, GLTF formats</p>
-                </div>
-                <input type="file" id="glb-input" accept=".glb,.gltf">
-                
-                <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 10px;">
-                    <p style="color: #2e7d32; font-size: 0.9rem;">
-                        <strong>💡 Tip:</strong> Import existing 3D models to view them in AR or add them to your gallery collection.
-                    </p>
-                </div>
-            </div>
-            
-            <!-- Error Message -->
-            <div class="error-message" id="error-message"></div>
-            
-            <!-- Progress Section -->
-            <div class="progress-section" id="progress-section">
-                <div class="progress-spinner"></div>
-                <div class="progress-text" id="progress-text">Creating your 3D model...</div>
-                <div class="progress-status" id="progress-status">Initializing...</div>
-                <div class="progress-bar-container">
-                    <div class="progress-bar" id="progress-bar"></div>
-                </div>
-                <div class="progress-percent" id="progress-percent">0%</div>
-            </div>
+            <button class="btn btn-secondary" style="width: 100%; margin-top: 15px;" onclick="resetPage()">
+                + Create Another Model
+            </button>
         </div>
         
-        <!-- Result Section -->
-        <div class="result-section" id="result-section">
-            <div class="result-card">
-                <div class="result-header">
-                    <h2>🎉 Your 3D Model is Ready!</h2>
-                    <p>Interact with your model below or view it in AR</p>
-                </div>
-                
-                <div class="model-viewer-container">
-                    <model-viewer 
-                        id="result-model-viewer"
-                        camera-controls 
-                        auto-rotate 
-                        shadow-intensity="1"
-                        exposure="1"
-                        ar
-                        ar-modes="webxr scene-viewer quick-look"
-                        ar-scale="auto"
-                        ar-placement="floor wall"
-                        ios-src=""
-                        style="width: 100%; height: 100%;">
-                        <button slot="ar-button" style="
-                            background: var(--accent);
-                            color: white;
-                            border: none;
-                            padding: 12px 24px;
-                            border-radius: 25px;
-                            font-weight: 600;
-                            position: absolute;
-                            bottom: 16px;
-                            right: 16px;
-                            cursor: pointer;
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                        ">
-                            👁️ View in AR
-                        </button>
-                    </model-viewer>
-                </div>
-                
-                <!-- Add to Gallery Section -->
-                <div class="add-to-gallery-section" id="add-to-gallery-section">
-                    <h4>🖼️ Add to Your Gallery</h4>
-                    <div class="gallery-form">
-                        <input type="text" id="model-title" placeholder="Model Title (e.g., My Sculpture)">
-                        <input type="text" id="model-artist" placeholder="Artist Name (optional)">
-                        <button class="add-gallery-btn" id="add-gallery-btn">
-                            ➕ Add to Gallery
-                        </button>
-                    </div>
-                    <div class="success-message" id="gallery-success">
-                        ✅ Model added to your gallery! View it on the main page.
-                    </div>
-                </div>
-                
-                <div class="result-actions" id="result-actions">
-                    <a class="result-btn primary" id="download-glb" href="#" download="model.glb">
-                        📥 Download GLB
-                    </a>
-                    <a class="result-btn secondary" id="download-fbx" href="#" download="model.fbx" style="display: none;">
-                        📥 Download FBX
-                    </a>
-                    <a class="result-btn secondary" id="download-obj" href="#" download="model.obj" style="display: none;">
-                        📥 Download OBJ
-                    </a>
-                </div>
-                
-                <div style="text-align: center; margin-top: 20px;">
-                    <button class="control-btn secondary" id="new-model-btn">
-                        ➕ Create Another Model
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Info Box -->
-        <div class="info-box">
-            <h4>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M12 16v-4M12 8h.01"/>
-                </svg>
-                Tips for Best Results
-            </h4>
+        <!-- Tips -->
+        <div class="tips">
+            <h4>💡 Tips for Best Results</h4>
             <ul>
-                <li><strong>Multiple angles:</strong> Take 2-4 photos from different angles (front, side, back)</li>
+                <li>Take 2-4 photos from different angles</li>
                 <li>Use a plain, contrasting background</li>
-                <li>Ensure good, even lighting without harsh shadows</li>
+                <li>Ensure good, even lighting</li>
                 <li>Avoid reflective or transparent objects</li>
-                <li>Higher resolution images produce better 3D models</li>
             </ul>
         </div>
     </div>
     
     <script>
-        // Meshy.ai API Key
-        const MESHY_API_KEY = 'msy_lzjCzq1NuuNTcdypfDc4LqX4fcVbHxeilx05';
-        const MESHY_API_BASE = 'https://api.meshy.ai/openapi/v1';
+        // Meshy.ai API
+        const API_KEY = 'msy_lzjCzq1NuuNTcdypfDc4LqX4fcVbHxeilx05';
+        const API_BASE = 'https://api.meshy.ai/openapi/v1';
         
         // State
-        let currentStream = null;
+        let stream = null;
         let facingMode = 'environment';
-        let capturedImages = []; // Array to store up to 4 images
-        let currentTaskId = null;
-        let pollInterval = null;
-        let currentModelUrls = null;
-        let importedModelUrl = null;
-        let currentModelData = null; // Store model data for gallery
+        let images = [];
+        let taskId = null;
+        let pollTimer = null;
+        let modelUrls = null;
         
-        // DOM Elements
-        const cameraContainer = document.getElementById('camera-container');
-        const cameraVideo = document.getElementById('camera-video');
-        const cameraCanvas = document.getElementById('camera-canvas');
-        const cameraControls = document.getElementById('camera-controls');
-        const startCameraSection = document.getElementById('start-camera-section');
-        const captureBtn = document.getElementById('capture-btn');
-        const switchCameraBtn = document.getElementById('switch-camera-btn');
-        const stopCameraBtn = document.getElementById('stop-camera-btn');
-        const startCameraBtn = document.getElementById('start-camera-btn');
-        const uploadArea = document.getElementById('upload-area');
-        const fileInput = document.getElementById('file-input');
-        const generateBtn = document.getElementById('generate-btn');
-        const progressSection = document.getElementById('progress-section');
-        const progressText = document.getElementById('progress-text');
-        const progressStatus = document.getElementById('progress-status');
-        const progressBar = document.getElementById('progress-bar');
-        const progressPercent = document.getElementById('progress-percent');
-        const resultSection = document.getElementById('result-section');
-        const errorMessage = document.getElementById('error-message');
-        const modelViewer = document.getElementById('result-model-viewer');
-        const glbUploadArea = document.getElementById('glb-upload-area');
-        const glbInput = document.getElementById('glb-input');
-        const imageGrid = document.getElementById('image-grid');
-        const imageCount = document.getElementById('image-count');
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            initCamera();
-            setupEventListeners();
-            setupTabs();
-            setupGLBImport();
-            setupImageSlots();
-            updateCreditEstimate();
-        });
-        
-        function setupTabs() {
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const tabId = btn.dataset.tab;
-                    
-                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    
-                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                    document.getElementById(`tab-${tabId}`).classList.add('active');
-                });
-            });
+        // Tab switching
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.closest('.tab-btn').classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
         }
         
-        function setupImageSlots() {
-            document.querySelectorAll('.image-slot').forEach(slot => {
-                const handleSlotClick = (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const index = parseInt(slot.dataset.index);
-                    console.log('Image slot clicked:', index);
-                    if (capturedImages[index]) {
-                        // If slot has image, do nothing (use remove button)
-                    } else {
-                        // Click to upload
-                        fileInput.click();
-                    }
-                };
-                slot.addEventListener('click', handleSlotClick);
-                slot.addEventListener('touchend', handleSlotClick, { passive: false });
-            });
+        // Toggle option
+        function toggleOption(el) {
+            el.classList.toggle('on');
         }
         
-        function updateImageGrid() {
-            const slots = document.querySelectorAll('.image-slot');
-            slots.forEach((slot, index) => {
-                if (capturedImages[index]) {
-                    slot.classList.add('filled');
-                    slot.innerHTML = `
-                        <img src="${capturedImages[index]}" alt="Image ${index + 1}">
-                        <button class="remove-btn" onclick="removeImage(${index}, event)">×</button>
-                    `;
-                } else {
-                    slot.classList.remove('filled');
-                    slot.innerHTML = '<span class="slot-icon">+</span>';
-                }
-            });
-            
-            imageCount.textContent = `${capturedImages.filter(Boolean).length}/4`;
-            generateBtn.disabled = capturedImages.filter(Boolean).length === 0;
-        }
-        
-        function removeImage(index, event) {
-            event.stopPropagation();
-            capturedImages[index] = null;
-            // Compact the array
-            capturedImages = capturedImages.filter(Boolean);
-            while (capturedImages.length < 4) {
-                capturedImages.push(null);
-            }
-            updateImageGrid();
-        }
-        
-        function addImage(imageData) {
-            // Find first empty slot
-            const emptyIndex = capturedImages.findIndex(img => !img);
-            if (emptyIndex !== -1 && emptyIndex < 4) {
-                capturedImages[emptyIndex] = imageData;
-                updateImageGrid();
-                return true;
-            }
-            return false;
-        }
-        
-        function setupGLBImport() {
-            glbUploadArea.addEventListener('click', () => glbInput.click());
-            
-            glbUploadArea.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                glbUploadArea.classList.add('dragover');
-            });
-            
-            glbUploadArea.addEventListener('dragleave', (e) => {
-                e.preventDefault();
-                glbUploadArea.classList.remove('dragover');
-            });
-            
-            glbUploadArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                glbUploadArea.classList.remove('dragover');
-                const file = e.dataTransfer.files[0];
-                if (file && (file.name.endsWith('.glb') || file.name.endsWith('.gltf'))) {
-                    handleGLBFile(file);
-                } else {
-                    showError('Please upload a GLB or GLTF file');
-                }
-            });
-            
-            glbInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    handleGLBFile(file);
-                }
-            });
-        }
-        
-        function handleGLBFile(file) {
-            importedModelUrl = URL.createObjectURL(file);
-            currentModelData = {
-                glbUrl: importedModelUrl,
-                fileName: file.name,
-                isImported: true
-            };
-            showImportedModel(importedModelUrl, file.name);
-        }
-        
-        function showImportedModel(modelUrl, fileName) {
-            document.querySelector('.main-card').style.display = 'none';
-            resultSection.classList.add('visible');
-            
-            modelViewer.src = modelUrl;
-            
-            document.querySelector('.result-header h2').textContent = '📦 Imported Model';
-            document.querySelector('.result-header p').textContent = fileName;
-            
-            const downloadGlb = document.getElementById('download-glb');
-            downloadGlb.href = modelUrl;
-            downloadGlb.download = fileName;
-            downloadGlb.style.display = 'inline-flex';
-            
-            document.getElementById('download-fbx').style.display = 'none';
-            document.getElementById('download-obj').style.display = 'none';
-            
-            // Pre-fill title with filename
-            document.getElementById('model-title').value = fileName.replace(/\.(glb|gltf)$/i, '');
-            
-            resultSection.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        async function initCamera() {
-            try {
-                await startCamera();
-            } catch (error) {
-                console.log('Camera not available, showing upload option');
-                cameraContainer.style.display = 'none';
-                cameraControls.style.display = 'none';
-                startCameraSection.style.display = 'block';
-            }
-        }
-        
+        // Start camera
         async function startCamera() {
             try {
-                if (currentStream) {
-                    currentStream.getTracks().forEach(track => track.stop());
+                if (stream) {
+                    stream.getTracks().forEach(t => t.stop());
                 }
                 
-                const constraints = {
-                    video: {
-                        facingMode: facingMode,
-                        width: { ideal: 1920 },
-                        height: { ideal: 1080 }
-                    }
-                };
-                
-                currentStream = await navigator.mediaDevices.getUserMedia(constraints);
-                cameraVideo.srcObject = currentStream;
-                
-                cameraContainer.style.display = 'block';
-                cameraControls.style.display = 'flex';
-                startCameraSection.style.display = 'none';
-                
-            } catch (error) {
-                throw error;
-            }
-        }
-        
-        function setupEventListeners() {
-            // Capture button - use touchstart for immediate response on mobile
-            if (captureBtn) {
-                captureBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Capture button clicked');
-                    captureImage();
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: facingMode, width: { ideal: 1920 }, height: { ideal: 1080 } }
                 });
-                captureBtn.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Capture button touched');
-                    captureImage();
-                }, { passive: false });
+                
+                document.getElementById('camera-video').srcObject = stream;
+                document.getElementById('video-container').classList.add('active');
+                document.getElementById('capture-btn').classList.remove('hidden');
+                document.getElementById('camera-controls').classList.add('active');
+                document.getElementById('start-camera-btn').classList.add('hidden');
+                
+            } catch (err) {
+                showError('Camera access denied. Please allow camera access.');
             }
-            
-            if (switchCameraBtn) {
-                switchCameraBtn.addEventListener('click', switchCamera);
-                switchCameraBtn.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    switchCamera();
-                }, { passive: false });
-            }
-            
-            if (stopCameraBtn) {
-                stopCameraBtn.addEventListener('click', stopCamera);
-                stopCameraBtn.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    stopCamera();
-                }, { passive: false });
-            }
-            
-            if (startCameraBtn) {
-                startCameraBtn.addEventListener('click', startCamera);
-                startCameraBtn.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    startCamera();
-                }, { passive: false });
-            }
-            
-            // Upload area
-            if (uploadArea) {
-                uploadArea.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    console.log('Upload area clicked');
-                    fileInput.click();
-                });
-                uploadArea.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    console.log('Upload area touched');
-                    fileInput.click();
-                }, { passive: false });
-                uploadArea.addEventListener('dragover', handleDragOver);
-                uploadArea.addEventListener('dragleave', handleDragLeave);
-                uploadArea.addEventListener('drop', handleDrop);
-            }
-            
-            if (fileInput) {
-                fileInput.addEventListener('change', handleFileSelect);
-            }
-            
-            generateBtn.addEventListener('click', generateModel);
-            
-            document.getElementById('should-texture').addEventListener('change', updateCreditEstimate);
-            document.getElementById('enable-pbr').addEventListener('change', updateCreditEstimate);
-            
-            document.getElementById('new-model-btn').addEventListener('click', resetToStart);
-            
-            // Add to gallery button
-            document.getElementById('add-gallery-btn').addEventListener('click', addToGallery);
         }
         
-        function captureImage() {
-            if (capturedImages.filter(Boolean).length >= 4) {
-                showError('Maximum 4 images allowed. Remove one to add more.');
-                return;
+        // Stop camera
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(t => t.stop());
+                stream = null;
             }
-            
-            const context = cameraCanvas.getContext('2d');
-            cameraCanvas.width = cameraVideo.videoWidth;
-            cameraCanvas.height = cameraVideo.videoHeight;
-            context.drawImage(cameraVideo, 0, 0);
-            
-            const imageData = cameraCanvas.toDataURL('image/jpeg', 0.9);
-            addImage(imageData);
+            document.getElementById('video-container').classList.remove('active');
+            document.getElementById('capture-btn').classList.add('hidden');
+            document.getElementById('camera-controls').classList.remove('active');
+            document.getElementById('start-camera-btn').classList.remove('hidden');
         }
         
+        // Switch camera
         async function switchCamera() {
             facingMode = facingMode === 'environment' ? 'user' : 'environment';
             await startCamera();
         }
         
-        function stopCamera() {
-            if (currentStream) {
-                currentStream.getTracks().forEach(track => track.stop());
-                currentStream = null;
+        // CAPTURE PHOTO - Simple function
+        function capturePhoto() {
+            console.log('capturePhoto called');
+            
+            if (images.length >= 4) {
+                showError('Maximum 4 images. Remove one to add more.');
+                return;
             }
-            cameraContainer.style.display = 'none';
-            cameraControls.style.display = 'none';
-            startCameraSection.style.display = 'block';
-        }
-        
-        function handleDragOver(e) {
-            e.preventDefault();
-            uploadArea.classList.add('dragover');
-        }
-        
-        function handleDragLeave(e) {
-            e.preventDefault();
-            uploadArea.classList.remove('dragover');
-        }
-        
-        function handleDrop(e) {
-            e.preventDefault();
-            uploadArea.classList.remove('dragover');
             
-            const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
-            processFiles(files);
-        }
-        
-        function handleFileSelect(e) {
-            const files = Array.from(e.target.files);
-            processFiles(files);
-        }
-        
-        function processFiles(files) {
-            console.log('Processing files:', files.length);
-            const currentCount = capturedImages.filter(Boolean).length;
-            const availableSlots = 4 - currentCount;
-            const filesToProcess = files.slice(0, availableSlots);
-            console.log('Files to process:', filesToProcess.length);
+            const video = document.getElementById('camera-video');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
             
-            filesToProcess.forEach(file => {
-                console.log('Processing file:', file.name, file.type);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+            images.push(dataUrl);
+            updateImageGrid();
+            
+            console.log('Photo captured, total images:', images.length);
+        }
+        
+        // Trigger file upload
+        function triggerUpload() {
+            document.getElementById('file-input').click();
+        }
+        
+        // Handle uploaded files
+        function handleFiles(files) {
+            console.log('handleFiles called with', files.length, 'files');
+            
+            const remaining = 4 - images.length;
+            const toProcess = Array.from(files).slice(0, remaining);
+            
+            toProcess.forEach(file => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    console.log('File loaded, adding image');
-                    addImage(e.target.result);
+                    images.push(e.target.result);
+                    updateImageGrid();
                 };
                 reader.readAsDataURL(file);
             });
+        }
+        
+        // Update image grid
+        function updateImageGrid() {
+            const grid = document.getElementById('image-grid');
+            grid.innerHTML = '';
             
-            if (files.length > availableSlots) {
-                showError(`Only ${availableSlots} more image(s) can be added. Some images were skipped.`);
+            for (let i = 0; i < 4; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'image-slot' + (images[i] ? ' filled' : '');
+                
+                if (images[i]) {
+                    slot.innerHTML = `
+                        <img src="${images[i]}" alt="Image ${i+1}">
+                        <button class="remove" onclick="removeImage(${i}, event)">×</button>
+                    `;
+                } else {
+                    slot.textContent = '+';
+                    slot.onclick = triggerUpload;
+                }
+                
+                grid.appendChild(slot);
             }
+            
+            document.getElementById('image-count').textContent = images.length + '/4';
+            document.getElementById('generate-btn').disabled = images.length === 0;
         }
         
-        function updateCreditEstimate() {
-            const shouldTexture = document.getElementById('should-texture').checked;
-            let credits = 20;
-            if (shouldTexture) credits += 10;
-            document.getElementById('credit-estimate').textContent = credits;
+        // Remove image
+        function removeImage(index, event) {
+            event.stopPropagation();
+            images.splice(index, 1);
+            updateImageGrid();
         }
         
+        // Handle GLB upload
+        function handleGLB(file) {
+            if (!file) return;
+            
+            const url = URL.createObjectURL(file);
+            showResult(url, null, null, 'imported');
+        }
+        
+        // Generate 3D model
         async function generateModel() {
-            const images = capturedImages.filter(Boolean);
             if (images.length === 0) {
-                showError('Please capture or upload at least one image');
+                showError('Please add at least one image');
                 return;
             }
             
-            const aiModel = document.getElementById('ai-model').value;
-            const shouldTexture = document.getElementById('should-texture').checked;
-            const enablePbr = document.getElementById('enable-pbr').checked;
+            const shouldTexture = document.getElementById('toggle-texture').classList.contains('on');
+            const enablePbr = document.getElementById('toggle-pbr').classList.contains('on');
             
-            progressSection.classList.add('visible');
-            generateBtn.disabled = true;
-            errorMessage.classList.remove('visible');
-            updateProgress(0, 'Uploading images...');
+            // Show progress
+            document.getElementById('options-card').classList.add('hidden');
+            document.getElementById('progress-section').classList.add('active');
             
             try {
-                let response;
+                // Use multi-image API if more than 1 image
+                const endpoint = images.length > 1 ? '/multi-image-to-3d' : '/image-to-3d';
                 
-                if (images.length === 1) {
-                    // Single image API
-                    response = await fetch(`${MESHY_API_BASE}/image-to-3d`, {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${MESHY_API_KEY}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            image_url: images[0],
-                            ai_model: aiModel,
-                            should_texture: shouldTexture,
-                            enable_pbr: enablePbr
-                        })
-                    });
+                let body;
+                if (images.length > 1) {
+                    body = {
+                        image_urls: images,
+                        should_texture: shouldTexture,
+                        enable_pbr: enablePbr
+                    };
                 } else {
-                    // Multi-image API (2-4 images)
-                    response = await fetch(`${MESHY_API_BASE}/multi-image-to-3d`, {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${MESHY_API_KEY}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            image_urls: images,
-                            ai_model: aiModel,
-                            should_texture: shouldTexture,
-                            enable_pbr: enablePbr
-                        })
-                    });
+                    body = {
+                        image_url: images[0],
+                        should_texture: shouldTexture,
+                        enable_pbr: enablePbr,
+                        ai_model: 'meshy-6'
+                    };
                 }
                 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || `API Error: ${response.status}`);
-                }
+                const response = await fetch(API_BASE + endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + API_KEY,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
                 
                 const data = await response.json();
-                currentTaskId = data.result;
                 
-                updateProgress(5, 'Task created, processing...');
-                pollTaskStatus(images.length > 1);
-                
-            } catch (error) {
-                console.error('Error:', error);
-                showError(`Failed to start generation: ${error.message}`);
-                progressSection.classList.remove('visible');
-                generateBtn.disabled = false;
-            }
-        }
-        
-        function pollTaskStatus(isMultiImage = false) {
-            const endpoint = isMultiImage ? 'multi-image-to-3d' : 'image-to-3d';
-            
-            pollInterval = setInterval(async () => {
-                try {
-                    const response = await fetch(`${MESHY_API_BASE}/${endpoint}/${currentTaskId}`, {
-                        headers: {
-                            'Authorization': `Bearer ${MESHY_API_KEY}`
-                        }
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error(`Status check failed: ${response.status}`);
-                    }
-                    
-                    const task = await response.json();
-                    const progress = task.progress || 0;
-                    updateProgress(progress, getStatusText(task.status));
-                    
-                    if (task.status === 'SUCCEEDED') {
-                        clearInterval(pollInterval);
-                        showResult(task);
-                    } else if (task.status === 'FAILED') {
-                        clearInterval(pollInterval);
-                        showError(task.task_error?.message || 'Model generation failed');
-                        progressSection.classList.remove('visible');
-                        generateBtn.disabled = false;
-                    } else if (task.status === 'EXPIRED') {
-                        clearInterval(pollInterval);
-                        showError('Task expired. Please try again.');
-                        progressSection.classList.remove('visible');
-                        generateBtn.disabled = false;
-                    }
-                    
-                } catch (error) {
-                    console.error('Poll error:', error);
+                if (!response.ok) {
+                    throw new Error(data.message || 'API error');
                 }
-            }, 3000);
-        }
-        
-        function getStatusText(status) {
-            switch (status) {
-                case 'PENDING': return 'Waiting in queue...';
-                case 'IN_PROGRESS': return 'Generating 3D model...';
-                case 'SUCCEEDED': return 'Complete!';
-                case 'FAILED': return 'Failed';
-                case 'EXPIRED': return 'Expired';
-                default: return 'Processing...';
+                
+                taskId = data.result;
+                pollStatus();
+                
+            } catch (err) {
+                showError('Error: ' + err.message);
+                resetProgress();
             }
         }
         
-        function updateProgress(percent, status) {
-            progressBar.style.width = `${percent}%`;
-            progressPercent.textContent = `${percent}%`;
-            progressStatus.textContent = status;
+        // Poll task status
+        async function pollStatus() {
+            try {
+                const endpoint = images.length > 1 ? '/multi-image-to-3d/' : '/image-to-3d/';
+                const response = await fetch(API_BASE + endpoint + taskId, {
+                    headers: { 'Authorization': 'Bearer ' + API_KEY }
+                });
+                
+                const data = await response.json();
+                
+                const progress = data.progress || 0;
+                document.getElementById('progress-bar').style.width = progress + '%';
+                document.getElementById('progress-percent').textContent = progress + '%';
+                document.getElementById('progress-status').textContent = data.status || 'Processing...';
+                
+                if (data.status === 'SUCCEEDED') {
+                    const glbUrl = data.model_urls?.glb || data.model_url;
+                    const fbxUrl = data.model_urls?.fbx;
+                    const objUrl = data.model_urls?.obj;
+                    showResult(glbUrl, fbxUrl, objUrl, 'generated');
+                } else if (data.status === 'FAILED') {
+                    throw new Error(data.task_error?.message || 'Generation failed');
+                } else {
+                    pollTimer = setTimeout(pollStatus, 3000);
+                }
+                
+            } catch (err) {
+                showError('Error: ' + err.message);
+                resetProgress();
+            }
+        }
+        
+        // Show result
+        function showResult(glbUrl, fbxUrl, objUrl, type) {
+            document.getElementById('progress-section').classList.remove('active');
+            document.getElementById('result-section').classList.add('active');
             
-            if (percent < 30) {
-                progressText.textContent = 'Analyzing images...';
-            } else if (percent < 60) {
-                progressText.textContent = 'Building 3D geometry...';
-            } else if (percent < 90) {
-                progressText.textContent = 'Applying textures...';
+            const viewer = document.getElementById('model-viewer');
+            viewer.src = glbUrl;
+            
+            document.getElementById('download-glb').href = glbUrl;
+            
+            if (fbxUrl) {
+                document.getElementById('download-fbx').href = fbxUrl;
+                document.getElementById('download-fbx').classList.remove('hidden');
             } else {
-                progressText.textContent = 'Finalizing model...';
+                document.getElementById('download-fbx').classList.add('hidden');
             }
+            
+            if (objUrl) {
+                document.getElementById('download-obj').href = objUrl;
+                document.getElementById('download-obj').classList.remove('hidden');
+            } else {
+                document.getElementById('download-obj').classList.add('hidden');
+            }
+            
+            modelUrls = { glb: glbUrl, fbx: fbxUrl, obj: objUrl, type: type };
         }
         
-        function showResult(task) {
-            progressSection.classList.remove('visible');
-            document.querySelector('.main-card').style.display = 'none';
-            resultSection.classList.add('visible');
-            
-            document.querySelector('.result-header h2').textContent = '🎉 Your 3D Model is Ready!';
-            document.querySelector('.result-header p').textContent = 'Interact with your model below or view it in AR';
-            
-            currentModelUrls = task.model_urls;
-            currentModelData = {
-                glbUrl: task.model_urls?.glb,
-                thumbnailUrl: task.thumbnail_url,
-                isGenerated: true
-            };
-            
-            if (task.model_urls && task.model_urls.glb) {
-                modelViewer.src = task.model_urls.glb;
-                
-                if (task.model_urls.usdz) {
-                    modelViewer.setAttribute('ios-src', task.model_urls.usdz);
-                }
-            }
-            
-            if (task.model_urls) {
-                const downloadGlb = document.getElementById('download-glb');
-                const downloadFbx = document.getElementById('download-fbx');
-                const downloadObj = document.getElementById('download-obj');
-                
-                if (task.model_urls.glb) {
-                    downloadGlb.href = task.model_urls.glb;
-                    downloadGlb.style.display = 'inline-flex';
-                }
-                if (task.model_urls.fbx) {
-                    downloadFbx.href = task.model_urls.fbx;
-                    downloadFbx.style.display = 'inline-flex';
-                }
-                if (task.model_urls.obj) {
-                    downloadObj.href = task.model_urls.obj;
-                    downloadObj.style.display = 'inline-flex';
-                }
-            }
-            
-            // Clear title field for new entry
-            document.getElementById('model-title').value = '';
-            document.getElementById('model-artist').value = '';
-            document.getElementById('gallery-success').classList.remove('visible');
-            
-            resultSection.scrollIntoView({ behavior: 'smooth' });
-        }
-        
+        // Add to gallery
         function addToGallery() {
-            const title = document.getElementById('model-title').value.trim();
-            const artist = document.getElementById('model-artist').value.trim() || 'User Created';
+            const title = document.getElementById('model-title').value || 'Untitled Model';
+            const artist = document.getElementById('model-artist').value || 'Unknown Artist';
             
-            if (!title) {
-                alert('Please enter a title for your model');
-                return;
-            }
-            
-            if (!currentModelData || !currentModelData.glbUrl) {
-                alert('No model available to add');
-                return;
-            }
-            
-            // Create artwork object
-            const newArtwork = {
-                id: Date.now(),
+            const artwork = {
+                id: 'user-' + Date.now(),
                 title: title,
                 artist: artist,
-                medium: currentModelData.isImported ? 'Imported 3D Model' : 'AI Generated 3D Model',
-                style: 'User Created',
-                price: 'Personal Collection',
-                dimensions: { width: 30, height: 30, depth: 30 },
-                model: currentModelData.glbUrl,
                 type: '3d',
-                badge: currentModelData.isImported ? 'Imported' : 'AI Generated',
-                category: 'user-created',
-                tags: ['user-created', 'custom', '3d-scan'],
-                description: `Created with ArtSpace 3D Generator`,
-                isUserCreated: true,
-                createdAt: new Date().toISOString()
+                model: modelUrls.glb,
+                source: modelUrls.type === 'generated' ? 'AI Generated' : 'Imported',
+                addedAt: new Date().toISOString()
             };
             
             // Save to localStorage
-            try {
-                const userArtworks = JSON.parse(localStorage.getItem('artspace_user_artworks') || '[]');
-                userArtworks.unshift(newArtwork);
-                localStorage.setItem('artspace_user_artworks', JSON.stringify(userArtworks));
-                
-                // Show success message
-                document.getElementById('gallery-success').classList.add('visible');
-                
-                // Disable button temporarily
-                const btn = document.getElementById('add-gallery-btn');
-                btn.textContent = '✅ Added!';
-                btn.disabled = true;
-                
-                setTimeout(() => {
-                    btn.textContent = '➕ Add to Gallery';
-                    btn.disabled = false;
-                }, 3000);
-                
-            } catch (e) {
-                console.error('Error saving to gallery:', e);
-                alert('Failed to save to gallery. Please try again.');
-            }
-        }
-        
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.classList.add('visible');
-            setTimeout(() => {
-                errorMessage.classList.remove('visible');
-            }, 5000);
-        }
-        
-        function resetToStart() {
-            capturedImages = [null, null, null, null];
-            currentTaskId = null;
-            currentModelUrls = null;
-            currentModelData = null;
-            importedModelUrl = null;
+            const saved = JSON.parse(localStorage.getItem('userArtworks') || '[]');
+            saved.push(artwork);
+            localStorage.setItem('userArtworks', JSON.stringify(saved));
             
-            if (pollInterval) {
-                clearInterval(pollInterval);
-            }
+            alert('Added to gallery!');
+        }
+        
+        // Show error
+        function showError(msg) {
+            const el = document.getElementById('error-msg');
+            el.textContent = msg;
+            el.classList.add('active');
+            setTimeout(() => el.classList.remove('active'), 5000);
+        }
+        
+        // Reset progress
+        function resetProgress() {
+            document.getElementById('progress-section').classList.remove('active');
+            document.getElementById('options-card').classList.remove('hidden');
+        }
+        
+        // Reset page
+        function resetPage() {
+            images = [];
+            taskId = null;
+            modelUrls = null;
+            if (pollTimer) clearTimeout(pollTimer);
             
             updateImageGrid();
-            progressSection.classList.remove('visible');
-            resultSection.classList.remove('visible');
-            errorMessage.classList.remove('visible');
-            generateBtn.disabled = true;
-            
-            document.querySelector('.main-card').style.display = 'block';
-            
-            fileInput.value = '';
-            glbInput.value = '';
-            
-            progressBar.style.width = '0%';
-            progressPercent.textContent = '0%';
-            
-            modelViewer.src = '';
-            
-            initCamera();
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('result-section').classList.remove('active');
+            document.getElementById('progress-section').classList.remove('active');
+            document.getElementById('options-card').classList.remove('hidden');
+            document.getElementById('progress-bar').style.width = '0%';
+            document.getElementById('progress-percent').textContent = '0%';
         }
         
-        // Listen for model-viewer AR status
-        modelViewer.addEventListener('ar-status', (event) => {
-            console.log('AR Status:', event.detail.status);
-        });
+        // Initialize
+        updateImageGrid();
     </script>
 </body>
 </html>
