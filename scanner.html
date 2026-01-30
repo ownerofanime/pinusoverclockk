@@ -721,8 +721,12 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Price</label>
-                    <input type="text" id="artPrice" placeholder="e.g., $500 or Contact for Price">
+                    <label>Price (USD)</label>
+                    <div style="position: relative;">
+                        <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #666; font-weight: 600;">$</span>
+                        <input type="number" id="artPrice" placeholder="500" style="padding-left: 30px;" min="0" step="0.01" oninput="formatPricePreview(this)">
+                    </div>
+                    <small id="pricePreview" style="color: #666; margin-top: 5px; display: block;"></small>
                 </div>
                 
                 <div class="crop-actions">
@@ -1240,7 +1244,7 @@
                         artist: artist,
                         medium: 'Digital Scan',
                         style: document.getElementById('artStyle').value || 'Contemporary',
-                        price: document.getElementById('artPrice').value || 'Contact for Price',
+                        price: formatPrice(document.getElementById('artPrice').value),
                         dimensions: { width, height, depth },
                         image: croppedImageData,
                         model: glbData,
@@ -1470,6 +1474,25 @@
         
         function hideLoading() {
             document.getElementById('loadingOverlay').classList.remove('active');
+        }
+        
+        // Price formatting functions
+        function formatPricePreview(input) {
+            const value = parseFloat(input.value);
+            const preview = document.getElementById('pricePreview');
+            if (!isNaN(value) && value > 0) {
+                preview.textContent = 'Formatted: ' + formatPrice(value);
+            } else {
+                preview.textContent = '';
+            }
+        }
+        
+        function formatPrice(value) {
+            const num = parseFloat(value);
+            if (isNaN(num) || num <= 0) {
+                return 'Contact for Price';
+            }
+            return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
         }
     </script>
 </body>
