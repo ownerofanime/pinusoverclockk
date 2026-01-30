@@ -101,8 +101,8 @@
         /* Hero Section */
         .hero {
             text-align: center;
-            padding: 40px 20px;
-            background: var(--gradient-ai);
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 20px;
             color: white;
             margin-bottom: 30px;
@@ -127,7 +127,7 @@
             padding: 8px 16px;
             border-radius: 20px;
             margin-top: 15px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
         
         /* Quiz Section */
@@ -136,7 +136,6 @@
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
         }
         
         .quiz-progress {
@@ -160,29 +159,36 @@
         }
         
         .progress-dot.completed {
-            background: #4CAF50;
+            background: var(--gold);
         }
         
         .question-container {
             display: none;
+            animation: fadeIn 0.3s ease;
         }
         
         .question-container.active {
             display: block;
-            animation: fadeIn 0.5s ease;
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
         .question-title {
             font-family: 'Playfair Display', serif;
             font-size: 1.5rem;
-            margin-bottom: 20px;
-            text-align: center;
             color: var(--primary);
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .question-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-size: 0.9rem;
         }
         
         .options-grid {
@@ -195,7 +201,7 @@
             background: var(--light);
             border: 2px solid transparent;
             border-radius: 15px;
-            padding: 20px;
+            padding: 20px 15px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
@@ -236,8 +242,8 @@
         }
         
         .color-option {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             cursor: pointer;
             border: 3px solid transparent;
@@ -263,6 +269,175 @@
             color: white;
             font-weight: bold;
             text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        /* Slider Options */
+        .slider-container {
+            margin: 20px 0;
+        }
+        
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        .slider-input {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .slider-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+        }
+        
+        .slider-value {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        /* Text Area */
+        .text-area-container {
+            margin: 20px 0;
+        }
+        
+        .text-area-container label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .text-area-container textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+        
+        .text-area-container textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .text-area-container .char-count {
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+        
+        /* Checkbox Options */
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background: var(--light);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .checkbox-option:hover {
+            border-color: var(--accent);
+        }
+        
+        .checkbox-option.selected {
+            border-color: var(--accent);
+            background: rgba(233, 69, 96, 0.1);
+        }
+        
+        .checkbox-option input {
+            display: none;
+        }
+        
+        .checkbox-icon {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .checkbox-option.selected .checkbox-icon {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+        
+        /* Toggle Section */
+        .toggle-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .toggle-section h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .toggle-section p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .toggle-btn {
+            background: var(--gradient-ai);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .extra-questions {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .extra-questions.visible {
+            display: block;
+            animation: fadeIn 0.3s ease;
         }
         
         /* Navigation Buttons */
@@ -408,33 +583,35 @@
         
         .recommendation-card {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             background: var(--light);
             border-radius: 15px;
-            padding: 15px;
-            cursor: pointer;
+            overflow: hidden;
             transition: all 0.3s ease;
         }
         
         .recommendation-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
         
         .rec-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 10px;
+            width: 150px;
+            height: 150px;
             object-fit: cover;
-            background: #ddd;
+            flex-shrink: 0;
         }
         
         .rec-info {
-            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
         .rec-title {
-            font-weight: 600;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
             color: var(--primary);
             margin-bottom: 5px;
         }
@@ -442,61 +619,77 @@
         .rec-artist {
             color: var(--accent);
             font-size: 0.9rem;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .rec-match {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--gold);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            width: fit-content;
         }
         
         .rec-reason {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-light);
-            line-height: 1.4;
+            line-height: 1.5;
         }
         
-        .match-score {
-            background: var(--gradient-ai);
+        .view-ar-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent);
             color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.85rem;
             font-weight: 600;
-            display: inline-block;
-            margin-top: 8px;
+            margin-top: 10px;
+            width: fit-content;
+            transition: all 0.3s ease;
+        }
+        
+        .view-ar-btn:hover {
+            background: #d63050;
+            transform: translateY(-2px);
         }
         
         .restart-btn {
             display: block;
             width: 100%;
             padding: 15px;
-            margin-top: 25px;
-            background: var(--light);
-            border: 2px solid var(--primary);
-            color: var(--primary);
+            background: var(--primary);
+            color: white;
+            border: none;
             border-radius: 25px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
+            margin-top: 30px;
             transition: all 0.3s ease;
         }
         
         .restart-btn:hover {
-            background: var(--primary);
-            color: white;
-        }
-        
-        /* Powered by badge */
-        .powered-by {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 0.85rem;
-            color: var(--text-light);
-        }
-        
-        .powered-by a {
-            color: var(--accent);
-            text-decoration: none;
+            background: var(--secondary);
+            transform: translateY(-2px);
         }
         
         /* Responsive */
         @media (max-width: 600px) {
             .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkbox-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -541,25 +734,21 @@
         <!-- Hero -->
         <div class="hero">
             <h1>Find Your Perfect Artwork</h1>
-            <p>Answer a few questions about your space, and our AI will recommend the perfect pieces for you.</p>
+            <p>Answer questions about your space, and our AI will recommend the perfect pieces for you.</p>
             <div class="ai-badge">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 2a10 10 0 1 0 10 10H12V2z"/>
                     <path d="M12 2a10 10 0 0 1 10 10"/>
                 </svg>
-                Powered by AI
+                Powered by Featherless.ai
             </div>
         </div>
         
         <!-- Quiz Section -->
         <div class="quiz-section" id="quiz-section">
             <!-- Progress Dots -->
-            <div class="quiz-progress">
-                <div class="progress-dot active" data-step="1"></div>
-                <div class="progress-dot" data-step="2"></div>
-                <div class="progress-dot" data-step="3"></div>
-                <div class="progress-dot" data-step="4"></div>
-                <div class="progress-dot" data-step="5"></div>
+            <div class="quiz-progress" id="progress-dots">
+                <!-- Will be generated dynamically -->
             </div>
             
             <!-- Question 1: Room Type -->
@@ -585,6 +774,16 @@
                         <div class="option-icon">🍽️</div>
                         <div class="option-label">Dining Room</div>
                         <div class="option-desc">Meals & entertaining</div>
+                    </div>
+                    <div class="option-card" data-value="hallway">
+                        <div class="option-icon">🚪</div>
+                        <div class="option-label">Hallway/Entryway</div>
+                        <div class="option-desc">First impressions</div>
+                    </div>
+                    <div class="option-card" data-value="bathroom">
+                        <div class="option-icon">🛁</div>
+                        <div class="option-label">Bathroom</div>
+                        <div class="option-desc">Spa-like retreat</div>
                     </div>
                 </div>
             </div>
@@ -613,26 +812,40 @@
                         <div class="option-label">Contemporary</div>
                         <div class="option-desc">Current trends</div>
                     </div>
+                    <div class="option-card" data-value="industrial">
+                        <div class="option-icon">🏭</div>
+                        <div class="option-label">Industrial</div>
+                        <div class="option-desc">Raw, urban</div>
+                    </div>
+                    <div class="option-card" data-value="scandinavian">
+                        <div class="option-icon">🌲</div>
+                        <div class="option-label">Scandinavian</div>
+                        <div class="option-desc">Cozy, functional</div>
+                    </div>
                 </div>
             </div>
             
             <!-- Question 3: Colors -->
             <div class="question-container" data-question="3">
                 <h2 class="question-title">What are the main colors in your room?</h2>
-                <p style="text-align: center; color: var(--text-light); margin-bottom: 20px;">Select up to 3 colors</p>
+                <p class="question-subtitle">Select up to 3 colors</p>
                 <div class="color-options">
                     <div class="color-option" data-value="white" style="background: #ffffff; border: 1px solid #ddd;"></div>
                     <div class="color-option" data-value="gray" style="background: #808080;"></div>
                     <div class="color-option" data-value="black" style="background: #1a1a1a;"></div>
                     <div class="color-option" data-value="beige" style="background: #d4c5a9;"></div>
                     <div class="color-option" data-value="brown" style="background: #8B4513;"></div>
+                    <div class="color-option" data-value="navy" style="background: #1a1a5e;"></div>
                     <div class="color-option" data-value="blue" style="background: #4169E1;"></div>
+                    <div class="color-option" data-value="teal" style="background: #008080;"></div>
                     <div class="color-option" data-value="green" style="background: #228B22;"></div>
+                    <div class="color-option" data-value="olive" style="background: #6B8E23;"></div>
                     <div class="color-option" data-value="yellow" style="background: #FFD700;"></div>
                     <div class="color-option" data-value="orange" style="background: #FF8C00;"></div>
                     <div class="color-option" data-value="red" style="background: #DC143C;"></div>
                     <div class="color-option" data-value="pink" style="background: #FF69B4;"></div>
                     <div class="color-option" data-value="purple" style="background: #8B008B;"></div>
+                    <div class="color-option" data-value="gold" style="background: linear-gradient(135deg, #d4af37, #f5d67a);"></div>
                 </div>
             </div>
             
@@ -659,6 +872,16 @@
                         <div class="option-icon">🔥</div>
                         <div class="option-label">Cozy & Warm</div>
                         <div class="option-desc">Inviting, comfortable</div>
+                    </div>
+                    <div class="option-card" data-value="inspiring and creative">
+                        <div class="option-icon">💡</div>
+                        <div class="option-label">Inspiring</div>
+                        <div class="option-desc">Creative, thought-provoking</div>
+                    </div>
+                    <div class="option-card" data-value="romantic and dreamy">
+                        <div class="option-icon">💕</div>
+                        <div class="option-label">Romantic</div>
+                        <div class="option-desc">Soft, dreamy</div>
                     </div>
                 </div>
             </div>
@@ -687,6 +910,317 @@
                         <div class="option-label">Bold & Colorful</div>
                         <div class="option-desc">Statement pieces</div>
                     </div>
+                    <div class="option-card" data-value="photography">
+                        <div class="option-icon">📷</div>
+                        <div class="option-label">Photography</div>
+                        <div class="option-desc">Captured moments</div>
+                    </div>
+                    <div class="option-card" data-value="sculptures and 3d">
+                        <div class="option-icon">🗿</div>
+                        <div class="option-label">Sculptures</div>
+                        <div class="option-desc">3D art pieces</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 6: Extra Questions Toggle -->
+            <div class="question-container" data-question="6">
+                <h2 class="question-title">Want more personalized recommendations?</h2>
+                <p class="question-subtitle">Answer additional questions for better AI matching</p>
+                
+                <div class="toggle-section">
+                    <h3>🎯 Get Tailored Results</h3>
+                    <p>Answer 10 more optional questions to help our AI understand your preferences better.</p>
+                    <button class="toggle-btn" id="toggle-extra-btn">Show Extra Questions</button>
+                </div>
+                
+                <!-- Extra Questions (Hidden by default) -->
+                <div class="extra-questions" id="extra-questions">
+                    
+                    <!-- Extra Q1: Budget -->
+                    <div class="extra-question" data-extra="1">
+                        <h3 style="margin: 20px 0 15px; color: var(--primary);">1. What's your budget range?</h3>
+                        <div class="options-grid">
+                            <div class="option-card extra-option" data-field="budget" data-value="under $500">
+                                <div class="option-icon">💵</div>
+                                <div class="option-label">Under $500</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="budget" data-value="$500 - $2000">
+                                <div class="option-icon">💰</div>
+                                <div class="option-label">$500 - $2,000</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="budget" data-value="$2000 - $5000">
+                                <div class="option-icon">💎</div>
+                                <div class="option-label">$2,000 - $5,000</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="budget" data-value="over $5000">
+                                <div class="option-icon">👑</div>
+                                <div class="option-label">Over $5,000</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Extra Q2: Room Size -->
+                    <div class="extra-question" data-extra="2">
+                        <h3 style="margin: 20px 0 15px; color: var(--primary);">2. How large is the wall space?</h3>
+                        <div class="options-grid">
+                            <div class="option-card extra-option" data-field="wallSize" data-value="small (under 3ft)">
+                                <div class="option-icon">📐</div>
+                                <div class="option-label">Small</div>
+                                <div class="option-desc">Under 3 feet</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="wallSize" data-value="medium (3-6ft)">
+                                <div class="option-icon">📏</div>
+                                <div class="option-label">Medium</div>
+                                <div class="option-desc">3-6 feet</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="wallSize" data-value="large (6-10ft)">
+                                <div class="option-icon">🖼️</div>
+                                <div class="option-label">Large</div>
+                                <div class="option-desc">6-10 feet</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="wallSize" data-value="extra large (over 10ft)">
+                                <div class="option-icon">🏛️</div>
+                                <div class="option-label">Extra Large</div>
+                                <div class="option-desc">Over 10 feet</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Extra Q3: Lighting -->
+                    <div class="extra-question" data-extra="3">
+                        <h3 style="margin: 20px 0 15px; color: var(--primary);">3. What's the lighting like?</h3>
+                        <div class="options-grid">
+                            <div class="option-card extra-option" data-field="lighting" data-value="bright natural light">
+                                <div class="option-icon">☀️</div>
+                                <div class="option-label">Bright Natural</div>
+                                <div class="option-desc">Lots of sunlight</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="lighting" data-value="soft ambient light">
+                                <div class="option-icon">💡</div>
+                                <div class="option-label">Soft Ambient</div>
+                                <div class="option-desc">Warm, gentle</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="lighting" data-value="dim and moody">
+                                <div class="option-icon">🌙</div>
+                                <div class="option-label">Dim & Moody</div>
+                                <div class="option-desc">Low light</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="lighting" data-value="mixed lighting">
+                                <div class="option-icon">🔆</div>
+                                <div class="option-label">Mixed</div>
+                                <div class="option-desc">Varies by time</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Extra Q4: Existing Art -->
+                    <div class="extra-question" data-extra="4">
+                        <h3 style="margin: 20px 0 15px; color: var(--primary);">4. Do you have existing art in the room?</h3>
+                        <div class="options-grid">
+                            <div class="option-card extra-option" data-field="existingArt" data-value="no art currently">
+                                <div class="option-icon">🆕</div>
+                                <div class="option-label">Starting Fresh</div>
+                                <div class="option-desc">No existing art</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="existingArt" data-value="a few pieces">
+                                <div class="option-icon">🖼️</div>
+                                <div class="option-label">A Few Pieces</div>
+                                <div class="option-desc">Some art already</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="existingArt" data-value="gallery wall">
+                                <div class="option-icon">🎨</div>
+                                <div class="option-label">Gallery Wall</div>
+                                <div class="option-desc">Multiple pieces</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="existingArt" data-value="replacing current art">
+                                <div class="option-icon">🔄</div>
+                                <div class="option-label">Replacing</div>
+                                <div class="option-desc">Updating existing</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Extra Q5: Time Period -->
+                    <div class="extra-question" data-extra="5">
+                        <h3 style="margin: 20px 0 15px; color: var(--primary);">5. Preferred art era/period?</h3>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-option" data-field="era" data-value="renaissance">
+                                <span class="checkbox-icon">✓</span>
+                                <span>Renaissance</span>
+                            </label>
+                            <label class="checkbox-option" data-field="era" data-value="impressionism">
+                                <span class="checkbox-icon">✓</span>
+                                <span>Impressionism</span>
+                            </label>
+                            <label class="checkbox-option" data-field="era" data-value="modern">
+                                <span class="checkbox-icon">✓</span>
+                                <span>Modern (20th C)</span>
+                            </label>
+                            <label class="checkbox-option" data-field="era" data-value="contemporary">
+                                <span class="checkbox-icon">✓</span>
+                                <span>Contemporary</span>
+                            </label>
+                            <label class="checkbox-option" data-field="era" data-value="asian">
+                                <span class="checkbox-icon">✓</span>
+                                <span>Asian Art</span>
+                            </label>
+                            <label class="checkbox-option" data-field="era" data-value="no preference">
+                                <span class="checkbox-icon">✓</span>
+                                <span>No Preference</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Extra Q6: Subject Matter -->
+                    <div class="extra-question" data-extra="6">
+                        <h3 style="margin: 20px 0 15px; color: var(--primary);">6. Preferred subject matter? (Select all)</h3>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-option" data-field="subject" data-value="portraits">
+                                <span class="checkbox-icon">✓</span>
+                                <span>Portraits</span>
+                            </label>
+                            <label class="checkbox-option" data-field="subject" data-value="landscapes">
+                                <span class="checkbox-icon">✓</span>
+                                <span>Landscapes</span>
+                            </label>
+                            <label class="checkbox-option" data-field="subject" data-value="still life">
+                                <span class="checkbox-icon">✓</span>
+                                <span>Still Life</span>
+                            </label>
+                            <label class="checkbox-option" data-field="subject" data-value="abstract">
+                                <span class="checkbox-icon">✓</span>
+                                <span>Abstract</span>
+                            </label>
+                            <label class="checkbox-option" data-field="subject" data-value="animals">
+                                <span class="checkbox-icon">✓</span>
+                                <span>Animals</span>
+                            </label>
+                            <label class="checkbox-option" data-field="subject" data-value="architecture">
+                                <span class="checkbox-icon">✓</span>
+                                <span>Architecture</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Extra Q7: Frame Preference -->
+                    <div class="extra-question" data-extra="7">
+                        <h3 style="margin: 20px 0 15px; color: var(--primary);">7. Frame style preference?</h3>
+                        <div class="options-grid">
+                            <div class="option-card extra-option" data-field="frame" data-value="no frame (canvas)">
+                                <div class="option-icon">🎨</div>
+                                <div class="option-label">No Frame</div>
+                                <div class="option-desc">Canvas wrap</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="frame" data-value="minimal black">
+                                <div class="option-icon">⬛</div>
+                                <div class="option-label">Minimal Black</div>
+                                <div class="option-desc">Sleek, modern</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="frame" data-value="natural wood">
+                                <div class="option-icon">🪵</div>
+                                <div class="option-label">Natural Wood</div>
+                                <div class="option-desc">Warm, organic</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="frame" data-value="ornate gold">
+                                <div class="option-icon">✨</div>
+                                <div class="option-label">Ornate Gold</div>
+                                <div class="option-desc">Classic, elegant</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Extra Q8: Color Temperature -->
+                    <div class="extra-question" data-extra="8">
+                        <h3 style="margin: 20px 0 15px; color: var(--primary);">8. Preferred color temperature?</h3>
+                        <div class="options-grid">
+                            <div class="option-card extra-option" data-field="colorTemp" data-value="warm tones">
+                                <div class="option-icon">🔥</div>
+                                <div class="option-label">Warm Tones</div>
+                                <div class="option-desc">Reds, oranges, yellows</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="colorTemp" data-value="cool tones">
+                                <div class="option-icon">❄️</div>
+                                <div class="option-label">Cool Tones</div>
+                                <div class="option-desc">Blues, greens, purples</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="colorTemp" data-value="neutral tones">
+                                <div class="option-icon">⚪</div>
+                                <div class="option-label">Neutral Tones</div>
+                                <div class="option-desc">Blacks, whites, grays</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="colorTemp" data-value="mixed/balanced">
+                                <div class="option-icon">🌈</div>
+                                <div class="option-label">Mixed</div>
+                                <div class="option-desc">Balanced variety</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Extra Q9: Conversation Starter -->
+                    <div class="extra-question" data-extra="9">
+                        <h3 style="margin: 20px 0 15px; color: var(--primary);">9. Should the art be a conversation starter?</h3>
+                        <div class="options-grid">
+                            <div class="option-card extra-option" data-field="conversation" data-value="yes, bold statement">
+                                <div class="option-icon">🗣️</div>
+                                <div class="option-label">Yes, Bold</div>
+                                <div class="option-desc">Make a statement</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="conversation" data-value="subtle but interesting">
+                                <div class="option-icon">🤔</div>
+                                <div class="option-label">Subtle</div>
+                                <div class="option-desc">Interesting on closer look</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="conversation" data-value="background piece">
+                                <div class="option-icon">🖼️</div>
+                                <div class="option-label">Background</div>
+                                <div class="option-desc">Complement the space</div>
+                            </div>
+                            <div class="option-card extra-option" data-field="conversation" data-value="no preference">
+                                <div class="option-icon">🤷</div>
+                                <div class="option-label">No Preference</div>
+                                <div class="option-desc">Either works</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Extra Q10: Emotional Response -->
+                    <div class="extra-question" data-extra="10">
+                        <h3 style="margin: 20px 0 15px; color: var(--primary);">10. What emotion should the art evoke?</h3>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-option" data-field="emotion" data-value="joy">
+                                <span class="checkbox-icon">✓</span>
+                                <span>😊 Joy</span>
+                            </label>
+                            <label class="checkbox-option" data-field="emotion" data-value="serenity">
+                                <span class="checkbox-icon">✓</span>
+                                <span>😌 Serenity</span>
+                            </label>
+                            <label class="checkbox-option" data-field="emotion" data-value="wonder">
+                                <span class="checkbox-icon">✓</span>
+                                <span>🤩 Wonder</span>
+                            </label>
+                            <label class="checkbox-option" data-field="emotion" data-value="nostalgia">
+                                <span class="checkbox-icon">✓</span>
+                                <span>🥹 Nostalgia</span>
+                            </label>
+                            <label class="checkbox-option" data-field="emotion" data-value="inspiration">
+                                <span class="checkbox-icon">✓</span>
+                                <span>💪 Inspiration</span>
+                            </label>
+                            <label class="checkbox-option" data-field="emotion" data-value="contemplation">
+                                <span class="checkbox-icon">✓</span>
+                                <span>🧐 Contemplation</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Text Description -->
+                <div class="text-area-container" style="margin-top: 25px;">
+                    <label>📝 Additional Details (Optional)</label>
+                    <textarea id="extra-description" placeholder="Describe anything else about your space or preferences that might help us find the perfect artwork for you. For example: 'I have a mid-century modern sofa in mustard yellow' or 'I want something that reminds me of the ocean' or 'Looking for something to match my grandmother's antique furniture'..." maxlength="500"></textarea>
+                    <div class="char-count"><span id="char-count">0</span>/500</div>
                 </div>
             </div>
             
@@ -698,15 +1232,19 @@
             
             <!-- Analyze Button (shown on last question) -->
             <button class="nav-btn analyze" id="analyze-btn" style="display: none;">
-                ✨ Get AI Recommendations
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 10px;">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4M12 8h.01"/>
+                </svg>
+                Get AI Recommendations
             </button>
         </div>
         
         <!-- Results Section -->
         <div class="results-section" id="results-section">
             <div class="results-header">
-                <h2>Your Personalized Recommendations</h2>
-                <p>Based on your preferences, here are the perfect artworks for your space</p>
+                <h2>🎨 Your Personalized Recommendations</h2>
+                <p>Based on your preferences, our AI selected these artworks for you</p>
             </div>
             
             <div class="ai-analysis" id="ai-analysis">
@@ -717,19 +1255,16 @@
                     </svg>
                     AI Analysis
                 </h3>
-                <p id="analysis-text">Loading...</p>
+                <p id="analysis-text">Loading analysis...</p>
             </div>
             
             <div class="recommendations-grid" id="recommendations-grid">
                 <!-- Recommendations will be inserted here -->
             </div>
             
-            <button class="restart-btn" onclick="restartQuiz()">Start Over</button>
-        </div>
-        
-        <!-- Powered By -->
-        <div class="powered-by">
-            Powered by <a href="https://featherless.ai" target="_blank">Featherless.ai</a>
+            <button class="restart-btn" onclick="restartQuiz()">
+                ← Start Over
+            </button>
         </div>
     </div>
     
@@ -741,34 +1276,55 @@
     </div>
     
     <script>
-        // Quiz State
+        // State
         let currentQuestion = 1;
-        const totalQuestions = 5;
+        const totalQuestions = 6;
+        let showingExtraQuestions = false;
+        
         const answers = {
             roomType: '',
             style: '',
             colors: [],
             mood: '',
-            artPreference: ''
+            artPreference: '',
+            // Extra answers
+            budget: '',
+            wallSize: '',
+            lighting: '',
+            existingArt: '',
+            era: [],
+            subject: [],
+            frame: '',
+            colorTemp: '',
+            conversation: '',
+            emotion: [],
+            description: ''
         };
         
         // Artwork Database
         const artworks = [
-            { id: 101, title: "Starry Night", artist: "Vincent van Gogh", image: "images/starry_night.jpg", style: "Post-Impressionism", colors: ["blue", "yellow"], mood: ["dramatic", "expressive"], type: "classical" },
-            { id: 102, title: "Water Lilies", artist: "Claude Monet", image: "images/water_lilies.jpg", style: "Impressionism", colors: ["green", "blue", "pink"], mood: ["calm", "serene"], type: "nature" },
-            { id: 103, title: "Café Terrace at Night", artist: "Vincent van Gogh", image: "images/cafe_terrace.jpg", style: "Post-Impressionism", colors: ["yellow", "blue"], mood: ["cozy", "warm"], type: "classical" },
-            { id: 104, title: "Mona Lisa", artist: "Leonardo da Vinci", image: "images/mona_lisa.jpg", style: "Renaissance", colors: ["brown", "beige"], mood: ["sophisticated", "elegant"], type: "classical" },
-            { id: 105, title: "Improvisation 4", artist: "Wassily Kandinsky", image: "images/kandinsky.jpg", style: "Abstract", colors: ["multicolor"], mood: ["energetic", "vibrant"], type: "abstract" },
-            { id: 106, title: "Abstract Blue Composition", artist: "Contemporary Artist", image: "images/abstract_blue.jpg", style: "Abstract", colors: ["blue", "white"], mood: ["calm", "modern"], type: "abstract" },
-            { id: 107, title: "Colorful Abstract", artist: "Modern Studio", image: "images/colorful_abstract.jpg", style: "Abstract", colors: ["multicolor"], mood: ["energetic", "playful"], type: "bold" },
-            { id: 108, title: "Golden Abstract", artist: "Luxe Arts", image: "images/golden_abstract.jpg", style: "Contemporary", colors: ["yellow", "beige", "brown"], mood: ["sophisticated", "warm"], type: "abstract" },
-            { id: 109, title: "Botanical Study", artist: "Nature Arts", image: "images/botanical.jpg", style: "Botanical", colors: ["green"], mood: ["calm", "natural"], type: "nature" },
-            { id: 110, title: "Classic Portrait", artist: "Portrait Masters", image: "images/portrait.jpg", style: "Classical", colors: ["brown", "beige"], mood: ["sophisticated", "traditional"], type: "classical" },
-            { id: 111, title: "The Great Wave", artist: "Hokusai", image: "images/great_wave.jpg", style: "Japanese", colors: ["blue", "white"], mood: ["dramatic", "powerful"], type: "classical" },
-            { id: 112, title: "Minimalist Lines", artist: "Line Studio", image: "images/minimalist.jpg", style: "Minimalist", colors: ["black", "white"], mood: ["calm", "modern"], type: "abstract" },
-            { id: 113, title: "Geometric Patterns", artist: "Geo Arts", image: "images/geometric.jpg", style: "Geometric", colors: ["multicolor"], mood: ["energetic", "modern"], type: "bold" },
-            { id: 114, title: "Neon Dreams", artist: "Digital Visions", image: "images/neon.jpg", style: "Digital", colors: ["pink", "blue", "purple"], mood: ["energetic", "vibrant"], type: "bold" },
-            { id: 115, title: "Traditional Oil Landscape", artist: "Heritage Arts", image: "images/landscape.jpg", style: "Traditional", colors: ["green", "blue", "brown"], mood: ["calm", "peaceful"], type: "nature" }
+            { id: 101, title: "Starry Night", artist: "Vincent van Gogh", image: "images/starry_night.jpg", model: "models/painting_starry_night.glb", style: "Post-Impressionism", colors: ["blue", "yellow"], mood: ["dramatic", "expressive"], type: "classical", price: "$2,500" },
+            { id: 102, title: "Water Lilies", artist: "Claude Monet", image: "images/water_lilies.jpg", model: "models/painting_water_lilies.glb", style: "Impressionism", colors: ["green", "blue", "pink"], mood: ["calm", "serene"], type: "nature", price: "$3,200" },
+            { id: 103, title: "Café Terrace at Night", artist: "Vincent van Gogh", image: "images/cafe_terrace.jpg", model: "models/painting_cafe_terrace.glb", style: "Post-Impressionism", colors: ["yellow", "blue"], mood: ["cozy", "warm"], type: "classical", price: "$2,800" },
+            { id: 104, title: "Mona Lisa", artist: "Leonardo da Vinci", image: "images/mona_lisa.jpg", model: "models/painting_mona_lisa.glb", style: "Renaissance", colors: ["brown", "beige"], mood: ["sophisticated", "elegant"], type: "classical", price: "$5,000" },
+            { id: 105, title: "Improvisation 4", artist: "Wassily Kandinsky", image: "images/kandinsky.jpg", model: "models/painting_kandinsky.glb", style: "Abstract", colors: ["multicolor"], mood: ["energetic", "vibrant"], type: "abstract", price: "$4,500" },
+            { id: 106, title: "Abstract Blue Composition", artist: "Contemporary Artist", image: "images/abstract_blue.jpg", model: "models/painting_abstract_blue.glb", style: "Abstract", colors: ["blue", "white"], mood: ["calm", "modern"], type: "abstract", price: "$1,800" },
+            { id: 107, title: "Colorful Abstract", artist: "Modern Studio", image: "images/colorful_abstract.jpg", model: "models/painting_colorful_abstract.glb", style: "Abstract", colors: ["multicolor"], mood: ["energetic", "playful"], type: "bold", price: "$2,200" },
+            { id: 108, title: "Golden Abstract", artist: "Luxe Arts", image: "images/golden_abstract.jpg", model: "models/painting_golden_abstract.glb", style: "Contemporary", colors: ["yellow", "beige", "brown"], mood: ["sophisticated", "warm"], type: "abstract", price: "$3,500" },
+            { id: 109, title: "Botanical Study", artist: "Nature Arts", image: "images/botanical.jpg", model: "models/painting_botanical.glb", style: "Botanical", colors: ["green"], mood: ["calm", "natural"], type: "nature", price: "$1,200" },
+            { id: 110, title: "Classic Portrait", artist: "Portrait Masters", image: "images/portrait.jpg", model: "models/painting_portrait.glb", style: "Classical", colors: ["brown", "beige"], mood: ["sophisticated", "traditional"], type: "classical", price: "$4,000" },
+            { id: 111, title: "The Great Wave", artist: "Hokusai", image: "images/great_wave.jpg", model: "models/painting_great_wave.glb", style: "Japanese", colors: ["blue", "white"], mood: ["dramatic", "powerful"], type: "classical", price: "$2,900" },
+            { id: 112, title: "Minimalist Lines", artist: "Line Studio", image: "images/minimalist.jpg", model: "models/painting_minimalist.glb", style: "Minimalist", colors: ["black", "white"], mood: ["calm", "modern"], type: "abstract", price: "$1,500" },
+            { id: 113, title: "Geometric Patterns", artist: "Geo Arts", image: "images/geometric.jpg", model: "models/painting_geometric.glb", style: "Geometric", colors: ["multicolor"], mood: ["energetic", "modern"], type: "bold", price: "$1,800" },
+            { id: 114, title: "Neon Dreams", artist: "Digital Visions", image: "images/neon.jpg", model: "models/painting_neon.glb", style: "Digital", colors: ["pink", "blue", "purple"], mood: ["energetic", "vibrant"], type: "bold", price: "$2,100" },
+            { id: 115, title: "Traditional Oil Landscape", artist: "Heritage Arts", image: "images/landscape.jpg", model: "models/painting_landscape.glb", style: "Traditional", colors: ["green", "blue", "brown"], mood: ["calm", "peaceful"], type: "nature", price: "$3,800" },
+            // 3D Sculptures
+            { id: 201, title: "Decorative Pot", artist: "Ceramic Studio", image: "models/FixedScalingPot.glb", model: "models/FixedScalingPot.glb", style: "Decorative", colors: ["brown", "beige"], mood: ["warm", "natural"], type: "sculpture", price: "$450" },
+            { id: 202, title: "Abstract Form I", artist: "Modern Sculptor", image: "models/Object006.glb", model: "models/Object006.glb", style: "Abstract", colors: ["white", "gray"], mood: ["modern", "sophisticated"], type: "sculpture", price: "$1,200" },
+            { id: 203, title: "Abstract Form II", artist: "Modern Sculptor", image: "models/Object006_001.glb", model: "models/Object006_001.glb", style: "Abstract", colors: ["white", "gray"], mood: ["modern", "elegant"], type: "sculpture", price: "$1,400" },
+            { id: 204, title: "Abstract Form III", artist: "Modern Sculptor", image: "models/Object006_002.glb", model: "models/Object006_002.glb", style: "Abstract", colors: ["white", "gray"], mood: ["modern", "minimalist"], type: "sculpture", price: "$1,300" },
+            { id: 205, title: "Wall Art Piece", artist: "Wall Decor Co", image: "models/WallArt.glb", model: "models/WallArt.glb", style: "Contemporary", colors: ["multicolor"], mood: ["vibrant", "modern"], type: "sculpture", price: "$890" },
+            { id: 206, title: "Wooden Frame Art", artist: "Artisan Frames", image: "models/WoodenFrame.glb", model: "models/WoodenFrame.glb", style: "Traditional", colors: ["brown", "beige"], mood: ["warm", "classic"], type: "sculpture", price: "$650" }
         ];
         
         // Featherless.ai API Key
@@ -776,16 +1332,32 @@
         
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
+            generateProgressDots();
             setupOptionCards();
             setupColorOptions();
+            setupExtraOptions();
+            setupCheckboxOptions();
             setupNavigation();
+            setupToggleExtra();
+            setupTextArea();
         });
         
+        function generateProgressDots() {
+            const container = document.getElementById('progress-dots');
+            container.innerHTML = '';
+            for (let i = 1; i <= totalQuestions; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot' + (i === 1 ? ' active' : '');
+                dot.dataset.step = i;
+                container.appendChild(dot);
+            }
+        }
+        
         function setupOptionCards() {
-            document.querySelectorAll('.option-card').forEach(card => {
+            document.querySelectorAll('.option-card:not(.extra-option)').forEach(card => {
                 card.addEventListener('click', () => {
                     const container = card.closest('.question-container');
-                    container.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+                    container.querySelectorAll('.option-card:not(.extra-option)').forEach(c => c.classList.remove('selected'));
                     card.classList.add('selected');
                     
                     const value = card.dataset.value;
@@ -817,6 +1389,43 @@
             });
         }
         
+        function setupExtraOptions() {
+            document.querySelectorAll('.extra-option').forEach(card => {
+                card.addEventListener('click', () => {
+                    const field = card.dataset.field;
+                    const value = card.dataset.value;
+                    const parent = card.closest('.extra-question');
+                    
+                    // Single select within each extra question
+                    parent.querySelectorAll('.extra-option').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    
+                    answers[field] = value;
+                });
+            });
+        }
+        
+        function setupCheckboxOptions() {
+            document.querySelectorAll('.checkbox-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const field = option.dataset.field;
+                    const value = option.dataset.value;
+                    
+                    option.classList.toggle('selected');
+                    
+                    if (!answers[field]) answers[field] = [];
+                    
+                    if (option.classList.contains('selected')) {
+                        if (!answers[field].includes(value)) {
+                            answers[field].push(value);
+                        }
+                    } else {
+                        answers[field] = answers[field].filter(v => v !== value);
+                    }
+                });
+            });
+        }
+        
         function setupNavigation() {
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
@@ -837,6 +1446,27 @@
             });
             
             analyzeBtn.addEventListener('click', analyzePreferences);
+        }
+        
+        function setupToggleExtra() {
+            const toggleBtn = document.getElementById('toggle-extra-btn');
+            const extraQuestions = document.getElementById('extra-questions');
+            
+            toggleBtn.addEventListener('click', () => {
+                showingExtraQuestions = !showingExtraQuestions;
+                extraQuestions.classList.toggle('visible', showingExtraQuestions);
+                toggleBtn.textContent = showingExtraQuestions ? 'Hide Extra Questions' : 'Show Extra Questions';
+            });
+        }
+        
+        function setupTextArea() {
+            const textarea = document.getElementById('extra-description');
+            const charCount = document.getElementById('char-count');
+            
+            textarea.addEventListener('input', () => {
+                charCount.textContent = textarea.value.length;
+                answers.description = textarea.value;
+            });
         }
         
         function updateQuiz() {
@@ -868,7 +1498,7 @@
             
             if (currentQuestion === totalQuestions) {
                 nextBtn.style.display = 'none';
-                analyzeBtn.style.display = 'block';
+                analyzeBtn.style.display = 'flex';
             } else {
                 nextBtn.style.display = 'block';
                 analyzeBtn.style.display = 'none';
@@ -880,43 +1510,78 @@
             loadingOverlay.classList.add('visible');
             
             try {
-                // Build prompt for AI
-                const prompt = `You are an expert art consultant. Based on the following room preferences, recommend 4 artworks from the available collection.
+                // Build comprehensive prompt for AI
+                let prompt = `You are an expert art consultant. Based on the following room preferences, recommend 4 artworks from the available collection.
 
 User's Room Preferences:
-- Room Type: ${answers.roomType}
-- Interior Style: ${answers.style}
-- Main Colors: ${answers.colors.join(', ')}
-- Desired Mood: ${answers.mood}
-- Art Preference: ${answers.artPreference}
+- Room Type: ${answers.roomType || 'Not specified'}
+- Interior Style: ${answers.style || 'Not specified'}
+- Main Colors: ${answers.colors.length > 0 ? answers.colors.join(', ') : 'Not specified'}
+- Desired Mood: ${answers.mood || 'Not specified'}
+- Art Preference: ${answers.artPreference || 'Not specified'}`;
 
-Available Artworks (ID, Title, Style, Colors, Mood):
-101. Starry Night - Post-Impressionism - blue, yellow - dramatic, expressive
-102. Water Lilies - Impressionism - green, blue, pink - calm, serene
-103. Café Terrace at Night - Post-Impressionism - yellow, blue - cozy, warm
-104. Mona Lisa - Renaissance - brown, beige - sophisticated, elegant
-105. Improvisation 4 (Kandinsky) - Abstract - multicolor - energetic, vibrant
-106. Abstract Blue Composition - Abstract - blue, white - calm, modern
-107. Colorful Abstract - Abstract - multicolor - energetic, playful
-108. Golden Abstract - Contemporary - yellow, beige, brown - sophisticated, warm
-109. Botanical Study - Botanical - green - calm, natural
-110. Classic Portrait - Classical - brown, beige - sophisticated, traditional
-111. The Great Wave - Japanese - blue, white - dramatic, powerful
-112. Minimalist Lines - Minimalist - black, white - calm, modern
-113. Geometric Patterns - Geometric - multicolor - energetic, modern
-114. Neon Dreams - Digital - pink, blue, purple - energetic, vibrant
-115. Traditional Oil Landscape - Traditional - green, blue, brown - calm, peaceful
+                // Add extra details if provided
+                if (showingExtraQuestions) {
+                    prompt += `
 
-Respond in JSON format:
+Additional Preferences:
+- Budget: ${answers.budget || 'Not specified'}
+- Wall Size: ${answers.wallSize || 'Not specified'}
+- Lighting: ${answers.lighting || 'Not specified'}
+- Existing Art: ${answers.existingArt || 'Not specified'}
+- Preferred Era: ${answers.era && answers.era.length > 0 ? answers.era.join(', ') : 'Not specified'}
+- Subject Matter: ${answers.subject && answers.subject.length > 0 ? answers.subject.join(', ') : 'Not specified'}
+- Frame Style: ${answers.frame || 'Not specified'}
+- Color Temperature: ${answers.colorTemp || 'Not specified'}
+- Conversation Starter: ${answers.conversation || 'Not specified'}
+- Desired Emotions: ${answers.emotion && answers.emotion.length > 0 ? answers.emotion.join(', ') : 'Not specified'}`;
+                }
+
+                if (answers.description) {
+                    prompt += `
+
+User's Additional Notes:
+"${answers.description}"`;
+                }
+
+                prompt += `
+
+Available Artworks (ID, Title, Artist, Style, Colors, Mood, Type, Price):
+101. Starry Night - Van Gogh - Post-Impressionism - blue, yellow - dramatic, expressive - classical - $2,500
+102. Water Lilies - Monet - Impressionism - green, blue, pink - calm, serene - nature - $3,200
+103. Café Terrace at Night - Van Gogh - Post-Impressionism - yellow, blue - cozy, warm - classical - $2,800
+104. Mona Lisa - Da Vinci - Renaissance - brown, beige - sophisticated, elegant - classical - $5,000
+105. Improvisation 4 - Kandinsky - Abstract - multicolor - energetic, vibrant - abstract - $4,500
+106. Abstract Blue Composition - Contemporary - Abstract - blue, white - calm, modern - abstract - $1,800
+107. Colorful Abstract - Modern Studio - Abstract - multicolor - energetic, playful - bold - $2,200
+108. Golden Abstract - Luxe Arts - Contemporary - yellow, beige, brown - sophisticated, warm - abstract - $3,500
+109. Botanical Study - Nature Arts - Botanical - green - calm, natural - nature - $1,200
+110. Classic Portrait - Portrait Masters - Classical - brown, beige - sophisticated, traditional - classical - $4,000
+111. The Great Wave - Hokusai - Japanese - blue, white - dramatic, powerful - classical - $2,900
+112. Minimalist Lines - Line Studio - Minimalist - black, white - calm, modern - abstract - $1,500
+113. Geometric Patterns - Geo Arts - Geometric - multicolor - energetic, modern - bold - $1,800
+114. Neon Dreams - Digital Visions - Digital - pink, blue, purple - energetic, vibrant - bold - $2,100
+115. Traditional Oil Landscape - Heritage Arts - Traditional - green, blue, brown - calm, peaceful - nature - $3,800
+201. Decorative Pot - Ceramic Studio - Decorative - brown, beige - warm, natural - sculpture - $450
+202. Abstract Form I - Modern Sculptor - Abstract - white, gray - modern, sophisticated - sculpture - $1,200
+203. Abstract Form II - Modern Sculptor - Abstract - white, gray - modern, elegant - sculpture - $1,400
+204. Abstract Form III - Modern Sculptor - Abstract - white, gray - modern, minimalist - sculpture - $1,300
+205. Wall Art Piece - Wall Decor Co - Contemporary - multicolor - vibrant, modern - sculpture - $890
+206. Wooden Frame Art - Artisan Frames - Traditional - brown, beige - warm, classic - sculpture - $650
+
+Respond in this exact JSON format:
 {
-    "analysis": "2-3 sentences explaining why these artworks match the user's preferences",
+    "analysis": "A 2-3 sentence personalized analysis of the user's style and what would work best for their space.",
     "recommendations": [
-        {"id": 101, "score": 95, "reason": "Why this artwork fits"},
-        {"id": 102, "score": 88, "reason": "Why this artwork fits"}
+        {"id": 101, "match": 95, "reason": "Brief reason why this artwork matches their preferences"},
+        {"id": 102, "match": 88, "reason": "Brief reason"},
+        {"id": 103, "match": 82, "reason": "Brief reason"},
+        {"id": 104, "match": 78, "reason": "Brief reason"}
     ]
-}`;
+}
 
-                // Call Featherless.ai API
+Only respond with the JSON, no other text.`;
+
                 const response = await fetch('https://api.featherless.ai/v1/chat/completions', {
                     method: 'POST',
                     headers: {
@@ -926,6 +1591,7 @@ Respond in JSON format:
                     body: JSON.stringify({
                         model: 'Qwen/Qwen2.5-7B-Instruct',
                         messages: [
+                            { role: 'system', content: 'You are an expert art consultant. Always respond with valid JSON only.' },
                             { role: 'user', content: prompt }
                         ],
                         max_tokens: 1000,
@@ -933,23 +1599,21 @@ Respond in JSON format:
                     })
                 });
                 
-                if (!response.ok) {
-                    throw new Error('API request failed');
-                }
-                
                 const data = await response.json();
-                const content = data.choices[0].message.content;
+                const aiResponse = data.choices[0].message.content;
                 
-                // Parse JSON from response
+                // Parse AI response
                 let result;
                 try {
-                    const jsonMatch = content.match(/\{[\s\S]*\}/);
+                    // Try to extract JSON from the response
+                    const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
                     if (jsonMatch) {
                         result = JSON.parse(jsonMatch[0]);
                     } else {
                         throw new Error('No JSON found');
                     }
                 } catch (e) {
+                    // Fallback recommendations
                     result = getDefaultRecommendations();
                 }
                 
@@ -957,6 +1621,7 @@ Respond in JSON format:
                 
             } catch (error) {
                 console.error('Error:', error);
+                // Use fallback recommendations
                 displayResults(getDefaultRecommendations());
             } finally {
                 loadingOverlay.classList.remove('visible');
@@ -964,63 +1629,105 @@ Respond in JSON format:
         }
         
         function getDefaultRecommendations() {
+            // Smart fallback based on answers
+            const recs = [];
+            
+            if (answers.mood && answers.mood.includes('calm')) {
+                recs.push({ id: 102, match: 90, reason: "Water Lilies creates a serene atmosphere perfect for relaxation." });
+                recs.push({ id: 112, match: 85, reason: "Minimalist Lines offers clean simplicity for a calm space." });
+            }
+            if (answers.artPreference && answers.artPreference.includes('abstract')) {
+                recs.push({ id: 105, match: 88, reason: "Kandinsky's abstract work adds dynamic energy." });
+                recs.push({ id: 106, match: 82, reason: "Abstract Blue provides modern sophistication." });
+            }
+            if (answers.style && answers.style.includes('traditional')) {
+                recs.push({ id: 104, match: 92, reason: "Mona Lisa brings timeless elegance." });
+                recs.push({ id: 115, match: 86, reason: "Traditional landscape adds classic beauty." });
+            }
+            
+            // Fill remaining slots
+            const defaultIds = [101, 103, 107, 109, 111];
+            while (recs.length < 4) {
+                const id = defaultIds[recs.length];
+                const artwork = artworks.find(a => a.id === id);
+                if (artwork && !recs.find(r => r.id === id)) {
+                    recs.push({ id: id, match: 75 - recs.length * 5, reason: `${artwork.title} complements your space beautifully.` });
+                }
+            }
+            
             return {
-                analysis: `Based on your ${answers.style} ${answers.roomType} with ${answers.colors.join(', ')} tones and a ${answers.mood} atmosphere, I've selected artworks that will complement your space beautifully.`,
-                recommendations: [
-                    { id: 106, score: 92, reason: "Perfect for creating a calm, modern atmosphere" },
-                    { id: 112, score: 88, reason: "Clean lines complement minimalist spaces" },
-                    { id: 102, score: 85, reason: "Brings natural tranquility to any room" },
-                    { id: 108, score: 82, reason: "Adds warmth and sophistication" }
-                ]
+                analysis: `Based on your ${answers.roomType || 'space'} with ${answers.style || 'unique'} style, we've selected artworks that match your ${answers.mood || 'desired'} atmosphere and ${answers.artPreference || 'art'} preferences.`,
+                recommendations: recs.slice(0, 4)
             };
         }
         
         function displayResults(result) {
-            // Hide quiz, show results
-            document.getElementById('quiz-section').style.display = 'none';
-            document.getElementById('results-section').classList.add('visible');
-            
-            // Display analysis
-            document.getElementById('analysis-text').textContent = result.analysis;
-            
-            // Display recommendations
+            const quizSection = document.getElementById('quiz-section');
+            const resultsSection = document.getElementById('results-section');
+            const analysisText = document.getElementById('analysis-text');
             const grid = document.getElementById('recommendations-grid');
-            grid.innerHTML = '';
             
+            quizSection.style.display = 'none';
+            resultsSection.classList.add('visible');
+            
+            analysisText.textContent = result.analysis;
+            
+            grid.innerHTML = '';
             result.recommendations.forEach(rec => {
                 const artwork = artworks.find(a => a.id === rec.id);
-                if (!artwork) return;
-                
-                const card = document.createElement('div');
-                card.className = 'recommendation-card';
-                card.onclick = () => window.location.href = `index.html?artwork=${artwork.id}`;
-                
-                card.innerHTML = `
-                    <img src="${artwork.image}" alt="${artwork.title}" class="rec-image" onerror="this.src='https://via.placeholder.com/100x100?text=Art'">
-                    <div class="rec-info">
-                        <div class="rec-title">${artwork.title}</div>
-                        <div class="rec-artist">by ${artwork.artist}</div>
-                        <div class="rec-reason">${rec.reason}</div>
-                        <div class="match-score">${rec.score}% Match</div>
-                    </div>
-                `;
-                
-                grid.appendChild(card);
+                if (artwork) {
+                    const card = document.createElement('div');
+                    card.className = 'recommendation-card';
+                    
+                    // Determine image source
+                    const imgSrc = artwork.image.startsWith('models/') 
+                        ? 'https://via.placeholder.com/150x150/f5f5f5/333?text=3D+Model' 
+                        : artwork.image;
+                    
+                    card.innerHTML = `
+                        <img src="${imgSrc}" alt="${artwork.title}" class="rec-image" onerror="this.src='https://via.placeholder.com/150x150/f5f5f5/333?text=Art'">
+                        <div class="rec-info">
+                            <div class="rec-match">⭐ ${rec.match}% Match</div>
+                            <h3 class="rec-title">${artwork.title}</h3>
+                            <p class="rec-artist">by ${artwork.artist}</p>
+                            <p class="rec-reason">${rec.reason}</p>
+                            <p style="font-weight: 600; color: var(--gold); margin-top: 5px;">${artwork.price}</p>
+                            <a href="index.html" class="view-ar-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                                View in Gallery
+                            </a>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                }
             });
         }
         
         function restartQuiz() {
             // Reset state
             currentQuestion = 1;
-            answers.roomType = '';
-            answers.style = '';
-            answers.colors = [];
-            answers.mood = '';
-            answers.artPreference = '';
+            showingExtraQuestions = false;
+            
+            // Reset answers
+            Object.keys(answers).forEach(key => {
+                if (Array.isArray(answers[key])) {
+                    answers[key] = [];
+                } else {
+                    answers[key] = '';
+                }
+            });
             
             // Reset UI
-            document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
-            document.querySelectorAll('.color-option').forEach(c => c.classList.remove('selected'));
+            document.querySelectorAll('.option-card, .color-option, .checkbox-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.getElementById('extra-description').value = '';
+            document.getElementById('char-count').textContent = '0';
+            document.getElementById('extra-questions').classList.remove('visible');
+            document.getElementById('toggle-extra-btn').textContent = 'Show Extra Questions';
             
             // Show quiz, hide results
             document.getElementById('quiz-section').style.display = 'block';
