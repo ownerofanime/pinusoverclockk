@@ -306,6 +306,9 @@
             padding: 12px 24px;
             border-radius: 25px;
             border: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -381,6 +384,9 @@
             position: relative;
             overflow: hidden;
             background: #fafafa;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
         }
         
         .image-slot:hover {
@@ -449,6 +455,9 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
         }
         
         .upload-area:hover {
@@ -1313,15 +1322,20 @@
         
         function setupImageSlots() {
             document.querySelectorAll('.image-slot').forEach(slot => {
-                slot.addEventListener('click', () => {
+                const handleSlotClick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
                     const index = parseInt(slot.dataset.index);
+                    console.log('Image slot clicked:', index);
                     if (capturedImages[index]) {
                         // If slot has image, do nothing (use remove button)
                     } else {
                         // Click to upload
                         fileInput.click();
                     }
-                });
+                };
+                slot.addEventListener('click', handleSlotClick);
+                slot.addEventListener('touchend', handleSlotClick, { passive: false });
             });
         }
         
@@ -1469,21 +1483,66 @@
         }
         
         function setupEventListeners() {
-            // Use both click and touchend for better mobile support
-            captureBtn.addEventListener('click', captureImage);
-            captureBtn.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                captureImage();
-            });
-            switchCameraBtn.addEventListener('click', switchCamera);
-            stopCameraBtn.addEventListener('click', stopCamera);
-            startCameraBtn.addEventListener('click', startCamera);
+            // Capture button - use touchstart for immediate response on mobile
+            if (captureBtn) {
+                captureBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Capture button clicked');
+                    captureImage();
+                });
+                captureBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Capture button touched');
+                    captureImage();
+                }, { passive: false });
+            }
             
-            uploadArea.addEventListener('click', () => fileInput.click());
-            uploadArea.addEventListener('dragover', handleDragOver);
-            uploadArea.addEventListener('dragleave', handleDragLeave);
-            uploadArea.addEventListener('drop', handleDrop);
-            fileInput.addEventListener('change', handleFileSelect);
+            if (switchCameraBtn) {
+                switchCameraBtn.addEventListener('click', switchCamera);
+                switchCameraBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    switchCamera();
+                }, { passive: false });
+            }
+            
+            if (stopCameraBtn) {
+                stopCameraBtn.addEventListener('click', stopCamera);
+                stopCameraBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    stopCamera();
+                }, { passive: false });
+            }
+            
+            if (startCameraBtn) {
+                startCameraBtn.addEventListener('click', startCamera);
+                startCameraBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    startCamera();
+                }, { passive: false });
+            }
+            
+            // Upload area
+            if (uploadArea) {
+                uploadArea.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('Upload area clicked');
+                    fileInput.click();
+                });
+                uploadArea.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    console.log('Upload area touched');
+                    fileInput.click();
+                }, { passive: false });
+                uploadArea.addEventListener('dragover', handleDragOver);
+                uploadArea.addEventListener('dragleave', handleDragLeave);
+                uploadArea.addEventListener('drop', handleDrop);
+            }
+            
+            if (fileInput) {
+                fileInput.addEventListener('change', handleFileSelect);
+            }
             
             generateBtn.addEventListener('click', generateModel);
             
@@ -1550,13 +1609,17 @@
         }
         
         function processFiles(files) {
+            console.log('Processing files:', files.length);
             const currentCount = capturedImages.filter(Boolean).length;
             const availableSlots = 4 - currentCount;
             const filesToProcess = files.slice(0, availableSlots);
+            console.log('Files to process:', filesToProcess.length);
             
             filesToProcess.forEach(file => {
+                console.log('Processing file:', file.name, file.type);
                 const reader = new FileReader();
                 reader.onload = (e) => {
+                    console.log('File loaded, adding image');
                     addImage(e.target.result);
                 };
                 reader.readAsDataURL(file);
