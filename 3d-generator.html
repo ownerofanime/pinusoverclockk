@@ -153,6 +153,58 @@
             gap: 10px;
         }
         
+        /* Tab Buttons */
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 15px 20px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .tab-btn:hover {
+            border-color: var(--accent);
+        }
+        
+        .tab-btn.active {
+            border-color: #11998e;
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+        }
+        
+        .tab-btn .tab-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .tab-btn .tab-label {
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .tab-btn .tab-desc {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
         /* Camera Section */
         .camera-container {
             position: relative;
@@ -167,6 +219,9 @@
         #camera-video {
             width: 100%;
             display: block;
+        }
+        
+        #camera-video.front-camera {
             transform: scaleX(-1);
         }
         
@@ -312,8 +367,27 @@
             color: var(--text-light);
         }
         
-        #file-input {
+        #file-input, #glb-input {
             display: none;
+        }
+        
+        /* GLB Import Section */
+        .glb-upload-area {
+            border: 2px dashed #11998e;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.05) 0%, rgba(56, 239, 125, 0.05) 100%);
+        }
+        
+        .glb-upload-area:hover {
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+        }
+        
+        .glb-upload-area.dragover {
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.15) 0%, rgba(56, 239, 125, 0.15) 100%);
         }
         
         /* Preview Section */
@@ -557,11 +631,35 @@
             border-radius: 15px;
             overflow: hidden;
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            position: relative;
         }
         
         model-viewer {
             width: 100%;
             height: 100%;
+        }
+        
+        .model-viewer-container .ar-button-custom {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+        }
+        
+        .model-viewer-container .ar-button-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5);
         }
         
         .result-actions {
@@ -681,6 +779,14 @@
                 width: 100%;
                 justify-content: center;
             }
+            
+            .tab-buttons {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                min-width: 100%;
+            }
         }
     </style>
 </head>
@@ -719,131 +825,165 @@
         <!-- Main Card -->
         <div class="main-card">
             <h2 class="section-title">
-                📸 Capture or Upload Image
+                🎨 Choose Your Method
             </h2>
             
-            <!-- Camera Section -->
-            <div class="camera-container" id="camera-container">
-                <video id="camera-video" autoplay playsinline></video>
-                <canvas id="camera-canvas"></canvas>
-                <div class="camera-overlay">
-                    <div class="camera-frame"></div>
-                </div>
-                <div class="camera-hint">Position object in frame</div>
-            </div>
-            
-            <div class="capture-controls" id="camera-controls">
-                <button class="control-btn secondary" id="switch-camera-btn">
-                    🔄 Switch Camera
+            <!-- Tab Buttons -->
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="generate">
+                    <div class="tab-icon">📸</div>
+                    <div class="tab-label">Generate 3D</div>
+                    <div class="tab-desc">From photo</div>
                 </button>
-                <button class="capture-btn" id="capture-btn">
-                    <div class="capture-inner"></div>
-                </button>
-                <button class="control-btn secondary" id="stop-camera-btn">
-                    ✕ Close
+                <button class="tab-btn" data-tab="import">
+                    <div class="tab-icon">📦</div>
+                    <div class="tab-label">Import Model</div>
+                    <div class="tab-desc">Upload GLB/GLTF</div>
                 </button>
             </div>
             
-            <!-- Start Camera Button (shown when camera is off) -->
-            <div id="start-camera-section" style="text-align: center; margin-top: 20px; display: none;">
-                <button class="control-btn primary" id="start-camera-btn">
-                    📷 Start Camera
+            <!-- Tab: Generate 3D -->
+            <div class="tab-content active" id="tab-generate">
+                <!-- Camera Section -->
+                <div class="camera-container" id="camera-container">
+                    <video id="camera-video" autoplay playsinline></video>
+                    <canvas id="camera-canvas"></canvas>
+                    <div class="camera-overlay">
+                        <div class="camera-frame"></div>
+                    </div>
+                    <div class="camera-hint">Position object in frame</div>
+                </div>
+                
+                <div class="capture-controls" id="camera-controls">
+                    <button class="control-btn secondary" id="switch-camera-btn">
+                        🔄 Switch Camera
+                    </button>
+                    <button class="capture-btn" id="capture-btn">
+                        <div class="capture-inner"></div>
+                    </button>
+                    <button class="control-btn secondary" id="stop-camera-btn">
+                        ✕ Close
+                    </button>
+                </div>
+                
+                <!-- Start Camera Button (shown when camera is off) -->
+                <div id="start-camera-section" style="text-align: center; margin-top: 20px; display: none;">
+                    <button class="control-btn primary" id="start-camera-btn">
+                        📷 Start Camera
+                    </button>
+                </div>
+                
+                <!-- Upload Section -->
+                <div class="upload-section" id="image-upload-section">
+                    <p style="text-align: center; color: var(--text-light); margin-bottom: 15px;">— or upload an image —</p>
+                    <div class="upload-area" id="upload-area">
+                        <div class="upload-icon">📁</div>
+                        <p class="upload-text">Click or drag & drop an image here</p>
+                        <p style="font-size: 0.85rem; color: #999; margin-top: 5px;">Supports JPG, JPEG, PNG</p>
+                    </div>
+                    <input type="file" id="file-input" accept="image/jpeg,image/jpg,image/png">
+                </div>
+                
+                <!-- Preview Section -->
+                <div class="preview-section" id="preview-section">
+                    <h3 style="text-align: center; margin-bottom: 15px; color: var(--primary);">📷 Captured Image</h3>
+                    <img id="preview-image" class="preview-image" alt="Preview">
+                    <div style="text-align: center; margin-top: 15px;">
+                        <button class="control-btn secondary" id="retake-btn">🔄 Retake / Choose Another</button>
+                    </div>
+                </div>
+                
+                <!-- Options Section -->
+                <div class="options-section" id="options-section" style="display: none;">
+                    <h3 class="options-title">⚙️ Generation Options</h3>
+                    
+                    <div class="option-row">
+                        <div class="option-label">
+                            <span>Model Quality</span>
+                            <small>Higher quality = longer processing</small>
+                        </div>
+                        <select class="option-select" id="model-type">
+                            <option value="standard">Standard (High Detail)</option>
+                            <option value="lowpoly">Low Poly (Optimized)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="option-row">
+                        <div class="option-label">
+                            <span>AI Model</span>
+                            <small>Latest model provides best results</small>
+                        </div>
+                        <select class="option-select" id="ai-model">
+                            <option value="latest">Meshy 6 (Latest)</option>
+                            <option value="meshy-5">Meshy 5</option>
+                        </select>
+                    </div>
+                    
+                    <div class="option-row">
+                        <div class="option-label">
+                            <span>Generate Textures</span>
+                            <small>Add realistic textures to the model</small>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="should-texture" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="option-row">
+                        <div class="option-label">
+                            <span>PBR Maps</span>
+                            <small>Metallic, roughness, normal maps</small>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="enable-pbr">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="option-row">
+                        <div class="option-label">
+                            <span>Symmetry Mode</span>
+                            <small>For symmetric objects</small>
+                        </div>
+                        <select class="option-select" id="symmetry-mode">
+                            <option value="auto">Auto Detect</option>
+                            <option value="on">Force Symmetry</option>
+                            <option value="off">No Symmetry</option>
+                        </select>
+                    </div>
+                    
+                    <div class="credits-info">
+                        <span>💎 Estimated Credits: <span id="credit-estimate">30</span></span>
+                        <small style="color: #666;">Based on selected options</small>
+                    </div>
+                </div>
+                
+                <!-- Generate Button -->
+                <button class="generate-btn" id="generate-btn" disabled>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                    </svg>
+                    Generate 3D Model
                 </button>
             </div>
             
-            <!-- Upload Section -->
-            <div class="upload-section">
-                <p style="text-align: center; color: var(--text-light); margin-bottom: 15px;">— or upload an image —</p>
-                <div class="upload-area" id="upload-area">
-                    <div class="upload-icon">📁</div>
-                    <p class="upload-text">Click or drag & drop an image here</p>
-                    <p style="font-size: 0.85rem; color: #999; margin-top: 5px;">Supports JPG, JPEG, PNG</p>
+            <!-- Tab: Import Model -->
+            <div class="tab-content" id="tab-import">
+                <div class="glb-upload-area" id="glb-upload-area">
+                    <div class="upload-icon">📦</div>
+                    <p style="font-size: 1.1rem; font-weight: 600; color: var(--primary); margin-bottom: 10px;">Import 3D Model</p>
+                    <p class="upload-text">Click or drag & drop a 3D model file here</p>
+                    <p style="font-size: 0.85rem; color: #999; margin-top: 10px;">Supports GLB, GLTF formats</p>
                 </div>
-                <input type="file" id="file-input" accept="image/jpeg,image/jpg,image/png">
-            </div>
-            
-            <!-- Preview Section -->
-            <div class="preview-section" id="preview-section">
-                <h3 style="text-align: center; margin-bottom: 15px; color: var(--primary);">📷 Captured Image</h3>
-                <img id="preview-image" class="preview-image" alt="Preview">
-                <div style="text-align: center; margin-top: 15px;">
-                    <button class="control-btn secondary" id="retake-btn">🔄 Retake / Choose Another</button>
+                <input type="file" id="glb-input" accept=".glb,.gltf">
+                
+                <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 10px;">
+                    <p style="color: #2e7d32; font-size: 0.9rem;">
+                        <strong>💡 Tip:</strong> Import existing 3D models to view them in AR or add them to your collection.
+                    </p>
                 </div>
             </div>
-            
-            <!-- Options Section -->
-            <div class="options-section" id="options-section" style="display: none;">
-                <h3 class="options-title">⚙️ Generation Options</h3>
-                
-                <div class="option-row">
-                    <div class="option-label">
-                        <span>Model Quality</span>
-                        <small>Higher quality = longer processing</small>
-                    </div>
-                    <select class="option-select" id="model-type">
-                        <option value="standard">Standard (High Detail)</option>
-                        <option value="lowpoly">Low Poly (Optimized)</option>
-                    </select>
-                </div>
-                
-                <div class="option-row">
-                    <div class="option-label">
-                        <span>AI Model</span>
-                        <small>Latest model provides best results</small>
-                    </div>
-                    <select class="option-select" id="ai-model">
-                        <option value="latest">Meshy 6 (Latest)</option>
-                        <option value="meshy-5">Meshy 5</option>
-                    </select>
-                </div>
-                
-                <div class="option-row">
-                    <div class="option-label">
-                        <span>Generate Textures</span>
-                        <small>Add realistic textures to the model</small>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="should-texture" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="option-row">
-                    <div class="option-label">
-                        <span>PBR Maps</span>
-                        <small>Metallic, roughness, normal maps</small>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="enable-pbr">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="option-row">
-                    <div class="option-label">
-                        <span>Symmetry Mode</span>
-                        <small>For symmetric objects</small>
-                    </div>
-                    <select class="option-select" id="symmetry-mode">
-                        <option value="auto">Auto Detect</option>
-                        <option value="on">Force Symmetry</option>
-                        <option value="off">No Symmetry</option>
-                    </select>
-                </div>
-                
-                <div class="credits-info">
-                    <span>💎 Estimated Credits: <span id="credit-estimate">30</span></span>
-                    <small style="color: #666;">Based on selected options</small>
-                </div>
-            </div>
-            
-            <!-- Generate Button -->
-            <button class="generate-btn" id="generate-btn" disabled>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                </svg>
-                Generate 3D Model
-            </button>
             
             <!-- Error Message -->
             <div class="error-message" id="error-message"></div>
@@ -865,7 +1005,7 @@
             <div class="result-card">
                 <div class="result-header">
                     <h2>🎉 Your 3D Model is Ready!</h2>
-                    <p>Interact with your model below or download it</p>
+                    <p>Interact with your model below or view it in AR</p>
                 </div>
                 
                 <div class="model-viewer-container">
@@ -877,37 +1017,24 @@
                         exposure="1"
                         ar
                         ar-modes="webxr scene-viewer quick-look"
+                        ios-src=""
                         style="width: 100%; height: 100%;">
-                        <button slot="ar-button" style="
-                            background: var(--accent);
-                            color: white;
-                            border: none;
-                            padding: 10px 20px;
-                            border-radius: 20px;
-                            font-weight: 600;
-                            position: absolute;
-                            bottom: 16px;
-                            right: 16px;
-                            cursor: pointer;
-                        ">
-                            👁️ View in AR
-                        </button>
                     </model-viewer>
-                </div>
-                
-                <div class="result-actions">
-                    <a class="result-btn primary" id="download-glb" href="#" download>
-                        📥 Download GLB
-                    </a>
-                    <a class="result-btn secondary" id="download-fbx" href="#" download>
-                        📥 Download FBX
-                    </a>
-                    <a class="result-btn secondary" id="download-obj" href="#" download>
-                        📥 Download OBJ
-                    </a>
-                    <button class="result-btn ar" id="view-ar-btn">
+                    <button class="ar-button-custom" id="ar-button-custom" style="display: none;">
                         👁️ View in AR
                     </button>
+                </div>
+                
+                <div class="result-actions" id="result-actions">
+                    <a class="result-btn primary" id="download-glb" href="#" download="model.glb">
+                        📥 Download GLB
+                    </a>
+                    <a class="result-btn secondary" id="download-fbx" href="#" download="model.fbx" style="display: none;">
+                        📥 Download FBX
+                    </a>
+                    <a class="result-btn secondary" id="download-obj" href="#" download="model.obj" style="display: none;">
+                        📥 Download OBJ
+                    </a>
                 </div>
                 
                 <div style="text-align: center; margin-top: 20px;">
@@ -944,10 +1071,12 @@
         
         // State
         let currentStream = null;
-        let facingMode = 'environment';
+        let facingMode = 'environment'; // Start with back camera
         let capturedImageData = null;
         let currentTaskId = null;
         let pollInterval = null;
+        let currentModelUrls = null;
+        let importedModelUrl = null;
         
         // DOM Elements
         const cameraContainer = document.getElementById('camera-container');
@@ -974,13 +1103,104 @@
         const resultSection = document.getElementById('result-section');
         const errorMessage = document.getElementById('error-message');
         const modelViewer = document.getElementById('result-model-viewer');
+        const glbUploadArea = document.getElementById('glb-upload-area');
+        const glbInput = document.getElementById('glb-input');
         
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             initCamera();
             setupEventListeners();
+            setupTabs();
+            setupGLBImport();
             updateCreditEstimate();
         });
+        
+        function setupTabs() {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabId = btn.dataset.tab;
+                    
+                    // Update buttons
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // Update content
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    document.getElementById(`tab-${tabId}`).classList.add('active');
+                });
+            });
+        }
+        
+        function setupGLBImport() {
+            glbUploadArea.addEventListener('click', () => glbInput.click());
+            
+            glbUploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                glbUploadArea.classList.add('dragover');
+            });
+            
+            glbUploadArea.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                glbUploadArea.classList.remove('dragover');
+            });
+            
+            glbUploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                glbUploadArea.classList.remove('dragover');
+                const file = e.dataTransfer.files[0];
+                if (file && (file.name.endsWith('.glb') || file.name.endsWith('.gltf'))) {
+                    handleGLBFile(file);
+                } else {
+                    showError('Please upload a GLB or GLTF file');
+                }
+            });
+            
+            glbInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    handleGLBFile(file);
+                }
+            });
+        }
+        
+        function handleGLBFile(file) {
+            // Create object URL for the file
+            importedModelUrl = URL.createObjectURL(file);
+            
+            // Show result with imported model
+            showImportedModel(importedModelUrl, file.name);
+        }
+        
+        function showImportedModel(modelUrl, fileName) {
+            // Hide other sections
+            document.querySelector('.main-card').style.display = 'none';
+            
+            // Show result section
+            resultSection.classList.add('visible');
+            
+            // Set model viewer source
+            modelViewer.src = modelUrl;
+            
+            // Update header
+            document.querySelector('.result-header h2').textContent = '📦 Imported Model';
+            document.querySelector('.result-header p').textContent = fileName;
+            
+            // Setup download button for imported model
+            const downloadGlb = document.getElementById('download-glb');
+            downloadGlb.href = modelUrl;
+            downloadGlb.download = fileName;
+            downloadGlb.style.display = 'inline-flex';
+            
+            // Hide other download buttons for imported models
+            document.getElementById('download-fbx').style.display = 'none';
+            document.getElementById('download-obj').style.display = 'none';
+            
+            // Setup AR button
+            setupARButton(modelUrl);
+            
+            // Scroll to result
+            resultSection.scrollIntoView({ behavior: 'smooth' });
+        }
         
         async function initCamera() {
             try {
@@ -1009,6 +1229,13 @@
                 
                 currentStream = await navigator.mediaDevices.getUserMedia(constraints);
                 cameraVideo.srcObject = currentStream;
+                
+                // Only mirror front camera, not back camera
+                if (facingMode === 'user') {
+                    cameraVideo.classList.add('front-camera');
+                } else {
+                    cameraVideo.classList.remove('front-camera');
+                }
                 
                 cameraContainer.style.display = 'block';
                 cameraControls.style.display = 'flex';
@@ -1045,11 +1272,6 @@
             
             // New model
             document.getElementById('new-model-btn').addEventListener('click', resetToStart);
-            
-            // AR button
-            document.getElementById('view-ar-btn').addEventListener('click', () => {
-                modelViewer.activateAR();
-            });
         }
         
         function captureImage() {
@@ -1057,9 +1279,12 @@
             cameraCanvas.width = cameraVideo.videoWidth;
             cameraCanvas.height = cameraVideo.videoHeight;
             
-            // Flip horizontally to match mirrored video
-            context.translate(cameraCanvas.width, 0);
-            context.scale(-1, 1);
+            // Only flip for front camera
+            if (facingMode === 'user') {
+                context.translate(cameraCanvas.width, 0);
+                context.scale(-1, 1);
+            }
+            
             context.drawImage(cameraVideo, 0, 0);
             
             capturedImageData = cameraCanvas.toDataURL('image/jpeg', 0.9);
@@ -1127,7 +1352,7 @@
             cameraContainer.style.display = 'none';
             cameraControls.style.display = 'none';
             startCameraSection.style.display = 'none';
-            document.querySelector('.upload-section').style.display = 'none';
+            document.getElementById('image-upload-section').style.display = 'none';
         }
         
         function retakeImage() {
@@ -1137,7 +1362,7 @@
             generateBtn.disabled = true;
             errorMessage.classList.remove('visible');
             
-            document.querySelector('.upload-section').style.display = 'block';
+            document.getElementById('image-upload-section').style.display = 'block';
             fileInput.value = '';
             
             // Try to restart camera
@@ -1281,20 +1506,77 @@
             }
         }
         
+        function setupARButton(glbUrl) {
+            const arButton = document.getElementById('ar-button-custom');
+            
+            // Check if AR is supported
+            if (modelViewer.canActivateAR) {
+                arButton.style.display = 'flex';
+                arButton.onclick = () => {
+                    modelViewer.activateAR();
+                };
+            } else {
+                // For iOS, we need to use a direct link approach
+                arButton.style.display = 'flex';
+                arButton.onclick = () => {
+                    // Try to activate AR through model-viewer
+                    if (modelViewer.activateAR) {
+                        modelViewer.activateAR();
+                    } else {
+                        // Fallback: open GLB directly (iOS Quick Look)
+                        window.open(glbUrl, '_blank');
+                    }
+                };
+            }
+        }
+        
         function showResult(task) {
             progressSection.classList.remove('visible');
+            
+            // Hide main card
+            document.querySelector('.main-card').style.display = 'none';
+            
+            // Show result section
             resultSection.classList.add('visible');
+            
+            // Update header
+            document.querySelector('.result-header h2').textContent = '🎉 Your 3D Model is Ready!';
+            document.querySelector('.result-header p').textContent = 'Interact with your model below or view it in AR';
+            
+            // Store model URLs
+            currentModelUrls = task.model_urls;
             
             // Set model viewer source
             if (task.model_urls && task.model_urls.glb) {
                 modelViewer.src = task.model_urls.glb;
+                
+                // For iOS AR Quick Look, also set ios-src
+                if (task.model_urls.usdz) {
+                    modelViewer.setAttribute('ios-src', task.model_urls.usdz);
+                }
+                
+                // Setup AR button
+                setupARButton(task.model_urls.glb);
             }
             
             // Set download links
             if (task.model_urls) {
-                document.getElementById('download-glb').href = task.model_urls.glb || '#';
-                document.getElementById('download-fbx').href = task.model_urls.fbx || '#';
-                document.getElementById('download-obj').href = task.model_urls.obj || '#';
+                const downloadGlb = document.getElementById('download-glb');
+                const downloadFbx = document.getElementById('download-fbx');
+                const downloadObj = document.getElementById('download-obj');
+                
+                if (task.model_urls.glb) {
+                    downloadGlb.href = task.model_urls.glb;
+                    downloadGlb.style.display = 'inline-flex';
+                }
+                if (task.model_urls.fbx) {
+                    downloadFbx.href = task.model_urls.fbx;
+                    downloadFbx.style.display = 'inline-flex';
+                }
+                if (task.model_urls.obj) {
+                    downloadObj.href = task.model_urls.obj;
+                    downloadObj.style.display = 'inline-flex';
+                }
             }
             
             // Scroll to result
@@ -1310,6 +1592,8 @@
             // Reset state
             capturedImageData = null;
             currentTaskId = null;
+            currentModelUrls = null;
+            importedModelUrl = null;
             if (pollInterval) {
                 clearInterval(pollInterval);
             }
@@ -1322,12 +1606,19 @@
             errorMessage.classList.remove('visible');
             generateBtn.disabled = true;
             
-            document.querySelector('.upload-section').style.display = 'block';
+            // Show main card again
+            document.querySelector('.main-card').style.display = 'block';
+            
+            document.getElementById('image-upload-section').style.display = 'block';
             fileInput.value = '';
+            glbInput.value = '';
             
             // Reset progress
             progressBar.style.width = '0%';
             progressPercent.textContent = '0%';
+            
+            // Reset model viewer
+            modelViewer.src = '';
             
             // Try to restart camera
             initCamera();
@@ -1335,6 +1626,11 @@
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        
+        // Listen for model-viewer AR status
+        modelViewer.addEventListener('ar-status', (event) => {
+            console.log('AR Status:', event.detail.status);
+        });
     </script>
 </body>
 </html>
