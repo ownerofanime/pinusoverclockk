@@ -324,6 +324,9 @@
             padding: 40px 20px;
             text-align: center;
             cursor: pointer;
+            display: block;
+            position: relative;
+            overflow: hidden;
         }
         
         .glb-upload:active {
@@ -454,6 +457,9 @@
             cursor: pointer;
             transition: all 0.3s ease;
             background: #fafafa;
+            display: block;
+            position: relative;
+            overflow: hidden;
         }
         
         .gallery-upload-area:hover {
@@ -617,11 +623,11 @@
             
             <!-- Import Tab -->
             <div id="tab-import" class="tab-content">
-                <div class="glb-upload" onclick="document.getElementById('glb-input').click()">
+                <label for="glb-input" class="glb-upload">
                     <span>📦</span>
                     <p>Tap to upload GLB/GLTF file</p>
-                </div>
-                <input type="file" id="glb-input" accept=".glb,.gltf" style="display: none;" onchange="handleGLB(this.files[0])">
+                    <input type="file" id="glb-input" accept=".glb,.gltf,model/gltf-binary,model/gltf+json" style="position: absolute; opacity: 0; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;" onchange="handleGLB(this.files[0])">
+                </label>
             </div>
         </div>
         
@@ -677,12 +683,12 @@
                 <h4>📤 Upload to Gallery</h4>
                 <p style="color: #888; font-size: 0.9rem; margin-bottom: 15px;">After downloading, upload the GLB file here to add it to your gallery and view in AR.</p>
                 
-                <div class="gallery-upload-area" id="gallery-upload-area" onclick="document.getElementById('gallery-file-input').click()">
-                    <input type="file" id="gallery-file-input" accept=".glb,.gltf" style="display: none;" onchange="handleGalleryUpload(event)">
+                <label for="gallery-file-input" class="gallery-upload-area" id="gallery-upload-area">
+                    <input type="file" id="gallery-file-input" accept=".glb,.gltf,model/gltf-binary,model/gltf+json" style="position: absolute; opacity: 0; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;" onchange="handleGalleryUpload(event)">
                     <div class="upload-icon">📁</div>
                     <p>Click to upload GLB file</p>
                     <span style="color: #888; font-size: 0.85rem;">or drag and drop</span>
-                </div>
+                </label>
                 
                 <div id="uploaded-file-info" style="display: none; margin-top: 15px; padding: 15px; background: #e8f5e9; border-radius: 10px;">
                     <p style="color: #2e7d32; font-weight: 600;">✅ File uploaded: <span id="uploaded-file-name"></span></p>
