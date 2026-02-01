@@ -878,27 +878,19 @@
             document.getElementById('download-fbx').style.display = 'none';
             document.getElementById('download-obj').style.display = 'none';
             
-            // Store preview URL
+            // Store blob URL directly (works immediately, no storage limits)
+            uploadedModelData = blobUrl;
             uploadedModelPreviewUrl = blobUrl;
             
-            // Convert file to Base64 for persistent storage
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                uploadedModelData = e.target.result; // Base64 data URL for localStorage
-                document.getElementById('uploaded-file-name').textContent = file.name;
-                document.getElementById('uploaded-file-info').style.display = 'block';
-                document.getElementById('add-gallery-btn').disabled = false;
-                
-                // Auto-fill title from filename
-                const titleInput = document.getElementById('model-title');
-                if (!titleInput.value) {
-                    titleInput.value = file.name.replace(/\.(glb|gltf)$/i, '');
-                }
-            };
-            reader.onerror = function() {
-                showError('Failed to read file. Please try again.');
-            };
-            reader.readAsDataURL(file);
+            document.getElementById('uploaded-file-name').textContent = file.name;
+            document.getElementById('uploaded-file-info').style.display = 'block';
+            document.getElementById('add-gallery-btn').disabled = false;
+            
+            // Auto-fill title from filename
+            const titleInput = document.getElementById('model-title');
+            if (!titleInput.value) {
+                titleInput.value = file.name.replace(/\.(glb|gltf)$/i, '');
+            }
             
             // Scroll to result
             document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
@@ -1034,7 +1026,7 @@
         let uploadedModelData = null;
         let uploadedModelPreviewUrl = null;
         
-        // Handle gallery upload - converts file to Base64 for localStorage persistence
+        // Handle gallery upload - uses blob URLs for immediate display (no storage limits)
         function handleGalleryUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1044,27 +1036,20 @@
                 return;
             }
             
-            // Create preview URL for immediate display
-            uploadedModelPreviewUrl = URL.createObjectURL(file);
+            // Create blob URL for immediate use (no storage limits)
+            const blobUrl = URL.createObjectURL(file);
+            uploadedModelData = blobUrl;
+            uploadedModelPreviewUrl = blobUrl;
             
-            // Convert file to Base64 data URL for persistent storage
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                uploadedModelData = e.target.result; // This is a data:application/octet-stream;base64,... URL
-                document.getElementById('uploaded-file-name').textContent = file.name;
-                document.getElementById('uploaded-file-info').style.display = 'block';
-                document.getElementById('add-gallery-btn').disabled = false;
-                
-                // Auto-fill title from filename
-                const titleInput = document.getElementById('model-title');
-                if (!titleInput.value) {
-                    titleInput.value = file.name.replace(/\.(glb|gltf)$/i, '');
-                }
-            };
-            reader.onerror = function() {
-                showError('Failed to read file. Please try again.');
-            };
-            reader.readAsDataURL(file);
+            document.getElementById('uploaded-file-name').textContent = file.name;
+            document.getElementById('uploaded-file-info').style.display = 'block';
+            document.getElementById('add-gallery-btn').disabled = false;
+            
+            // Auto-fill title from filename
+            const titleInput = document.getElementById('model-title');
+            if (!titleInput.value) {
+                titleInput.value = file.name.replace(/\.(glb|gltf)$/i, '');
+            }
         }
         
         // Add uploaded file to gallery
@@ -1086,7 +1071,7 @@
                 title: title,
                 artist: artist,
                 type: '3d',
-                model: uploadedModelData, // Base64 data URL for persistence
+                model: uploadedModelData, // Blob URL for immediate use
                 image: '',
                 badge: badgeText,
                 category: 'sculpture',
@@ -1105,29 +1090,24 @@
             };
             
             try {
-                const saved = JSON.parse(localStorage.getItem('artspace_user_artworks') || '[]');
+                // Store artwork metadata in sessionStorage (blob URLs work in same session)
+                const saved = JSON.parse(sessionStorage.getItem('artspace_session_artworks') || '[]');
                 saved.push(artwork);
-                localStorage.setItem('artspace_user_artworks', JSON.stringify(saved));
+                sessionStorage.setItem('artspace_session_artworks', JSON.stringify(saved));
                 
-                alert('✅ Added to gallery! Go back to see your model.');
+                alert('✅ Added to gallery! Go back to see your model.\n\nNote: Models are available during this browser session.');
                 
-                // Reset
+                // Reset form but keep the blob URL valid
                 document.getElementById('uploaded-file-info').style.display = 'none';
                 document.getElementById('add-gallery-btn').disabled = true;
                 document.getElementById('model-title').value = '';
                 document.getElementById('model-artist').value = '';
                 uploadedModelData = null;
-                if (uploadedModelPreviewUrl) {
-                    URL.revokeObjectURL(uploadedModelPreviewUrl);
-                    uploadedModelPreviewUrl = null;
-                }
+                // Don't revoke the blob URL - it needs to stay valid for the gallery
+                uploadedModelPreviewUrl = null;
             } catch (err) {
                 console.error('Error saving to gallery:', err);
-                if (err.name === 'QuotaExceededError') {
-                    showError('Storage full! Please delete some artworks or use a smaller model file.');
-                } else {
-                    showError('Failed to save to gallery: ' + err.message);
-                }
+                showError('Failed to save to gallery: ' + err.message);
             }
         }
         
