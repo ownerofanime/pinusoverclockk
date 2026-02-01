@@ -593,6 +593,95 @@
             gap: 10px;
         }
         
+        /* AR Scale Control */
+        .ar-scale-control {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 15px 20px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .scale-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .scale-label svg {
+            color: var(--accent);
+        }
+        
+        .scale-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #dee2e6;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        
+        .scale-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, #ff6b6b 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(233, 69, 96, 0.4);
+            transition: transform 0.2s;
+        }
+        
+        .scale-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+        
+        .scale-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, #ff6b6b 100%);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(233, 69, 96, 0.4);
+        }
+        
+        .scale-hints {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
+        .reset-scale-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .reset-scale-btn:hover {
+            background: var(--accent);
+        }
+        
+        .scale-tip {
+            margin: 10px 0 0 0;
+            font-size: 12px;
+            color: var(--accent);
+            text-align: center;
+            font-weight: 500;
+        }
+        
         .modal-details {
             padding: 30px;
         }
@@ -1217,6 +1306,24 @@
             <button class="modal-close" onclick="closeModal()">×</button>
             <div class="modal-viewer-container" id="modal-viewer-container">
                 <!-- Will be populated dynamically -->
+            </div>
+            
+            <!-- AR Scale Control -->
+            <div class="ar-scale-control" id="ar-scale-control">
+                <div class="scale-label">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 21H3V3"/>
+                        <path d="M21 9L15 15L9 9L3 15"/>
+                    </svg>
+                    <span>AR Scale: <span id="scale-value">100</span>%</span>
+                </div>
+                <input type="range" id="ar-scale-slider" min="10" max="300" value="100" class="scale-slider" oninput="updateARScale(this.value)">
+                <div class="scale-hints">
+                    <span>Smaller</span>
+                    <button class="reset-scale-btn" onclick="resetARScale()">Reset</button>
+                    <span>Larger</span>
+                </div>
+                <p class="scale-tip">👆 Pinch to scale in AR mode - size stays fixed!</p>
             </div>
             <div class="modal-details">
                 <div class="modal-header">
@@ -2307,6 +2414,11 @@
             currentArtwork = artworks.find(a => a.id === artworkId);
             if (!currentArtwork) return;
             
+            // Reset AR scale when opening a new artwork
+            currentARScale = 100;
+            document.getElementById('ar-scale-slider').value = 100;
+            document.getElementById('scale-value').textContent = 100;
+            
             // Store the original artwork so user can switch back to it
             originalArtwork = { ...currentArtwork };
             
@@ -2336,7 +2448,7 @@
                         shadow-intensity="1"
                         ar
                         ar-modes="webxr scene-viewer quick-look"
-                        ar-scale="fixed"
+                        ar-scale="auto"
                     ></model-viewer>
                     <div class="real-size-indicator">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2356,7 +2468,7 @@
                         shadow-intensity="1"
                         ar
                         ar-modes="webxr scene-viewer quick-look"
-                        ar-scale="fixed"
+                        ar-scale="auto"
                         loading="eager"
                     >
                         <div class="model-loading" slot="poster">
@@ -2507,7 +2619,7 @@
                         shadow-intensity="1"
                         ar
                         ar-modes="webxr scene-viewer quick-look"
-                        ar-scale="fixed"
+                        ar-scale="auto"
                     ></model-viewer>
                     <div class="real-size-indicator">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2527,7 +2639,7 @@
                         shadow-intensity="1"
                         ar
                         ar-modes="webxr scene-viewer quick-look"
-                        ar-scale="fixed"
+                        ar-scale="auto"
                     ></model-viewer>
                     <div class="real-size-indicator">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2679,6 +2791,34 @@
             // fetch('/api/contact', { method: 'POST', body: JSON.stringify({ artistName, artworkTitle, name, email, message }) });
         }
         
+        // Current AR scale value
+        let currentARScale = 100;
+        
+        // Update AR scale from slider
+        function updateARScale(value) {
+            currentARScale = parseInt(value);
+            document.getElementById('scale-value').textContent = currentARScale;
+            
+            // Apply scale to model-viewer
+            const viewer = document.querySelector('#modal-viewer-container model-viewer');
+            if (viewer) {
+                const scale = currentARScale / 100;
+                viewer.scale = `${scale} ${scale} ${scale}`;
+            }
+        }
+        
+        // Reset AR scale to 100%
+        function resetARScale() {
+            currentARScale = 100;
+            document.getElementById('ar-scale-slider').value = 100;
+            document.getElementById('scale-value').textContent = 100;
+            
+            const viewer = document.querySelector('#modal-viewer-container model-viewer');
+            if (viewer) {
+                viewer.scale = '1 1 1';
+            }
+        }
+        
         // Activate AR
         function activateAR() {
             const viewer = document.querySelector('#modal-viewer-container model-viewer');
@@ -2694,9 +2834,14 @@
                 return;
             }
             
+            // Apply current scale before entering AR
+            const scale = currentARScale / 100;
+            viewer.scale = `${scale} ${scale} ${scale}`;
+            
             if (viewer.canActivateAR) {
                 try {
                     viewer.activateAR();
+                    showToast(`Entering AR at ${currentARScale}% scale. Pinch to resize!`, 'success');
                 } catch (err) {
                     console.error('AR activation error:', err);
                     showToast('AR activation failed. Please try again.', 'error');
