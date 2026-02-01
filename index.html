@@ -616,7 +616,7 @@
             color: var(--accent);
             font-size: 14px;
             font-weight: 600;
-            margin-top: 5px;
+            margin-top: 0; padding: 12px 20px; font-size: 14px; border-radius: 25px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
         }
         
         .modal-price {
@@ -741,15 +741,51 @@
             transform: scale(1.02);
         }
         
+        .btn-chat {
+            background: linear-gradient(135deg, #25D366, #128C7E) !important;
+            color: white !important;
+        }
+        
+        .btn-chat:hover {
+            background: linear-gradient(135deg, #20BD5C, #0E7A6E) !important;
+            transform: scale(1.02);
+        }
+        
+        .btn-chat-card {
+            background: linear-gradient(135deg, #25D366, #128C7E) !important;
+            color: white !important;
+            flex: 1;
+            min-width: auto;
+            margin-top: 0; padding: 12px 20px; font-size: 14px; border-radius: 25px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        
+        .btn-chat-card:hover {
+            background: linear-gradient(135deg, #20BD5C, #0E7A6E) !important;
+            transform: scale(1.02);
+        }
+        
         .modal-actions {
             display: flex;
-            gap: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
             margin-top: 25px;
         }
         
         .modal-actions .btn {
-            padding: 15px 30px;
-            font-size: 15px;
+            padding: 12px 20px;
+            font-size: 14px;
+            flex: 1 1 auto;
+            min-width: 140px;
+            justify-content: center;
+        }
+        
+        @media (max-width: 480px) {
+            .modal-actions {
+                flex-direction: column;
+            }
+            .modal-actions .btn {
+                width: 100%;
+            }
         }
         
         /* Compare Banner */
@@ -879,7 +915,7 @@
             color: var(--accent);
             font-size: 12px;
             font-weight: 600;
-            margin-top: 5px;
+            margin-top: 0; padding: 12px 20px; font-size: 14px; border-radius: 25px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
             display: block;
         }
         
@@ -1244,6 +1280,12 @@
                         </svg>
                         <span id="shortlist-btn-text">Add to Shortlist</span>
                     </button>
+                    <button class="btn btn-chat" id="modal-chat-btn" onclick="chatWithSeller()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        Chat with Seller
+                    </button>
                     <button class="btn btn-delete" id="modal-delete-btn" onclick="deleteFromModal()" style="display: none;">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="3 6 5 6 21 6"/>
@@ -1288,7 +1330,8 @@
                 badge: "Masterpiece",
                 category: "paintings",
                 tags: ["classic", "impressionism", "night", "blue", "swirling", "famous", "van gogh"],
-                description: "One of the most recognized paintings in Western art, depicting a swirling night sky over a village."
+                description: "One of the most recognized paintings in Western art, depicting a swirling night sky over a village.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 102,
@@ -1304,7 +1347,8 @@
                 badge: "Impressionist",
                 category: "paintings",
                 tags: ["impressionism", "nature", "water", "flowers", "peaceful", "garden", "monet"],
-                description: "Part of Monet's famous series depicting his flower garden at Giverny."
+                description: "Part of Monet's famous series depicting his flower garden at Giverny.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 103,
@@ -1320,7 +1364,8 @@
                 badge: null,
                 category: "paintings",
                 tags: ["night", "cafe", "stars", "warm", "yellow", "van gogh", "street"],
-                description: "A colorful depiction of a café terrace in Arles, France at night."
+                description: "A colorful depiction of a café terrace in Arles, France at night.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 104,
@@ -1336,7 +1381,8 @@
                 badge: "Legendary",
                 category: "paintings",
                 tags: ["renaissance", "portrait", "classic", "famous", "mysterious", "da vinci"],
-                description: "The world's most famous portrait, known for her enigmatic smile."
+                description: "The world's most famous portrait, known for her enigmatic smile.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 105,
@@ -1352,7 +1398,8 @@
                 badge: "Abstract",
                 category: "paintings",
                 tags: ["abstract", "colorful", "modern", "expressionism", "kandinsky", "vibrant"],
-                description: "An early abstract work by Kandinsky exploring color and form."
+                description: "An early abstract work by Kandinsky exploring color and form.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 106,
@@ -1368,7 +1415,8 @@
                 badge: "New",
                 category: "paintings",
                 tags: ["abstract", "blue", "modern", "contemporary", "calm", "ocean"],
-                description: "A contemporary abstract piece featuring calming blue tones."
+                description: "A contemporary abstract piece featuring calming blue tones.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 107,
@@ -1384,7 +1432,8 @@
                 badge: null,
                 category: "paintings",
                 tags: ["abstract", "colorful", "vibrant", "modern", "energetic", "playful"],
-                description: "A vibrant abstract composition bursting with color and energy."
+                description: "A vibrant abstract composition bursting with color and energy.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 108,
@@ -1400,7 +1449,8 @@
                 badge: "Luxury",
                 category: "paintings",
                 tags: ["gold", "luxury", "elegant", "abstract", "sophisticated", "warm"],
-                description: "An elegant piece featuring gold leaf accents for a luxurious feel."
+                description: "An elegant piece featuring gold leaf accents for a luxurious feel.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 109,
@@ -1416,7 +1466,8 @@
                 badge: null,
                 category: "paintings",
                 tags: ["botanical", "nature", "plants", "green", "organic", "peaceful"],
-                description: "A delicate botanical illustration celebrating natural beauty."
+                description: "A delicate botanical illustration celebrating natural beauty.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 110,
@@ -1432,7 +1483,8 @@
                 badge: "Classical",
                 category: "paintings",
                 tags: ["portrait", "classical", "elegant", "traditional", "timeless"],
-                description: "A beautifully executed classical portrait in the traditional style."
+                description: "A beautifully executed classical portrait in the traditional style.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 111,
@@ -1448,7 +1500,8 @@
                 badge: "Asian Art",
                 category: "paintings",
                 tags: ["japanese", "asian", "landscape", "peaceful", "zen", "nature", "minimalist"],
-                description: "A serene Japanese landscape capturing the essence of Eastern aesthetics."
+                description: "A serene Japanese landscape capturing the essence of Eastern aesthetics.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 112,
@@ -1464,7 +1517,8 @@
                 badge: "Minimal",
                 category: "modern",
                 tags: ["minimalist", "lines", "simple", "modern", "clean", "office"],
-                description: "A minimalist composition using simple lines to create visual harmony."
+                description: "A minimalist composition using simple lines to create visual harmony.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 113,
@@ -1480,7 +1534,8 @@
                 badge: null,
                 category: "modern",
                 tags: ["geometric", "modern", "patterns", "colorful", "contemporary"],
-                description: "Bold geometric patterns creating a striking visual impact."
+                description: "Bold geometric patterns creating a striking visual impact.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 114,
@@ -1496,7 +1551,8 @@
                 badge: "Digital",
                 category: "modern",
                 tags: ["neon", "digital", "modern", "vibrant", "futuristic", "tech"],
-                description: "A vibrant digital artwork with neon aesthetics."
+                description: "A vibrant digital artwork with neon aesthetics.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 115,
@@ -1512,7 +1568,8 @@
                 badge: "Traditional",
                 category: "paintings",
                 tags: ["traditional", "landscape", "oil", "classic", "nature", "scenic"],
-                description: "A traditional oil painting capturing a beautiful landscape scene."
+                description: "A traditional oil painting capturing a beautiful landscape scene.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 116,
@@ -1528,7 +1585,8 @@
                 badge: "Masterpiece",
                 category: "paintings",
                 tags: ["baroque", "portrait", "classic", "famous", "dutch", "vermeer", "mysterious"],
-                description: "Often called the 'Mona Lisa of the North', this masterpiece captivates with its intimate gaze."
+                description: "Often called the 'Mona Lisa of the North', this masterpiece captivates with its intimate gaze.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 117,
@@ -1544,7 +1602,8 @@
                 badge: "Iconic",
                 category: "paintings",
                 tags: ["expressionism", "dramatic", "famous", "emotional", "munch", "anxiety"],
-                description: "An iconic symbol of human anxiety and existential dread in modern art."
+                description: "An iconic symbol of human anxiety and existential dread in modern art.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 118,
@@ -1560,7 +1619,8 @@
                 badge: "Renaissance",
                 category: "paintings",
                 tags: ["renaissance", "mythology", "classical", "famous", "botticelli", "beauty"],
-                description: "A Renaissance masterpiece depicting the goddess Venus emerging from the sea."
+                description: "A Renaissance masterpiece depicting the goddess Venus emerging from the sea.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 119,
@@ -1576,7 +1636,8 @@
                 badge: "Surrealist",
                 category: "paintings",
                 tags: ["surrealism", "dali", "famous", "dreamlike", "melting", "clocks", "time"],
-                description: "Dalí's most famous work featuring melting clocks in a dreamlike landscape."
+                description: "Dalí's most famous work featuring melting clocks in a dreamlike landscape.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 120,
@@ -1592,7 +1653,8 @@
                 badge: "American",
                 category: "paintings",
                 tags: ["american", "portrait", "famous", "rural", "traditional", "iconic"],
-                description: "One of the most familiar images in American art, depicting rural American values."
+                description: "One of the most familiar images in American art, depicting rural American values.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 121,
@@ -1608,7 +1670,8 @@
                 badge: "Iconic",
                 category: "paintings",
                 tags: ["american", "urban", "night", "lonely", "diner", "hopper", "moody"],
-                description: "A haunting depiction of urban isolation in a late-night diner."
+                description: "A haunting depiction of urban isolation in a late-night diner.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 122,
@@ -1624,7 +1687,8 @@
                 badge: "Romantic",
                 category: "paintings",
                 tags: ["art nouveau", "romantic", "gold", "famous", "klimt", "love", "elegant"],
-                description: "Klimt's masterpiece of love and intimacy, adorned with gold leaf."
+                description: "Klimt's masterpiece of love and intimacy, adorned with gold leaf.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 123,
@@ -1640,7 +1704,8 @@
                 badge: "Pointillist",
                 category: "paintings",
                 tags: ["pointillism", "park", "leisure", "famous", "seurat", "sunday", "paris"],
-                description: "A pioneering work of pointillism depicting Parisians at leisure."
+                description: "A pioneering work of pointillism depicting Parisians at leisure.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 124,
@@ -1656,7 +1721,8 @@
                 badge: "Surrealist",
                 category: "paintings",
                 tags: ["surrealism", "magritte", "apple", "mysterious", "iconic", "bowler hat"],
-                description: "Magritte's iconic self-portrait with a floating green apple."
+                description: "Magritte's iconic self-portrait with a floating green apple.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 125,
@@ -1672,7 +1738,8 @@
                 badge: "Romantic",
                 category: "paintings",
                 tags: ["romanticism", "landscape", "dramatic", "contemplative", "fog", "mountain"],
-                description: "A quintessential Romantic painting of man confronting nature's sublime power."
+                description: "A quintessential Romantic painting of man confronting nature's sublime power.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 126,
@@ -1688,7 +1755,8 @@
                 badge: "Legendary",
                 category: "paintings",
                 tags: ["renaissance", "religious", "famous", "michelangelo", "sistine", "iconic"],
-                description: "The most famous section of the Sistine Chapel ceiling, depicting the creation of the first man."
+                description: "The most famous section of the Sistine Chapel ceiling, depicting the creation of the first man.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 127,
@@ -1704,7 +1772,8 @@
                 badge: "Political",
                 category: "paintings",
                 tags: ["cubism", "political", "war", "picasso", "powerful", "black white", "dramatic"],
-                description: "Picasso's powerful anti-war statement responding to the bombing of Guernica."
+                description: "Picasso's powerful anti-war statement responding to the bombing of Guernica.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 128,
@@ -1720,7 +1789,8 @@
                 badge: "Van Gogh",
                 category: "paintings",
                 tags: ["post-impressionism", "flowers", "yellow", "van gogh", "bright", "cheerful"],
-                description: "One of Van Gogh's most celebrated series, radiating warmth and vitality."
+                description: "One of Van Gogh's most celebrated series, radiating warmth and vitality.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 129,
@@ -1736,7 +1806,8 @@
                 badge: "Legendary",
                 category: "paintings",
                 tags: ["renaissance", "religious", "da vinci", "famous", "biblical", "dramatic"],
-                description: "Da Vinci's monumental depiction of Jesus's final meal with his disciples."
+                description: "Da Vinci's monumental depiction of Jesus's final meal with his disciples.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 130,
@@ -1752,7 +1823,8 @@
                 badge: "Impressionist",
                 category: "paintings",
                 tags: ["impressionism", "manet", "paris", "nightlife", "mirror", "elegant"],
-                description: "Manet's final major work, a complex meditation on modern Parisian life."
+                description: "Manet's final major work, a complex meditation on modern Parisian life.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 131,
@@ -1768,7 +1840,8 @@
                 badge: "Japanese",
                 category: "paintings",
                 tags: ["japanese", "ukiyo-e", "wave", "ocean", "famous", "hokusai", "blue"],
-                description: "The most iconic work of Japanese art, depicting a towering wave with Mount Fuji."
+                description: "The most iconic work of Japanese art, depicting a towering wave with Mount Fuji.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 132,
@@ -1784,7 +1857,8 @@
                 badge: "American",
                 category: "paintings",
                 tags: ["realism", "portrait", "american", "famous", "mother", "grey", "elegant"],
-                description: "An American icon, this portrait of the artist's mother embodies quiet dignity."
+                description: "An American icon, this portrait of the artist's mother embodies quiet dignity.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 133,
@@ -1800,7 +1874,8 @@
                 badge: null,
                 category: "paintings",
                 tags: ["post-impressionism", "night", "cafe", "stars", "van gogh", "arles", "warm"],
-                description: "Van Gogh's vibrant night scene of a café terrace in Arles, France."
+                description: "Van Gogh's vibrant night scene of a café terrace in Arles, France.",
+                sellerPhone: "+6567676767"
             },
             
             // ===== 3D SCULPTURES =====
@@ -1817,7 +1892,8 @@
                 badge: "Featured",
                 category: "decorative",
                 tags: ["modern", "geometric", "elegant", "wall art", "minimalist"],
-                description: "A stunning geometric wall piece perfect for modern living spaces."
+                description: "A stunning geometric wall piece perfect for modern living spaces.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 2,
@@ -1832,7 +1908,8 @@
                 badge: "New",
                 category: "sculptures",
                 tags: ["fantasy", "unique", "conversation piece", "dramatic", "collector"],
-                description: "An intricately detailed fantasy sword sculpture."
+                description: "An intricately detailed fantasy sword sculpture.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 3,
@@ -1847,7 +1924,8 @@
                 badge: null,
                 category: "modern",
                 tags: ["modern", "office", "professional", "minimalist", "business"],
-                description: "A modern 3D visualization perfect for office spaces."
+                description: "A modern 3D visualization perfect for office spaces.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 4,
@@ -1862,7 +1940,8 @@
                 badge: "Popular",
                 category: "decorative",
                 tags: ["rustic", "vintage", "decorative", "statement", "unique"],
-                description: "A charming vintage cart sculpture with rustic appeal."
+                description: "A charming vintage cart sculpture with rustic appeal.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 5,
@@ -1877,7 +1956,8 @@
                 badge: null,
                 category: "modern",
                 tags: ["playful", "fun", "interactive", "game", "conversation piece"],
-                description: "A playful wooden tower sculpture inspired by classic games."
+                description: "A playful wooden tower sculpture inspired by classic games.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 6,
@@ -1892,7 +1972,8 @@
                 badge: "Trending",
                 category: "decorative",
                 tags: ["elegant", "functional", "decorative", "lighting", "art deco"],
-                description: "An elegant designer lamp that doubles as a sculptural piece."
+                description: "An elegant designer lamp that doubles as a sculptural piece.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 7,
@@ -1907,7 +1988,8 @@
                 badge: null,
                 category: "modern",
                 tags: ["tech", "modern", "office", "digital", "contemporary"],
-                description: "A modern tech-inspired display piece for contemporary spaces."
+                description: "A modern tech-inspired display piece for contemporary spaces.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 8,
@@ -1922,7 +2004,8 @@
                 badge: "Editor's Pick",
                 category: "sculptures",
                 tags: ["space", "adventure", "unique", "conversation piece", "inspiring"],
-                description: "An inspiring astronaut sculpture celebrating human exploration."
+                description: "An inspiring astronaut sculpture celebrating human exploration.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 9,
@@ -1937,7 +2020,8 @@
                 badge: null,
                 category: "sculptures",
                 tags: ["classical", "elegant", "nature", "majestic", "traditional"],
-                description: "A majestic horse sculpture capturing movement and grace."
+                description: "A majestic horse sculpture capturing movement and grace.",
+                sellerPhone: "+6567676767"
             },
             {
                 id: 10,
@@ -1952,7 +2036,8 @@
                 badge: null,
                 category: "modern",
                 tags: ["futuristic", "playful", "tech", "fun", "animated"],
-                description: "A charming robot sculpture with expressive personality."
+                description: "A charming robot sculpture with expressive personality.",
+                sellerPhone: "+6567676767"
             }
         ];
         
@@ -2136,6 +2221,12 @@
                                 </svg>
                                 View in AR
                             </button>
+                            <button class="btn btn-chat-card" onclick="event.stopPropagation();">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                </svg>
+                                Chat Seller
+                            </button>
                             <button class="btn btn-secondary" onclick="event.stopPropagation(); openModal(${art.id})">
                                 Details
                             </button>
@@ -2266,7 +2357,15 @@
                         ar
                         ar-modes="webxr scene-viewer quick-look"
                         ar-scale="fixed"
-                    ></model-viewer>
+                        loading="eager"
+                    >
+                        <div class="model-loading" slot="poster">
+                            <div style="text-align: center; padding: 20px;">
+                                <div style="width: 40px; height: 40px; border: 3px solid #ccc; border-top-color: #E91E63; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                                <p style="margin-top: 10px; color: #666;">Loading 3D model...</p>
+                            </div>
+                        </div>
+                    </model-viewer>
                     <div class="real-size-indicator">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21 3H3v18h18V3zM9 3v18M15 3v18M3 9h18M3 15h18"/>
@@ -2274,6 +2373,24 @@
                         <span id="real-size">${currentArtwork.dimensions.width} × ${currentArtwork.dimensions.height} × ${currentArtwork.dimensions.depth} cm</span>
                     </div>
                 `;
+                
+                // Add error handling for model loading
+                const modelViewer = viewerContainer.querySelector('model-viewer');
+                if (modelViewer) {
+                    modelViewer.addEventListener('error', function(e) {
+                        console.error('Model loading error:', e);
+                        viewerContainer.innerHTML = `
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #666; text-align: center; padding: 20px; background: #1a1a2e;">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#E91E63" stroke-width="1.5">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 8v4M12 16h.01"/>
+                                </svg>
+                                <p style="margin-top: 10px; color: #fff;">Unable to load 3D model</p>
+                                <p style="font-size: 12px; margin-top: 0; padding: 12px 20px; font-size: 14px; border-radius: 25px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; color: #aaa;">The model file may be corrupted or no longer available.</p>
+                            </div>
+                        `;
+                    });
+                }
             }
             
             // Update shortlist button
@@ -2489,13 +2606,106 @@
             }
         }
         
+        // Chat with Seller - Opens a chat interface or contact form
+        function chatWithSeller() {
+            if (!currentArtwork) {
+                showToast('No artwork selected', 'error');
+                return;
+            }
+            
+            const artistName = currentArtwork.artist || 'the seller';
+            const artworkTitle = currentArtwork.title || 'this artwork';
+            
+            // Check if artwork has seller contact info
+            if (currentArtwork.sellerEmail) {
+                // If seller email exists, open email client
+                const subject = encodeURIComponent('Inquiry about "' + artworkTitle + '"');
+                const body = encodeURIComponent('Hello ' + artistName + ',\n\nI am interested in your artwork "' + artworkTitle + '" listed on ArtSpace.\n\nCould you please provide more information about:\n- Availability\n- Shipping options\n- Any additional details\n\nThank you!');
+                window.open('mailto:' + currentArtwork.sellerEmail + '?subject=' + subject + '&body=' + body, '_blank');
+                showToast('Opening email to contact ' + artistName, 'success');
+            } else if (currentArtwork.sellerPhone) {
+                // If seller phone exists, open WhatsApp or phone
+                const message = encodeURIComponent('Hi ' + artistName + ', I\'m interested in your artwork "' + artworkTitle + '" on ArtSpace. Is it still available?');
+                window.open('https://wa.me/' + currentArtwork.sellerPhone.replace(/[^0-9]/g, '') + '?text=' + message, '_blank');
+                showToast('Opening WhatsApp to contact ' + artistName, 'success');
+            } else {
+                // Show a contact inquiry modal for demo purposes
+                openContactModal(artistName, artworkTitle);
+            }
+        }
+        
+        // Contact Modal for demo purposes
+        function openContactModal(artistName, artworkTitle) {
+            // Create modal overlay
+            const modalHtml = `
+                <div id="contact-modal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px;">
+                    <div style="background: #1a1a2e; border-radius: 20px; padding: 30px; max-width: 400px; width: 100%; position: relative;">
+                        <button onclick="closeContactModal()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer;">&times;</button>
+                        <h3 style="color: #fff; margin-bottom: 10px; font-size: 20px;">Contact ${artistName}</h3>
+                        <p style="color: #aaa; margin-bottom: 20px; font-size: 14px;">Send an inquiry about "${artworkTitle}"</p>
+                        <form onsubmit="submitContactForm(event, '${artistName}', '${artworkTitle}')">
+                            <input type="text" id="contact-name" placeholder="Your Name" required style="width: 100%; padding: 12px 15px; margin-bottom: 10px; border: 1px solid #333; border-radius: 10px; background: #0f0f1a; color: #fff; font-size: 14px;">
+                            <input type="email" id="contact-email" placeholder="Your Email" required style="width: 100%; padding: 12px 15px; margin-bottom: 10px; border: 1px solid #333; border-radius: 10px; background: #0f0f1a; color: #fff; font-size: 14px;">
+                            <textarea id="contact-message" placeholder="Your message..." rows="4" required style="width: 100%; padding: 12px 15px; margin-bottom: 15px; border: 1px solid #333; border-radius: 10px; background: #0f0f1a; color: #fff; font-size: 14px; resize: none;"></textarea>
+                            <button type="submit" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #25D366, #128C7E); color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer;">Send Inquiry</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+        
+        function closeContactModal() {
+            const modal = document.getElementById('contact-modal');
+            if (modal) modal.remove();
+        }
+        
+        function submitContactForm(event, artistName, artworkTitle) {
+            event.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const message = document.getElementById('contact-message').value;
+            
+            // For demo: just show success message
+            closeContactModal();
+            showToast('Inquiry sent to ' + artistName + '! They will respond to ' + email + ' soon.', 'success');
+            
+            // In production, you would send this to a backend:
+            // fetch('/api/contact', { method: 'POST', body: JSON.stringify({ artistName, artworkTitle, name, email, message }) });
+        }
+        
         // Activate AR
         function activateAR() {
             const viewer = document.querySelector('#modal-viewer-container model-viewer');
-            if (viewer && viewer.canActivateAR) {
-                viewer.activateAR();
+            
+            if (!viewer) {
+                showToast('Model viewer not found. Please wait for the model to load.', 'error');
+                return;
+            }
+            
+            // Check if model is loaded
+            if (!viewer.loaded) {
+                showToast('Please wait for the 3D model to finish loading before using AR.', 'info');
+                return;
+            }
+            
+            if (viewer.canActivateAR) {
+                try {
+                    viewer.activateAR();
+                } catch (err) {
+                    console.error('AR activation error:', err);
+                    showToast('AR activation failed. Please try again.', 'error');
+                }
             } else {
-                alert('AR is not supported on this device. Please try on a mobile device with AR capabilities.');
+                // Provide more helpful error message
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                const isAndroid = /Android/.test(navigator.userAgent);
+                
+                if (!isIOS && !isAndroid) {
+                    showToast('AR requires a mobile device. Please open this page on your phone or tablet.', 'info');
+                } else {
+                    showToast('AR is not supported on this device or browser. Try using Safari on iOS or Chrome on Android.', 'error');
+                }
             }
         }
         
