@@ -741,6 +741,16 @@
             transform: scale(1.02);
         }
         
+        .btn-chat {
+            background: linear-gradient(135deg, #25D366, #128C7E) !important;
+            color: white !important;
+        }
+        
+        .btn-chat:hover {
+            background: linear-gradient(135deg, #20BD5C, #0E7A6E) !important;
+            transform: scale(1.02);
+        }
+        
         .modal-actions {
             display: flex;
             gap: 15px;
@@ -1243,6 +1253,12 @@
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                         </svg>
                         <span id="shortlist-btn-text">Add to Shortlist</span>
+                    </button>
+                    <button class="btn btn-chat" id="modal-chat-btn" onclick="chatWithSeller()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        Chat with Seller
                     </button>
                     <button class="btn btn-delete" id="modal-delete-btn" onclick="deleteFromModal()" style="display: none;">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2486,6 +2502,38 @@
                 // Clear references
                 currentArtwork = null;
                 originalArtwork = null;
+            }
+        }
+        
+        // Chat with Seller - Opens a chat interface or contact form
+        function chatWithSeller() {
+            if (!currentArtwork) {
+                showToast('No artwork selected', 'error');
+                return;
+            }
+            
+            const artistName = currentArtwork.artist || 'the seller';
+            const artworkTitle = currentArtwork.title || 'this artwork';
+            
+            // Check if artwork has seller contact info
+            if (currentArtwork.sellerEmail) {
+                // If seller email exists, open email client
+                const subject = encodeURIComponent('Inquiry about "' + artworkTitle + '"');
+                const body = encodeURIComponent('Hello ' + artistName + ',\n\nI am interested in your artwork "' + artworkTitle + '" listed on ArtSpace.\n\nCould you please provide more information about:\n- Availability\n- Shipping options\n- Any additional details\n\nThank you!');
+                window.open('mailto:' + currentArtwork.sellerEmail + '?subject=' + subject + '&body=' + body, '_blank');
+                showToast('Opening email to contact ' + artistName, 'success');
+            } else if (currentArtwork.sellerPhone) {
+                // If seller phone exists, open WhatsApp or phone
+                const message = encodeURIComponent('Hi ' + artistName + ', I\'m interested in your artwork "' + artworkTitle + '" on ArtSpace. Is it still available?');
+                window.open('https://wa.me/' + currentArtwork.sellerPhone.replace(/[^0-9]/g, '') + '?text=' + message, '_blank');
+                showToast('Opening WhatsApp to contact ' + artistName, 'success');
+            } else {
+                // Default: Show a contact form modal or placeholder message
+                // For demo purposes, show a toast with instructions
+                showToast('Contact feature coming soon! Reach out to ' + artistName + ' via the gallery.', 'info');
+                
+                // You can replace this with a custom chat modal:
+                // openChatModal(currentArtwork);
             }
         }
         
