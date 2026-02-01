@@ -1028,12 +1028,6 @@
                 return;
             }
             
-            // Check file size - localStorage has ~5MB limit, warn if file is large
-            if (file.size > 4 * 1024 * 1024) {
-                showError('File too large! Maximum size is 4MB for local storage. Consider using a smaller model or hosting it externally.');
-                return;
-            }
-            
             // Create preview URL for immediate display
             uploadedModelPreviewUrl = URL.createObjectURL(file);
             
