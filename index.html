@@ -751,6 +751,19 @@
             transform: scale(1.02);
         }
         
+        .btn-chat-card {
+            background: linear-gradient(135deg, #25D366, #128C7E) !important;
+            color: white !important;
+            flex: 1;
+            min-width: 100%;
+            margin-top: 5px;
+        }
+        
+        .btn-chat-card:hover {
+            background: linear-gradient(135deg, #20BD5C, #0E7A6E) !important;
+            transform: scale(1.02);
+        }
+        
         .modal-actions {
             display: flex;
             flex-wrap: wrap;
@@ -2207,6 +2220,12 @@
                                     <circle cx="12" cy="12" r="3"/>
                                 </svg>
                                 View in AR
+                            </button>
+                            <button class="btn btn-chat-card" onclick="event.stopPropagation();">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                </svg>
+                                Chat Seller
                             </button>
                             <button class="btn btn-secondary" onclick="event.stopPropagation(); openModal(${art.id})">
                                 Details
