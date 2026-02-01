@@ -2589,6 +2589,11 @@
                 userArtworks = userArtworks.filter(a => a.id !== artworkId);
                 localStorage.setItem('artspace_user_artworks', JSON.stringify(userArtworks));
                 
+                // Also remove from sessionStorage
+                let sessionArtworks = JSON.parse(sessionStorage.getItem('artspace_session_artworks') || '[]');
+                sessionArtworks = sessionArtworks.filter(a => a.id !== artworkId);
+                sessionStorage.setItem('artspace_session_artworks', JSON.stringify(sessionArtworks));
+                
                 // Close modal and refresh views
                 closeModal();
                 renderGallery(currentFilter);
@@ -2861,14 +2866,22 @@
             }
         });
         
-        // Load user-scanned artworks from localStorage
+        // Load user artworks from both localStorage and sessionStorage
         function loadUserArtworks() {
             try {
-                const userArtworks = JSON.parse(localStorage.getItem('artspace_user_artworks') || '[]');
-                if (userArtworks.length > 0) {
+                // Load from localStorage (persistent but limited storage)
+                const localArtworks = JSON.parse(localStorage.getItem('artspace_user_artworks') || '[]');
+                
+                // Load from sessionStorage (blob URLs - works in current session)
+                const sessionArtworks = JSON.parse(sessionStorage.getItem('artspace_session_artworks') || '[]');
+                
+                // Combine both sources
+                const allUserArtworks = [...sessionArtworks, ...localArtworks];
+                
+                if (allUserArtworks.length > 0) {
                     // Add user artworks to the beginning of the array
-                    artworks = [...userArtworks, ...artworks];
-                    console.log(`Loaded ${userArtworks.length} user artwork(s)`);
+                    artworks = [...allUserArtworks, ...artworks];
+                    console.log(`Loaded ${allUserArtworks.length} user artwork(s) (${sessionArtworks.length} session, ${localArtworks.length} local)`);
                 }
             } catch (e) {
                 console.error('Error loading user artworks:', e);
