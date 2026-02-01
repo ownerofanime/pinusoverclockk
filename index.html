@@ -753,13 +753,26 @@
         
         .modal-actions {
             display: flex;
-            gap: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
             margin-top: 25px;
         }
         
         .modal-actions .btn {
-            padding: 15px 30px;
-            font-size: 15px;
+            padding: 12px 20px;
+            font-size: 14px;
+            flex: 1 1 auto;
+            min-width: 140px;
+            justify-content: center;
+        }
+        
+        @media (max-width: 480px) {
+            .modal-actions {
+                flex-direction: column;
+            }
+            .modal-actions .btn {
+                width: 100%;
+            }
         }
         
         /* Compare Banner */
@@ -2282,7 +2295,15 @@
                         ar
                         ar-modes="webxr scene-viewer quick-look"
                         ar-scale="fixed"
-                    ></model-viewer>
+                        loading="eager"
+                    >
+                        <div class="model-loading" slot="poster">
+                            <div style="text-align: center; padding: 20px;">
+                                <div style="width: 40px; height: 40px; border: 3px solid #ccc; border-top-color: #E91E63; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                                <p style="margin-top: 10px; color: #666;">Loading 3D model...</p>
+                            </div>
+                        </div>
+                    </model-viewer>
                     <div class="real-size-indicator">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21 3H3v18h18V3zM9 3v18M15 3v18M3 9h18M3 15h18"/>
@@ -2290,6 +2311,24 @@
                         <span id="real-size">${currentArtwork.dimensions.width} × ${currentArtwork.dimensions.height} × ${currentArtwork.dimensions.depth} cm</span>
                     </div>
                 `;
+                
+                // Add error handling for model loading
+                const modelViewer = viewerContainer.querySelector('model-viewer');
+                if (modelViewer) {
+                    modelViewer.addEventListener('error', function(e) {
+                        console.error('Model loading error:', e);
+                        viewerContainer.innerHTML = `
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #666; text-align: center; padding: 20px; background: #1a1a2e;">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#E91E63" stroke-width="1.5">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 8v4M12 16h.01"/>
+                                </svg>
+                                <p style="margin-top: 10px; color: #fff;">Unable to load 3D model</p>
+                                <p style="font-size: 12px; margin-top: 5px; color: #aaa;">The model file may be corrupted or no longer available.</p>
+                            </div>
+                        `;
+                    });
+                }
             }
             
             // Update shortlist button
@@ -2528,22 +2567,83 @@
                 window.open('https://wa.me/' + currentArtwork.sellerPhone.replace(/[^0-9]/g, '') + '?text=' + message, '_blank');
                 showToast('Opening WhatsApp to contact ' + artistName, 'success');
             } else {
-                // Default: Show a contact form modal or placeholder message
-                // For demo purposes, show a toast with instructions
-                showToast('Contact feature coming soon! Reach out to ' + artistName + ' via the gallery.', 'info');
-                
-                // You can replace this with a custom chat modal:
-                // openChatModal(currentArtwork);
+                // Show a contact inquiry modal for demo purposes
+                openContactModal(artistName, artworkTitle);
             }
+        }
+        
+        // Contact Modal for demo purposes
+        function openContactModal(artistName, artworkTitle) {
+            // Create modal overlay
+            const modalHtml = `
+                <div id="contact-modal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px;">
+                    <div style="background: #1a1a2e; border-radius: 20px; padding: 30px; max-width: 400px; width: 100%; position: relative;">
+                        <button onclick="closeContactModal()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer;">&times;</button>
+                        <h3 style="color: #fff; margin-bottom: 10px; font-size: 20px;">Contact ${artistName}</h3>
+                        <p style="color: #aaa; margin-bottom: 20px; font-size: 14px;">Send an inquiry about "${artworkTitle}"</p>
+                        <form onsubmit="submitContactForm(event, '${artistName}', '${artworkTitle}')">
+                            <input type="text" id="contact-name" placeholder="Your Name" required style="width: 100%; padding: 12px 15px; margin-bottom: 10px; border: 1px solid #333; border-radius: 10px; background: #0f0f1a; color: #fff; font-size: 14px;">
+                            <input type="email" id="contact-email" placeholder="Your Email" required style="width: 100%; padding: 12px 15px; margin-bottom: 10px; border: 1px solid #333; border-radius: 10px; background: #0f0f1a; color: #fff; font-size: 14px;">
+                            <textarea id="contact-message" placeholder="Your message..." rows="4" required style="width: 100%; padding: 12px 15px; margin-bottom: 15px; border: 1px solid #333; border-radius: 10px; background: #0f0f1a; color: #fff; font-size: 14px; resize: none;"></textarea>
+                            <button type="submit" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #25D366, #128C7E); color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer;">Send Inquiry</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+        
+        function closeContactModal() {
+            const modal = document.getElementById('contact-modal');
+            if (modal) modal.remove();
+        }
+        
+        function submitContactForm(event, artistName, artworkTitle) {
+            event.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const message = document.getElementById('contact-message').value;
+            
+            // For demo: just show success message
+            closeContactModal();
+            showToast('Inquiry sent to ' + artistName + '! They will respond to ' + email + ' soon.', 'success');
+            
+            // In production, you would send this to a backend:
+            // fetch('/api/contact', { method: 'POST', body: JSON.stringify({ artistName, artworkTitle, name, email, message }) });
         }
         
         // Activate AR
         function activateAR() {
             const viewer = document.querySelector('#modal-viewer-container model-viewer');
-            if (viewer && viewer.canActivateAR) {
-                viewer.activateAR();
+            
+            if (!viewer) {
+                showToast('Model viewer not found. Please wait for the model to load.', 'error');
+                return;
+            }
+            
+            // Check if model is loaded
+            if (!viewer.loaded) {
+                showToast('Please wait for the 3D model to finish loading before using AR.', 'info');
+                return;
+            }
+            
+            if (viewer.canActivateAR) {
+                try {
+                    viewer.activateAR();
+                } catch (err) {
+                    console.error('AR activation error:', err);
+                    showToast('AR activation failed. Please try again.', 'error');
+                }
             } else {
-                alert('AR is not supported on this device. Please try on a mobile device with AR capabilities.');
+                // Provide more helpful error message
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                const isAndroid = /Android/.test(navigator.userAgent);
+                
+                if (!isIOS && !isAndroid) {
+                    showToast('AR requires a mobile device. Please open this page on your phone or tablet.', 'info');
+                } else {
+                    showToast('AR is not supported on this device or browser. Try using Safari on iOS or Chrome on Android.', 'error');
+                }
             }
         }
         
