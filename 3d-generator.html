@@ -866,7 +866,7 @@
         function handleGLB(file) {
             if (!file) return;
             
-            const url = URL.createObjectURL(file);
+            const blobUrl = URL.createObjectURL(file);
             
             // Show result section
             document.getElementById('options-card').classList.add('hidden');
@@ -874,21 +874,31 @@
             document.getElementById('result-section').classList.add('active');
             
             // Set download link
-            document.getElementById('download-glb').href = url;
+            document.getElementById('download-glb').href = blobUrl;
             document.getElementById('download-fbx').style.display = 'none';
             document.getElementById('download-obj').style.display = 'none';
             
-            // Auto-fill the gallery upload area
-            uploadedModelBlob = url;
-            document.getElementById('uploaded-file-name').textContent = file.name;
-            document.getElementById('uploaded-file-info').style.display = 'block';
-            document.getElementById('add-gallery-btn').disabled = false;
+            // Store preview URL
+            uploadedModelPreviewUrl = blobUrl;
             
-            // Auto-fill title from filename
-            const titleInput = document.getElementById('model-title');
-            if (!titleInput.value) {
-                titleInput.value = file.name.replace(/\.(glb|gltf)$/i, '');
-            }
+            // Convert file to Base64 for persistent storage
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedModelData = e.target.result; // Base64 data URL for localStorage
+                document.getElementById('uploaded-file-name').textContent = file.name;
+                document.getElementById('uploaded-file-info').style.display = 'block';
+                document.getElementById('add-gallery-btn').disabled = false;
+                
+                // Auto-fill title from filename
+                const titleInput = document.getElementById('model-title');
+                if (!titleInput.value) {
+                    titleInput.value = file.name.replace(/\.(glb|gltf)$/i, '');
+                }
+            };
+            reader.onerror = function() {
+                showError('Failed to read file. Please try again.');
+            };
+            reader.readAsDataURL(file);
             
             // Scroll to result
             document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
@@ -1076,13 +1086,14 @@
                 title: title,
                 artist: artist,
                 type: '3d',
-                model: uploadedModelData, // Now stores Base64 data URL for persistence
+                model: uploadedModelData, // Base64 data URL for persistence
                 image: '',
                 badge: badgeText,
                 category: 'sculpture',
                 style: 'Digital',
                 medium: '3D Model',
                 price: 'Custom',
+                contact: '+65 67676767',
                 dimensions: {
                     width: 20,
                     height: 20,
