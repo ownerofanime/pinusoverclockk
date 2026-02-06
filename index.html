@@ -2328,7 +2328,7 @@
                                 </svg>
                                 View in AR
                             </button>
-                            <button class="btn btn-chat-card" onclick="event.stopPropagation();">
+                            <button class="btn btn-chat-card" onclick="event.stopPropagation(); chatWithSellerDirect(${art.id});">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                                 </svg>
@@ -2724,6 +2724,31 @@
         }
         
         // Chat with Seller - Opens a chat interface or contact form
+        // Chat with seller directly from gallery card (without needing modal open)
+        function chatWithSellerDirect(artworkId) {
+            const art = artworks.find(a => a.id === artworkId);
+            if (!art) {
+                showToast('Artwork not found', 'error');
+                return;
+            }
+            
+            const artistName = art.artist || 'the seller';
+            const artworkTitle = art.title || 'this artwork';
+            
+            if (art.sellerEmail) {
+                const subject = encodeURIComponent('Inquiry about "' + artworkTitle + '"');
+                const body = encodeURIComponent('Hello ' + artistName + ',\n\nI am interested in your artwork "' + artworkTitle + '" listed on ArtSpace.\n\nCould you please provide more information about:\n- Availability\n- Shipping options\n- Any additional details\n\nThank you!');
+                window.open('mailto:' + art.sellerEmail + '?subject=' + subject + '&body=' + body, '_blank');
+                showToast('Opening email to contact ' + artistName, 'success');
+            } else if (art.sellerPhone) {
+                const message = encodeURIComponent('Hi ' + artistName + ', I\'m interested in your artwork "' + artworkTitle + '" on ArtSpace. Is it still available?');
+                window.open('https://wa.me/' + art.sellerPhone.replace(/[^0-9]/g, '') + '?text=' + message, '_blank');
+                showToast('Opening WhatsApp to contact ' + artistName, 'success');
+            } else {
+                openContactModal(artistName, artworkTitle);
+            }
+        }
+
         function chatWithSeller() {
             if (!currentArtwork) {
                 showToast('No artwork selected', 'error');

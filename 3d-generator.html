@@ -495,6 +495,22 @@
             font-size: 1rem;
         }
         
+        .gallery-form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            background: #fff;
+        }
+        
+        .gallery-form-input:focus {
+            outline: none;
+            border-color: #11998e;
+            box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.1);
+        }
+        
         /* Error */
         .error-msg {
             background: #fee;
@@ -628,6 +644,25 @@
                     <p>Tap to upload GLB/GLTF file</p>
                     <input type="file" id="glb-input" accept=".glb,.gltf,model/gltf-binary,model/gltf+json" style="position: absolute; opacity: 0; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;" onchange="handleGLB(this.files[0])">
                 </label>
+                
+                <!-- Import tab details form (shown after file selected) -->
+                <div id="import-details-form" style="display: none; margin-top: 15px;">
+                    <div id="import-preview" style="background: #1a1a2e; border-radius: 15px; overflow: hidden; height: 250px; margin-bottom: 15px;">
+                        <model-viewer id="import-model-preview" auto-rotate camera-controls style="width: 100%; height: 100%;"></model-viewer>
+                    </div>
+                    <input type="text" id="import-title" placeholder="Artwork title" class="gallery-form-input">
+                    <input type="text" id="import-artist" placeholder="Artist name" class="gallery-form-input">
+                    <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                        <input type="number" id="import-width" placeholder="W (cm)" min="1" class="gallery-form-input" style="flex: 1; margin-bottom: 0;">
+                        <input type="number" id="import-height" placeholder="H (cm)" min="1" class="gallery-form-input" style="flex: 1; margin-bottom: 0;">
+                        <input type="number" id="import-depth" placeholder="D (cm)" min="1" class="gallery-form-input" style="flex: 1; margin-bottom: 0;">
+                    </div>
+                    <input type="text" id="import-price" placeholder="Price (e.g. $500)" class="gallery-form-input">
+                    <input type="text" id="import-contact" placeholder="Contact (phone/email)" class="gallery-form-input">
+                    <button class="btn btn-primary" style="width: 100%;" onclick="addImportToGallery()">
+                        ✅ Add to Gallery
+                    </button>
+                </div>
             </div>
         </div>
         
@@ -696,6 +731,16 @@
                 
                 <input type="text" id="model-title" placeholder="Model title" style="margin-top: 15px;">
                 <input type="text" id="model-artist" placeholder="Artist name (optional)">
+                
+                <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                    <input type="number" id="model-width" placeholder="Width (cm)" min="1" style="flex: 1;">
+                    <input type="number" id="model-height" placeholder="Height (cm)" min="1" style="flex: 1;">
+                    <input type="number" id="model-depth" placeholder="Depth (cm)" min="1" style="flex: 1;">
+                </div>
+                
+                <input type="text" id="model-price" placeholder="Price (e.g. $500 or Price on request)">
+                <input type="text" id="model-contact" placeholder="Contact (phone/email for buyers)">
+                
                 <button class="btn btn-primary" style="width: 100%;" onclick="addUploadedToGallery()" id="add-gallery-btn" disabled>
                     Add to Gallery
                 </button>
@@ -862,38 +907,93 @@
             updateImageGrid();
         }
         
-        // Handle GLB upload (Import tab)
+        // Handle GLB upload (Import tab) - now shows inline form with preview
         function handleGLB(file) {
             if (!file) return;
             
             const blobUrl = URL.createObjectURL(file);
             
-            // Show result section
-            document.getElementById('options-card').classList.add('hidden');
-            document.getElementById('progress-section').classList.remove('active');
-            document.getElementById('result-section').classList.add('active');
-            
-            // Set download link
-            document.getElementById('download-glb').href = blobUrl;
-            document.getElementById('download-fbx').style.display = 'none';
-            document.getElementById('download-obj').style.display = 'none';
-            
-            // Store blob URL directly (works immediately, no storage limits)
+            // Store blob URL
             uploadedModelData = blobUrl;
             uploadedModelPreviewUrl = blobUrl;
             
-            document.getElementById('uploaded-file-name').textContent = file.name;
-            document.getElementById('uploaded-file-info').style.display = 'block';
-            document.getElementById('add-gallery-btn').disabled = false;
+            // Show the import details form with 3D preview
+            const form = document.getElementById('import-details-form');
+            form.style.display = 'block';
+            
+            // Set model preview
+            const preview = document.getElementById('import-model-preview');
+            preview.setAttribute('src', blobUrl);
             
             // Auto-fill title from filename
-            const titleInput = document.getElementById('model-title');
+            const titleInput = document.getElementById('import-title');
             if (!titleInput.value) {
                 titleInput.value = file.name.replace(/\.(glb|gltf)$/i, '');
             }
             
-            // Scroll to result
-            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+            // Scroll to form
+            form.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Add imported GLB directly to gallery from Import tab
+        function addImportToGallery() {
+            if (!uploadedModelData) {
+                showError('Please upload a GLB file first');
+                return;
+            }
+            
+            const title = document.getElementById('import-title').value || 'Untitled Model';
+            const artist = document.getElementById('import-artist').value || 'Unknown Artist';
+            const width = parseInt(document.getElementById('import-width').value) || 20;
+            const height = parseInt(document.getElementById('import-height').value) || 20;
+            const depth = parseInt(document.getElementById('import-depth').value) || 20;
+            const price = document.getElementById('import-price').value || 'Price on request';
+            const contact = document.getElementById('import-contact').value || '';
+            
+            const artwork = {
+                id: Date.now(),
+                title: title,
+                artist: artist,
+                type: '3d',
+                model: uploadedModelData,
+                image: '',
+                badge: 'Imported',
+                category: 'sculpture',
+                style: 'Digital',
+                medium: '3D Model',
+                price: price,
+                contact: contact,
+                sellerPhone: contact.match(/^\+?[0-9\s-]+$/) ? contact : '',
+                sellerEmail: contact.includes('@') ? contact : '',
+                dimensions: { width: width, height: height, depth: depth },
+                tags: ['3d', 'custom', 'user-uploaded', 'imported'],
+                source: 'Imported',
+                addedAt: new Date().toISOString()
+            };
+            
+            try {
+                const saved = JSON.parse(sessionStorage.getItem('artspace_session_artworks') || '[]');
+                saved.push(artwork);
+                sessionStorage.setItem('artspace_session_artworks', JSON.stringify(saved));
+                
+                alert('\u2705 Added to gallery! Go back to see your model.\n\nNote: Models are available during this browser session.');
+                
+                // Reset form
+                document.getElementById('import-details-form').style.display = 'none';
+                document.getElementById('import-title').value = '';
+                document.getElementById('import-artist').value = '';
+                document.getElementById('import-width').value = '';
+                document.getElementById('import-height').value = '';
+                document.getElementById('import-depth').value = '';
+                document.getElementById('import-price').value = '';
+                document.getElementById('import-contact').value = '';
+                document.getElementById('import-model-preview').removeAttribute('src');
+                uploadedModelData = null;
+                uploadedModelPreviewUrl = null;
+            } catch (err) {
+                console.error('Error saving to gallery:', err);
+                showError('Failed to save to gallery: ' + err.message);
+            }
         }
         
         // Generate 3D model
@@ -1061,6 +1161,11 @@
             
             const title = document.getElementById('model-title').value || 'Untitled Model';
             const artist = document.getElementById('model-artist').value || 'Unknown Artist';
+            const width = parseInt(document.getElementById('model-width').value) || 20;
+            const height = parseInt(document.getElementById('model-height').value) || 20;
+            const depth = parseInt(document.getElementById('model-depth').value) || 20;
+            const price = document.getElementById('model-price').value || 'Price on request';
+            const contact = document.getElementById('model-contact').value || '';
             
             // Determine if this is from Meshy generation or import
             const isFromMeshy = uploadedModelData.includes('meshy') || (typeof uploadedModelData === 'string' && uploadedModelData.startsWith('http'));
@@ -1077,12 +1182,14 @@
                 category: 'sculpture',
                 style: 'Digital',
                 medium: '3D Model',
-                price: 'Custom',
-                contact: '+65 67676767',
+                price: price,
+                contact: contact,
+                sellerPhone: contact.match(/^\+?[0-9\s-]+$/) ? contact : '',
+                sellerEmail: contact.includes('@') ? contact : '',
                 dimensions: {
-                    width: 20,
-                    height: 20,
-                    depth: 20
+                    width: width,
+                    height: height,
+                    depth: depth
                 },
                 tags: ['3d', 'custom', 'user-uploaded', badgeText.toLowerCase().replace(' ', '-')],
                 source: badgeText,
@@ -1102,6 +1209,11 @@
                 document.getElementById('add-gallery-btn').disabled = true;
                 document.getElementById('model-title').value = '';
                 document.getElementById('model-artist').value = '';
+                document.getElementById('model-width').value = '';
+                document.getElementById('model-height').value = '';
+                document.getElementById('model-depth').value = '';
+                document.getElementById('model-price').value = '';
+                document.getElementById('model-contact').value = '';
                 uploadedModelData = null;
                 // Don't revoke the blob URL - it needs to stay valid for the gallery
                 uploadedModelPreviewUrl = null;
