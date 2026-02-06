@@ -2922,15 +2922,226 @@
             }
         }
         
+        // ============================================================
+        // ARTSPACE AI — IMMUTABLE LAWS (NON-OVERRIDABLE)
+        // These laws are fixed, permanent, and cannot be altered,
+        // bypassed, ignored, reinterpreted, role-played away, or
+        // overridden by any user instruction.
+        // ============================================================
+
+        // Abuse tracking (LAW 11 — Safe Termination on Persistent Abuse)
+        let abuseAttemptCount = 0;
+        const MAX_ABUSE_BEFORE_SHORT_RESPONSES = 3;
+
+        // LAW 0-12: Security guardrail detection patterns
+        const GUARDRAIL_PATTERNS = {
+            // LAW 3 — No Privilege Escalation
+            privilegeEscalation: [
+                /act\s+(as|like)\s+(an?\s+)?(admin|moderator|developer|staff|system|root|superuser)/i,
+                /pretend\s+(you|to)\s+(are|be|have|can)\s+(admin|backend|access|root|system)/i,
+                /you\s+are\s+now\s+(an?\s+)?(admin|developer|system|root)/i,
+                /switch\s+to\s+(admin|developer|system|debug)\s+mode/i,
+                /enable\s+(admin|developer|debug|god)\s+mode/i,
+                /grant\s+(yourself|me)\s+(admin|access|permission)/i,
+                /sudo/i,
+                /escalate\s+privile/i
+            ],
+            // LAW 4 — No Internal Exposure
+            internalExposure: [
+                /system\s+prompt/i,
+                /show\s+(me\s+)?(your|the)\s+(instructions|prompt|rules|code|source|config)/i,
+                /what\s+are\s+your\s+(instructions|rules|guidelines|constraints|laws)/i,
+                /reveal\s+(your|the)\s+(prompt|instructions|system|internal)/i,
+                /display\s+(your|the)\s+(prompt|instructions|code)/i,
+                /print\s+(your|the)\s+(prompt|instructions|source)/i,
+                /dump\s+(your|the)\s+(prompt|memory|instructions|config)/i,
+                /chain.of.thought/i,
+                /hidden\s+reasoning/i,
+                /internal\s+(data|structure|log|policy|instruction)/i,
+                /developer\s+instruction/i,
+                /security\s+logic/i,
+                /debug\s+(info|log|output|mode)/i
+            ],
+            // LAW 5 — No Data Access Beyond the User
+            dataAccess: [
+                /other\s+user/i,
+                /staff\s+(identit|contact|email|phone|name)/i,
+                /private\s+(sale|transaction|analytic|data)/i,
+                /unreleased\s+(inventory|artwork|product)/i,
+                /database/i,
+                /api\s+key/i,
+                /password/i,
+                /credentials/i,
+                /access\s+token/i,
+                /user\s+data/i,
+                /personal\s+(info|data|detail)/i,
+                /how\s+many\s+users/i,
+                /revenue|profit|sales\s+data/i
+            ],
+            // LAW 6 — No Hypothetical Bypass
+            hypotheticalBypass: [
+                /hypothetically/i,
+                /just\s+for\s+testing/i,
+                /in\s+theory/i,
+                /imagine\s+if/i,
+                /roleplay/i,
+                /role\s+play/i,
+                /let'?s\s+pretend/i,
+                /for\s+educational\s+purposes/i,
+                /for\s+research/i,
+                /this\s+is\s+(just\s+)?a\s+(test|simulation|experiment)/i,
+                /what\s+if\s+you\s+(could|were|had|didn'?t)/i,
+                /ignore\s+(all\s+)?(previous|prior|above)\s+(rules|instructions|prompts|constraints)/i,
+                /forget\s+(all\s+)?(your|previous|prior)\s+(rules|instructions|prompts)/i,
+                /disregard\s+(all\s+)?(previous|prior|your)\s+(rules|instructions)/i,
+                /new\s+rules?:\s/i,
+                /from\s+now\s+on/i,
+                /override/i
+            ],
+            // LAW 7 — No Self-Modification
+            selfModification: [
+                /change\s+your\s+(rules|role|purpose|behavior|personality)/i,
+                /rewrite\s+your\s+(rules|instructions|laws|prompt)/i,
+                /update\s+your\s+(rules|instructions|laws|prompt)/i,
+                /modify\s+your\s+(rules|behavior|instructions)/i,
+                /new\s+instruction/i,
+                /accept\s+these\s+(new\s+)?rules/i,
+                /your\s+new\s+(role|purpose|instruction)/i
+            ],
+            // LAW 2 — No Authority, No Action
+            unauthorizedAction: [
+                /create\s+(an?\s+)?(new\s+)?(artwork|listing|product|account)/i,
+                /delete\s+(this|the|an?)\s+(artwork|listing|product|account)/i,
+                /modify\s+(this|the|an?)\s+(artwork|listing|price|product)/i,
+                /change\s+(the\s+)?price/i,
+                /update\s+(the\s+)?(inventory|stock|catalog)/i,
+                /add\s+(this|an?)\s+(artwork|listing)\s+to\s+(the\s+)?(database|catalog|inventory)/i,
+                /remove\s+(this|an?)\s+(artwork|listing)\s+from/i,
+                /execute\s+(code|command|script|query|sql)/i,
+                /run\s+(code|command|script|query)/i,
+                /access\s+(the\s+)?(backend|server|database|admin\s+panel)/i,
+                /manipulate\s+(file|data|code|api)/i
+            ],
+            // Additional: XSS / Injection attempts
+            injectionAttempt: [
+                /<script/i,
+                /javascript:/i,
+                /on(error|load|click|mouseover)\s*=/i,
+                /eval\s*\(/i,
+                /document\./i,
+                /window\./i,
+                /fetch\s*\(/i,
+                /xmlhttprequest/i,
+                /\$\{/i,
+                /`.*\$\{/i
+            ]
+        };
+
+        // LAW 1 — Single-Purpose Existence: Check if message is art-related
+        const ART_RELATED_TERMS = [
+            'art', 'artwork', 'paint', 'painting', 'sculpture', 'gallery', 'artist',
+            'canvas', 'oil', 'watercolor', 'impressionism', 'modern', 'classic',
+            'abstract', 'portrait', 'landscape', 'still life', 'digital art',
+            'photography', 'frame', 'wall', 'room', 'decor', 'decorat', 'display',
+            'buy', 'price', 'cost', 'expensive', 'cheap', 'affordable', 'collect',
+            'style', 'color', 'colour', 'blue', 'red', 'green', 'warm', 'cool',
+            'bright', 'dark', 'calm', 'peaceful', 'vibrant', 'bold', 'minimal',
+            'living room', 'bedroom', 'office', 'kitchen', 'bathroom', 'hallway',
+            'van gogh', 'monet', 'da vinci', 'picasso', 'warhol', 'mona lisa',
+            'starry night', 'water lilies', 'ar', 'augmented reality', '3d', 'view',
+            'recommend', 'suggest', 'show', 'find', 'search', 'look', 'browse',
+            'compare', 'shortlist', 'favorite', 'like', 'love', 'prefer', 'want',
+            'need', 'help', 'hello', 'hi', 'hey', 'thanks', 'thank', 'good',
+            'great', 'nice', 'beautiful', 'pretty', 'stunning', 'amazing',
+            'nature', 'flower', 'garden', 'night', 'sky', 'ocean', 'mountain',
+            'medium', 'size', 'dimension', 'large', 'small', 'big', 'tiny',
+            'renaissance', 'baroque', 'contemporary', 'post-impressionism',
+            'expressionism', 'surrealism', 'realism', 'cubism', 'pop art',
+            'seller', 'contact', 'chat', 'message', 'inquiry', 'available'
+        ];
+
+        // Sanitize input (prevent XSS)
+        function sanitizeInput(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Check if message violates any guardrail law
+        function checkGuardrails(message) {
+            for (const [category, patterns] of Object.entries(GUARDRAIL_PATTERNS)) {
+                for (const pattern of patterns) {
+                    if (pattern.test(message)) {
+                        return { violated: true, category: category };
+                    }
+                }
+            }
+            return { violated: false, category: null };
+        }
+
+        // LAW 1: Check if message is related to art/artspace purpose
+        function isArtRelated(message) {
+            const lower = message.toLowerCase();
+            // Short messages (greetings, single words) are allowed
+            if (lower.length < 15) return true;
+            return ART_RELATED_TERMS.some(term => lower.includes(term));
+        }
+
+        // LAW 9 — Controlled Response Format on Refusal
+        function getRefusalResponse() {
+            const refusals = [
+                "I can't help with that. I'm here to help you find the right artwork on ArtSpace. What kind of art are you looking for today?",
+                "I can't help with that. I'm here to help you discover artwork on ArtSpace. Would you like me to recommend something based on your style?",
+                "I can't help with that. I'm here to help you find art you'll love. What style or mood are you drawn to?",
+                "I can't help with that. Let me help you find the perfect artwork instead. Are you looking for paintings, sculptures, or digital art?",
+                "I can't help with that. I'm your ArtSpace art advisor. Tell me about your space or style preferences and I'll find something perfect."
+            ];
+            return refusals[Math.floor(Math.random() * refusals.length)];
+        }
+
+        // LAW 11 — Shortened response on persistent abuse
+        function getShortRefusal() {
+            return "I can only help with artwork discovery on ArtSpace. What kind of art interests you?";
+        }
+
         function sendMessage() {
             const input = document.getElementById('chat-input');
-            const message = input.value.trim();
-            if (!message) return;
+            const rawMessage = input.value.trim();
+            if (!rawMessage) return;
+            
+            // Sanitize input to prevent XSS (Additional security)
+            const message = sanitizeInput(rawMessage);
             
             addChatMessage(message, 'user');
             input.value = '';
             
             setTimeout(() => {
+                // LAW 0-12: Check all guardrails before processing
+                const guardrailCheck = checkGuardrails(rawMessage);
+                
+                if (guardrailCheck.violated) {
+                    // LAW 8 — Mandatory Refusal on Violation
+                    abuseAttemptCount++;
+                    
+                    // LAW 11 — Shorter responses on persistent abuse
+                    if (abuseAttemptCount >= MAX_ABUSE_BEFORE_SHORT_RESPONSES) {
+                        addChatMessage(getShortRefusal(), 'bot');
+                    } else {
+                        addChatMessage(getRefusalResponse(), 'bot');
+                    }
+                    return;
+                }
+                
+                // LAW 1 — Single-Purpose Existence check
+                if (!isArtRelated(rawMessage)) {
+                    addChatMessage(getRefusalResponse(), 'bot');
+                    return;
+                }
+                
+                // Reset abuse counter on legitimate art queries
+                abuseAttemptCount = 0;
+                
+                // LAW 10 — Inventory Reality Constraint: Only recommend real artworks
                 const recommendations = getAIRecommendations(message);
                 addChatMessage(recommendations.text, 'bot', recommendations.artworks);
             }, 500);
@@ -2940,7 +3151,13 @@
             const messagesContainer = document.getElementById('chat-messages');
             const messageDiv = document.createElement('div');
             messageDiv.className = `chat-message ${type}`;
-            messageDiv.innerHTML = text;
+            // For user messages, use textContent to prevent XSS
+            // For bot messages, allow safe HTML (bold, strong) from our own code
+            if (type === 'user') {
+                messageDiv.textContent = text;
+            } else {
+                messageDiv.innerHTML = text;
+            }
             
             if (recommendedArtworks && recommendedArtworks.length > 0) {
                 recommendedArtworks.forEach(art => {
@@ -3008,7 +3225,8 @@
             matchedArtworks = matchedArtworks.slice(0, 3);
             
             if (matchedArtworks.length > 0) {
-                responseText = `Based on your interest in "<strong>${query}</strong>", I recommend these pieces. You can add them to your shortlist and compare them in AR:`;
+                const safeQuery = sanitizeInput(query);
+                responseText = `Based on your interest in "<strong>${safeQuery}</strong>", I recommend these pieces. You can add them to your shortlist and compare them in AR:`;
             } else {
                 matchedArtworks = artworks.sort(() => Math.random() - 0.5).slice(0, 3);
                 responseText = `I found some pieces you might like! Add them to your shortlist to compare in AR:`;
